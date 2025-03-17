@@ -5,4 +5,8 @@
     <string name="email">Электронная почта</string>
     <string name="password">Пароль</string>
     <string name="sign_in">Войти</string>
+    <string name="search_by_book">Поиск по книгам</string>
+    <string name="last_request">Недавние запросы</string>
+    <string name="genres">Жанры</string>
+    <string name="authors">Авторы</string>
 </resources>
