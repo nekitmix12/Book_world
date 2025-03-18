@@ -10,6 +10,7 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
@@ -103,4 +104,34 @@ val authorText = TextStyle(
     fontSize = 16.sp,
     lineHeight = 20.8.sp
 )
+
+val popularBookName = TextStyle(
+    color = accent_dark,
+    fontWeight = FontWeight(700),
+    fontFamily = Alumni_Sans,
+    fontSize = 14.sp,
+)
+val popularBookAuthor = TextStyle(
+    color = accent_dark,
+    fontWeight = FontWeight(400),
+    fontFamily = Vela_Sans,
+    fontSize = 10.sp,
+    lineHeight = 13.sp
+)
+
+val LibraryLabelText = TextStyle(
+    color = secondary,
+    fontWeight = FontWeight(700),
+    fontFamily = Alumni_Sans,
+    fontSize = 48.sp,
+)
+val quoteContent = TextStyle(
+    color = black,
+    fontWeight = FontWeight(400),
+    fontFamily = Georgia,
+    fontStyle = FontStyle.Italic,
+    fontSize = 16.sp,
+)
+
+
 

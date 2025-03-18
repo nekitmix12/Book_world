@@ -3,87 +3,110 @@ package hits.tsu.presentation
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
-import androidx.compose.material3.carousel.HorizontalMultiBrowseCarousel
-import androidx.compose.material3.carousel.rememberCarouselState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.imageResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import hits.tsu.R
 import hits.tsu.presentation.models.NewCarouselModel
 import hits.tsu.presentation.models.PopularBookModel
+import hits.tsu.presentation.theme.LibraryLabelText
+import hits.tsu.presentation.theme.popularBookAuthor
+import hits.tsu.presentation.theme.popularBookName
+
 
 @Composable
 fun LibraryScreen() {
+    val popularBooks = listOf(
+        PopularBookModel(
+            ImageBitmap.imageResource(
+                R.drawable.test_book
+            ), "Дэн Браун", "Код да винчи"
+        ),
+        PopularBookModel(
+            ImageBitmap.imageResource(
+                R.drawable.test_book
+            ), "Дэн Браун", "Код да винчи"
+        ),
+        PopularBookModel(
+            ImageBitmap.imageResource(
+                R.drawable.test_book
+            ), "Дэн Браун", "Код да винчи"
+        ),
+        PopularBookModel(
+            ImageBitmap.imageResource(
+                R.drawable.test_book
+            ), "Дэн Браун", "Код да винчи"
+        ),
+    )
+    LazyColumn {
+        item { TopLabel(stringResource(R.string.library)) }
+        item { MiddleLabel(stringResource(R.string.nova)) }
 
+        item { Spacer(Modifier.height(24.dp)) }
+        item { MiddleLabel(stringResource(R.string.popular_book)) }
+        items(popularBooks.size / 3) {
+            ListPopularBook(popularBooks.slice(it * 3..it * 3 + 2))
+        }
+        if (popularBooks.size % 3 != 0) item { ListPopularBook(popularBooks.slice((popularBooks.size / 3 * 3)..<popularBooks.size)) }
+    }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CarouselNew(
     listItems: List<NewCarouselModel> = listOf(
         NewCarouselModel(
             ImageBitmap.imageResource(
                 R.drawable.test_new_carousel
-            ),
-            "Долгожданное продолжение «Голодных игр»",
-            "рассвет жатвы"
+            ), "Долгожданное продолжение «Голодных игр»", "рассвет жатвы"
         ), NewCarouselModel(
             ImageBitmap.imageResource(
                 R.drawable.test_new_carousel
-            ),
-            "Долгожданное продолжение «Голодных игр»",
-            "рассвет жатвы"
+            ), "Долгожданное продолжение «Голодных игр»", "рассвет жатвы"
         ), NewCarouselModel(
             ImageBitmap.imageResource(
                 R.drawable.test_new_carousel
-            ),
-            "Долгожданное продолжение «Голодных игр»",
-            "рассвет жатвы"
+            ), "Долгожданное продолжение «Голодных игр»", "рассвет жатвы"
         ), NewCarouselModel(
             ImageBitmap.imageResource(
                 R.drawable.test_new_carousel
-            ),
-            "Долгожданное продолжение «Голодных игр»",
-            "рассвет жатвы"
+            ), "Долгожданное продолжение «Голодных игр»", "рассвет жатвы"
         ), NewCarouselModel(
             ImageBitmap.imageResource(
                 R.drawable.test_new_carousel
-            ),
-            "Долгожданное продолжение «Голодных игр»",
-            "рассвет жатвы"
+            ), "Долгожданное продолжение «Голодных игр»", "рассвет жатвы"
         )
     ),
 ) {
 
-    val state = rememberCarouselState { listItems.count() }
+    
+}
 
-    HorizontalMultiBrowseCarousel(
-        state = state,
-        modifier = Modifier.clip(RoundedCornerShape(10.dp)),
-        preferredItemWidth = 186.dp,
-        itemSpacing = 8.dp,
-    ) { i ->
-        val item = listItems[i]
-        ImageBox(item.image, item.description, item.name)
-    }
+
+@Composable
+fun TopLabel(label: String ) {
+    Text(text = label.uppercase(), Modifier.padding(horizontal = 16.dp), style = LibraryLabelText)
 }
 
 @Composable
@@ -99,10 +122,7 @@ fun ImageBox(
             .clip(RoundedCornerShape(10.dp))
     ) {
         Image(
-            image,
-            "",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier.fillMaxSize()
+            image, "", contentScale = ContentScale.Crop, modifier = Modifier.fillMaxSize()
         )
         Column {
             Spacer(Modifier.weight(1f, true))
@@ -111,44 +131,8 @@ fun ImageBox(
                 modifier = Modifier.padding(bottom = 4.dp, start = 16.dp, end = 16.dp)
             )
             Text(
-                text = name,
-                modifier = Modifier.padding(bottom = 16.dp, start = 16.dp, end = 16.dp)
+                text = name, modifier = Modifier.padding(bottom = 16.dp, start = 16.dp, end = 16.dp)
             )
-        }
-
-    }
-}
-
-@Composable
-fun PopularBooksList(
-    books: List<PopularBookModel> = listOf(
-        PopularBookModel(
-            ImageBitmap.imageResource(
-                R.drawable.test_book
-            ), "Дэн Браун", "Код да винчи"
-        ),
-        PopularBookModel(
-            ImageBitmap.imageResource(
-                R.drawable.test_book
-            ), "Дэн Браун", "Код да винчи"
-        ),
-        PopularBookModel(
-            ImageBitmap.imageResource(
-                R.drawable.test_book
-            ), "Дэн Браун", "Код да винчи"
-        ),
-    ),
-) {
-
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(3),
-        modifier = Modifier.fillMaxSize(),
-        userScrollEnabled = true,
-        
-    ) {
-        items(books) { item ->
-
-            PopularItem(item)
         }
 
     }
@@ -162,9 +146,52 @@ fun PopularItem(
         ), "Дэн Браун", "Код да винчи"
     ),
 ) {
-    Column {
-        Image(item.image, "")
-        Text(item.name)
-        Text(item.author)
+    Column(Modifier.padding(top = 16.dp)) {
+        Image(item.image, "", modifier = Modifier.clip(RoundedCornerShape(8.dp)))
+        Text(item.name, style = popularBookName)
+        Text(item.author, style = popularBookAuthor)
+    }
+}
+
+
+@Composable
+fun ListPopularBook(list: List<PopularBookModel>) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 8.dp)
+            .padding(horizontal = 16.dp)
+            .height(IntrinsicSize.Min)
+    ) {
+        Box(
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxHeight(), contentAlignment = Alignment.Center
+        ) {
+            PopularItem(list[0])
+        }
+
+        Spacer(modifier = Modifier.width(8.dp))
+
+        Box(
+            modifier = if (list.size > 1) Modifier
+                .weight(1f)
+                .fillMaxHeight()
+            else Modifier.weight(1f), contentAlignment = Alignment.Center
+        ) {
+            if (list.size > 1) PopularItem(list[1])
+        }
+
+        Spacer(modifier = Modifier.width(8.dp))
+
+        Box(
+            modifier = if (list.size > 2) Modifier
+                .weight(1f)
+
+                .fillMaxHeight()
+            else Modifier.weight(1f), contentAlignment = Alignment.Center
+        ) {
+            if (list.size > 2) PopularItem(list[2])
+        }
     }
 }

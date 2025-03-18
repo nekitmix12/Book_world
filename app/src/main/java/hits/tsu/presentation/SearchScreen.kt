@@ -39,8 +39,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import hits.tsu.R
 import hits.tsu.presentation.models.AuthorModel
@@ -60,12 +58,7 @@ import hits.tsu.presentation.theme.textBarText
 import hits.tsu.presentation.theme.white
 import java.util.UUID
 
-@Preview(
-    showBackground = true,
-    showSystemUi = true,
-    device = Devices.PIXEL_2,
-    backgroundColor = 0xFFFCF2E8,
-)
+
 @Composable
 fun SearchScreen() {
     val requests = remember {
@@ -144,7 +137,7 @@ fun SearchScreen() {
             )
         }
         item { Spacer(Modifier.height(24.dp)) }
-        item { Label(stringResource(R.string.last_request)) }
+        item { MiddleLabel(stringResource(R.string.last_request)) }
         item { Spacer(Modifier.height(8.dp)) }
         items(requests.value.size) { item ->
             RequestItem(requests.value[item], { request ->
@@ -156,7 +149,7 @@ fun SearchScreen() {
             })
         }
         item { Spacer(Modifier.height(24.dp)) }
-        item { Label(stringResource(R.string.genres)) }
+        item { MiddleLabel(stringResource(R.string.genres)) }
         items(genres.size / 2) { item ->
             GenreLine(genres.slice(item * 2..item * 2 + 1))
         }
@@ -164,7 +157,7 @@ fun SearchScreen() {
             item { GenreLine(listOf(genres[genres.size - 1])) }
         }
         item { Spacer(Modifier.height(24.dp)) }
-        item { Label(stringResource(R.string.authors)) }
+        item { MiddleLabel(stringResource(R.string.authors)) }
         items(authors.size) { item ->
             AuthorItem(authors[item])
         }
@@ -283,7 +276,7 @@ fun BookSearchItem(
 
 @Composable
 @Stable
-fun Label(label: String) {
+fun MiddleLabel(label: String) {
     Text(
         text = label.uppercase(), style = labelText, modifier = Modifier.padding(horizontal = 16.dp)
     )
