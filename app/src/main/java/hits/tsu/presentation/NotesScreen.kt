@@ -26,8 +26,6 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import hits.tsu.R
 import hits.tsu.presentation.models.BookSearchModel
@@ -43,12 +41,7 @@ import hits.tsu.presentation.theme.quoteContent
 import hits.tsu.presentation.theme.white
 import java.util.UUID
 
-@Preview(
-    showBackground = true,
-    showSystemUi = true,
-    device = Devices.PIXEL_2,
-    backgroundColor = 0xFFFCF2E8,
-)
+
 @Composable
 fun NotesScreen() {
 
@@ -217,35 +210,40 @@ fun ReadNow(
             Spacer(Modifier.weight(1f))
             Text(text = readNowBookModel.name, style = bookNameSearch)
             Text(text = readNowBookModel.part, style = bookAuthorSearch)
-            Row(Modifier.padding(top = 16.dp)) {
-                Spacer(
-                    Modifier
-                        .weight(readNowBookModel.partInt)
-                        .height(4.dp)
-                        .clip(RoundedCornerShape(8.dp))
-                        .background(accent_dark)
-                )
-                Spacer(Modifier.width(4.dp))
-                Box(
-                    modifier = Modifier
-                        .weight(1f - readNowBookModel.partInt)
-                        .height(4.dp)
-                        .clip(RoundedCornerShape(8.dp))
-                        .background(accent_medium)
-
-                ) {
-                    Spacer(
-                        Modifier
-                            .align(Alignment.CenterEnd)
-                            .clip(CircleShape)
-                            .background(accent_dark)
-                            .size(4.dp)
-                    )
-                }
-            }
+            ProgressReadBar(readNowBookModel.partInt, Modifier.padding(top = 16.dp))
             Spacer(Modifier.weight(1f))
 
         }
 
+    }
+}
+
+@Composable
+fun ProgressReadBar(part: Float, modifier: Modifier) {
+    Row(modifier) {
+        Spacer(
+            Modifier
+                .weight(part)
+                .height(4.dp)
+                .clip(RoundedCornerShape(8.dp))
+                .background(accent_dark)
+        )
+        Spacer(Modifier.width(4.dp))
+        Box(
+            modifier = Modifier
+                .weight(1f - part)
+                .height(4.dp)
+                .clip(RoundedCornerShape(8.dp))
+                .background(accent_medium)
+
+        ) {
+            Spacer(
+                Modifier
+                    .align(Alignment.CenterEnd)
+                    .clip(CircleShape)
+                    .background(accent_dark)
+                    .size(4.dp)
+            )
+        }
     }
 }
