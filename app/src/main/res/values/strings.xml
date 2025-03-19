@@ -20,4 +20,7 @@
     <string name="in_favorite">В избранное</string>
     <string name="was_read">Прочитано</string>
     <string name="toc">Оглавление</string>
-</resources>
+    <string name="string_space">Расстояние между строками</string>
+    <string name="font_size">Размер шрифта</string>
+    <string name="settings">Настройки</string>
+    </resources>

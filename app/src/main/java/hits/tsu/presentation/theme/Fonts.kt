@@ -13,5 +13,9 @@ val Vela_Sans = FontFamily(
 )
 
 val Georgia = FontFamily(
-    Font(R.font.georgia), Font(R.font.georgiai)
+    Font(R.font.georgia),
+
+    )
+val GeorgiaI = FontFamily(
+    Font(R.font.georgiai)
 )

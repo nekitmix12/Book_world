@@ -9,14 +9,9 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.ParagraphStyle
-import androidx.compose.ui.text.PlatformParagraphStyle
-import androidx.compose.ui.text.PlatformSpanStyle
-import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 private val DarkColorScheme = darkColorScheme(
@@ -168,4 +163,19 @@ val detailsSelectedBody = TextStyle(
     lineHeight = 20.8.sp,
 )
 
+val chapterText = TextStyle(
+    color = black,
+    fontWeight = FontWeight(400),
+    fontFamily = GeorgiaI,
+    fontSize = 14.sp,
+    lineHeight = 21.sp,
+)
+
+val chapterName = TextStyle(
+    color = accent_dark,
+    fontWeight = FontWeight(400),
+    fontFamily = Vela_Sans,
+    fontSize = 14.sp,
+    lineHeight = 18.2.sp
+)
 
