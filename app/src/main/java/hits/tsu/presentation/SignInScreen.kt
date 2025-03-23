@@ -1,9 +1,11 @@
 package hits.tsu.presentation
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.animateScrollBy
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -29,6 +30,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.ImageBitmap
@@ -39,82 +41,99 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Devices
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import hits.tsu.R
 import hits.tsu.presentation.models.DeviceType
 import hits.tsu.presentation.theme.BookWorldTheme
 import hits.tsu.presentation.theme.accent_dark
 import hits.tsu.presentation.theme.accent_light
 import hits.tsu.presentation.theme.accent_medium
+import hits.tsu.presentation.theme.appName
+import hits.tsu.presentation.theme.signInSlogan
 import hits.tsu.presentation.theme.white
 import java.util.Locale
 
-//Pixel 2,PIXEL_4
+@Preview(showSystemUi = true, device = Devices.PIXEL_5)
 @Composable
-fun SignInScreen() {
+fun SignInScreen(navController: NavController = rememberNavController()) {
+
+    val isActive: SnapshotStateList<Boolean> = remember { mutableStateListOf(false, false) }
+
+    val navigateToLibrary = {
+        navController.navigate(Screens.Library)
+    }
+
     Column(
         Modifier
             .fillMaxSize()
             .background(accent_dark)
     ) {
         Spacer(
-            Modifier.size(
-                when (getDeviceType()) {
-                    DeviceType.ExtraLargePhone -> 78.dp
-                    DeviceType.LargePhone -> 48.dp
-                    DeviceType.MediumPhone -> 40.dp
-                    DeviceType.SmallPhone -> 32.dp
-                }
-            )
+            Modifier.weight(0.112f)
         )
-        SingInCarousel(
-            listOf(
-                ImageBitmap.imageResource(R.drawable.test_image2),
-                ImageBitmap.imageResource(R.drawable.test_image4),
-                ImageBitmap.imageResource(R.drawable.test_image2),
-                ImageBitmap.imageResource(R.drawable.test_image4),
-                ImageBitmap.imageResource(R.drawable.test_image2),
-                ImageBitmap.imageResource(R.drawable.test_image4),
-                ImageBitmap.imageResource(R.drawable.test_image2),
-                ImageBitmap.imageResource(R.drawable.test_image4),
-                ImageBitmap.imageResource(R.drawable.test_image2),
+        Box(Modifier.weight(0.3f)) {
+            SingInCarousel(
+                listOf(
+                    ImageBitmap.imageResource(R.drawable.test_image2),
+                    ImageBitmap.imageResource(R.drawable.test_image4),
+                    ImageBitmap.imageResource(R.drawable.test_image2),
+                    ImageBitmap.imageResource(R.drawable.test_image4),
+                    ImageBitmap.imageResource(R.drawable.test_image2),
+                    ImageBitmap.imageResource(R.drawable.test_image4),
+                    ImageBitmap.imageResource(R.drawable.test_image2),
+                    ImageBitmap.imageResource(R.drawable.test_image4),
+                    ImageBitmap.imageResource(R.drawable.test_image2),
+                )
             )
+        }
+
+        Spacer(
+            Modifier.weight(0.043f)
+        )
+        Text(
+            text = stringResource(R.string.open_for_you).uppercase(Locale.ROOT),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            style = signInSlogan
+        )
+        Text(
+            text = stringResource(R.string.book_world).uppercase(Locale.ROOT),
+            modifier = Modifier
+                .fillMaxWidth()
+                .offset(y = (-18).dp)
+                .padding(horizontal = 16.dp),
+            style = appName
         )
         Spacer(
-            Modifier.size(
-                when (getDeviceType()) {
-                    DeviceType.ExtraLargePhone -> 48.dp
-                    DeviceType.LargePhone -> 48.dp
-                    DeviceType.MediumPhone -> 38.dp
-                    DeviceType.SmallPhone -> 28.dp
-                }
-            )
+            Modifier.weight(0.016f)
         )
-        LabelMedium()
-        InputField(stringResource(R.string.email), listOf(R.drawable.close))
+        InputField(stringResource(R.string.email), listOf(R.drawable.close)) {
+            isActive[0] = it
+            Log.d("SignInScreen", "isActive: $isActive")
+        }
         Spacer(
-            Modifier.size(
-                when (getDeviceType()) {
-                    DeviceType.ExtraLargePhone -> 8.dp
-                    DeviceType.LargePhone -> 8.dp
-                    DeviceType.MediumPhone -> 7.dp
-                    DeviceType.SmallPhone -> 6.dp
-                }
-            )
+            Modifier.weight(0.0089f)
         )
-        InputField(stringResource(R.string.password), listOf(R.drawable.eye, R.drawable.not_see))
+        InputField(stringResource(R.string.password), listOf(R.drawable.eye, R.drawable.not_see), {
+            isActive[1] = it
+            Log.d("SignInScreen", "isActive: $isActive")
+        })
         Spacer(
-            Modifier.size(
-                when (getDeviceType()) {
-                    DeviceType.ExtraLargePhone -> 24.dp
-                    DeviceType.LargePhone -> 24.dp
-                    DeviceType.MediumPhone -> 21.dp
-                    DeviceType.SmallPhone -> 18.dp
-                }
-            )
+            Modifier.weight(0.027f)
         )
-        ButtonSignIn(false)
+        ButtonSignIn(isActive.all {
+            Log.d("SignInScreen", "it: $it")
+            Log.d("SignInScreen", "isActive: $isActive")
+            it
+        }, navigateToLibrary)
+        Spacer(
+            Modifier.weight(0.054f)
+        )
     }
 
 }
@@ -192,63 +211,16 @@ fun SingInCarousel(images: List<ImageBitmap>) {
 
 }
 
-@Composable
-fun LabelMedium() {
-    BookWorldTheme {
-        val bookSize = when (getDeviceType()) {
-            DeviceType.ExtraLargePhone -> 96.sp
-            DeviceType.LargePhone -> 96.sp
-            DeviceType.MediumPhone -> 80.sp
-            DeviceType.SmallPhone -> 64.sp
-        }
-
-        val openSize = when (getDeviceType()) {
-            DeviceType.ExtraLargePhone -> 48.sp
-            DeviceType.LargePhone -> 48.sp
-            DeviceType.MediumPhone -> 40.sp
-            DeviceType.SmallPhone -> 32.sp
-        }
-
-        val lineHeight = when (getDeviceType()) {
-            DeviceType.ExtraLargePhone -> 76.8.sp
-            DeviceType.LargePhone -> 76.8.sp
-            DeviceType.MediumPhone -> 65.sp
-            DeviceType.SmallPhone -> 52.sp
-        }
-
-        Column(
-            Modifier
-                .background(accent_dark)
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-        ) {
-            Text(
-                fontSize = openSize,
-                text = stringResource(R.string.open_for_you).uppercase(Locale.ROOT),
-                modifier = Modifier.fillMaxWidth(1f),
-                style = MaterialTheme.typography.titleMedium
-            )
-            Text(
-                text = stringResource(R.string.book_world).uppercase(Locale.ROOT),
-                fontSize = bookSize,
-                modifier = Modifier
-                    .fillMaxWidth(1f)
-                    .offset(y = (-12).dp),
-                lineHeight = lineHeight,
-                style = MaterialTheme.typography.titleLarge
-            )
-        }
-    }
-
-}
-
-
 @Stable
 @Composable
-fun InputField(hint: String = "Электронная почта", iconRes: List<Int>) {
+fun InputField(
+    hint: String,
+    iconRes: List<Int>,
+    onValueChange: (Boolean) -> Unit,
+) {
     BookWorldTheme {
         val isSeeAndClickable = remember { mutableStateOf(false) }
-        val message = remember { mutableStateOf("1") }
+        val message = remember { mutableStateOf("") }
         OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth(1f)
@@ -263,10 +235,8 @@ fun InputField(hint: String = "Электронная почта", iconRes: List
                     modifier = Modifier
                         .alpha(if (message.value.isNotEmpty()) 1f else 0f)
                         .clickable {
-                            if (iconRes.size == 1)
-                                message.value = ""
-                            else
-                                isSeeAndClickable.value = !isSeeAndClickable.value
+                            if (iconRes.size == 1) message.value = ""
+                            else isSeeAndClickable.value = !isSeeAndClickable.value
                         },
                     tint = accent_light
                 )
@@ -283,7 +253,12 @@ fun InputField(hint: String = "Электронная почта", iconRes: List
                     hint, style = MaterialTheme.typography.bodySmall
                 )
             },
-            onValueChange = { message.value = it },
+            onValueChange = {
+                message.value = it
+                Log.d("SignInScreen", "message: $message")
+                Log.d("SignInScreen", "message.value: ${message.value == ""}")
+                onValueChange(message.value != "")
+            },
             textStyle = MaterialTheme.typography.bodySmall,
             shape = RoundedCornerShape(10.dp),
             colors = OutlinedTextFieldDefaults.colors(
@@ -298,23 +273,22 @@ fun InputField(hint: String = "Электронная почта", iconRes: List
 }
 
 @Composable
-fun ButtonSignIn(isActive: Boolean) {
-    val paddingValues = when (getDeviceType()) {
-        DeviceType.ExtraLargePhone -> 7.dp
-        DeviceType.LargePhone -> 5.dp
-        DeviceType.MediumPhone -> 3.dp
-        DeviceType.SmallPhone -> 1.dp
-    }
+fun ButtonSignIn(isActive: Boolean, navigateToLibrary: () -> Unit) {
+
     Button(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp), colors = ButtonColors(
+            .padding(horizontal = 16.dp)
+            , colors = ButtonColors(
             contentColor = accent_dark,
             containerColor = white,
             disabledContentColor = accent_light,
             disabledContainerColor = accent_medium
-        ), onClick = {}, enabled = isActive
+        ), onClick = navigateToLibrary, enabled = isActive
     ) {
-        Text(text = stringResource(R.string.sign_in), modifier = Modifier.padding(vertical = paddingValues))
+        Text(
+            text = stringResource(R.string.sign_in),
+            modifier = Modifier.padding(vertical = 7.5.dp)
+        )
     }
 }

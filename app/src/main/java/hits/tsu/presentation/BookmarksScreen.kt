@@ -2,6 +2,7 @@ package hits.tsu.presentation
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,10 +24,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Devices
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import hits.tsu.R
 import hits.tsu.presentation.models.BookSearchModel
 import hits.tsu.presentation.models.QuoteModel
@@ -34,6 +40,7 @@ import hits.tsu.presentation.models.ReadNowBookModel
 import hits.tsu.presentation.theme.accent_dark
 import hits.tsu.presentation.theme.accent_light
 import hits.tsu.presentation.theme.accent_medium
+import hits.tsu.presentation.theme.background
 import hits.tsu.presentation.theme.bookAuthorSearch
 import hits.tsu.presentation.theme.bookNameSearch
 import hits.tsu.presentation.theme.popularBookAuthor
@@ -42,8 +49,9 @@ import hits.tsu.presentation.theme.white
 import java.util.UUID
 
 
+@Preview(showSystemUi = true, device = Devices.PIXEL_5)
 @Composable
-fun NotesScreen() {
+fun BookmarksScreen(navController: NavController = rememberNavController()) {
 
     val listQuote = listOf(
         QuoteModel(
@@ -120,8 +128,8 @@ fun NotesScreen() {
         ),
     )
 
-    LazyColumn {
-        item { Spacer(Modifier.height(48.dp)) }
+    LazyColumn(Modifier.background(background)) {
+        item { Spacer(Modifier.height((LocalConfiguration.current.screenHeightDp * 0.085f).dp)) }
         item { TopLabel(stringResource(R.string.notes)) }
         item { Spacer(Modifier.height(24.dp)) }
         item {
@@ -140,7 +148,11 @@ fun NotesScreen() {
                     Icon(
                         painterResource(R.drawable.play),
                         "",
-                        tint = white
+                        tint = white,
+                        modifier = Modifier.clickable {
+                            if (readNow.isNotEmpty())
+                                navController.navigate(Screens.Chapter(readNow[0].id))
+                        }
                     )
                 }
 

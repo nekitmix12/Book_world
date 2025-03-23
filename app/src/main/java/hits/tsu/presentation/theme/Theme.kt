@@ -164,9 +164,8 @@ val detailsSelectedBody = TextStyle(
 )
 
 val chapterText = TextStyle(
-    color = black,
     fontWeight = FontWeight(400),
-    fontFamily = GeorgiaI,
+    fontFamily = Georgia,
     fontSize = 14.sp,
     lineHeight = 21.sp,
 )
@@ -177,5 +176,19 @@ val chapterName = TextStyle(
     fontFamily = Vela_Sans,
     fontSize = 14.sp,
     lineHeight = 18.2.sp
+)
+
+val signInSlogan = TextStyle(
+    color = accent_light,
+    fontWeight = FontWeight(700),
+    fontFamily = Alumni_Sans,
+    fontSize = 48.sp,
+)
+val appName = TextStyle(
+    color = secondary,
+    fontWeight = FontWeight(700),
+    fontFamily = Alumni_Sans,
+    fontSize = 96.sp,
+    lineHeight = 76.8.sp
 )
 

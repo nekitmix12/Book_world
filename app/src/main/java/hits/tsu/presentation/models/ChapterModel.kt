@@ -1,7 +1,7 @@
 package hits.tsu.presentation.models
 
 data class ChapterModel(
-    val id: String,
-    val name: String,
-    val state: ChapterState,
+    val bookName: String,
+    val chapter: ShortChapterModel,
+    val text: List<List<String>>,
 )

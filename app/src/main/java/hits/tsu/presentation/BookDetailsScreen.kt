@@ -2,6 +2,7 @@ package hits.tsu.presentation
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -30,8 +31,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import hits.tsu.R
-import hits.tsu.presentation.models.ChapterModel
+import hits.tsu.presentation.models.ShortChapterModel
 import hits.tsu.presentation.models.ChapterState
 import hits.tsu.presentation.theme.accent_dark
 import hits.tsu.presentation.theme.accent_light
@@ -45,32 +48,40 @@ import hits.tsu.presentation.theme.white
 import java.util.UUID
 
 
+@Preview(showSystemUi = true, device = Devices.PIXEL_5)
 @Composable
-fun BookDetailsScreen() {
+fun BookDetailsScreen(
+    navController: NavController = rememberNavController(),
+    bookId: String = "null",
+) {
 
     val chaptersList = listOf(
-        ChapterModel(
+        ShortChapterModel(
             UUID.randomUUID().toString(), name = "Факты", ChapterState.Passed
-        ), ChapterModel(
+        ), ShortChapterModel(
             UUID.randomUUID().toString(), name = "Пролог", ChapterState.InProgress
-        ), ChapterModel(
+        ), ShortChapterModel(
             UUID.randomUUID().toString(), name = "Глава 1", ChapterState.NotWatch
-        ), ChapterModel(
+        ), ShortChapterModel(
             UUID.randomUUID().toString(), name = "Глава 2", ChapterState.NotWatch
-        ), ChapterModel(
+        ), ShortChapterModel(
             UUID.randomUUID().toString(), name = "Глава 3", ChapterState.NotWatch
-        ), ChapterModel(
+        ), ShortChapterModel(
             UUID.randomUUID().toString(), name = "Глава 4", ChapterState.NotWatch
-        ), ChapterModel(
+        ), ShortChapterModel(
             UUID.randomUUID().toString(), name = "Глава 5", ChapterState.NotWatch
-        ), ChapterModel(
+        ), ShortChapterModel(
             UUID.randomUUID().toString(), name = "Глава 6", ChapterState.NotWatch
-        ), ChapterModel(
+        ), ShortChapterModel(
             UUID.randomUUID().toString(), name = "Глава 7", ChapterState.NotWatch
-        ), ChapterModel(
+        ), ShortChapterModel(
             UUID.randomUUID().toString(), name = "Глава 8", ChapterState.NotWatch
         )
     )
+
+    val onReadClick: (String) -> Unit =
+        { if (it.isNotEmpty()) navController.navigate(Screens.Chapter(it)) }
+    val onAddToFavoriteClick = {}
 
     LazyColumn(
         Modifier
@@ -78,7 +89,13 @@ fun BookDetailsScreen() {
             .fillMaxSize()
     ) {
         item { DetailsImage() }
-        item { ButtonRow() }
+        item {
+            ButtonRow({
+                onReadClick(
+                    chaptersList.find { it.state == ChapterState.InProgress }?.id ?: ""
+                )
+            }, onAddToFavoriteClick)
+        }
         item { DetailsName("Код да винчи") }
         item { CommonDetailsText("Дэн Браун") }
         item { Spacer(Modifier.height(24.dp)) }
@@ -101,7 +118,7 @@ fun BookDetailsScreen() {
         item { MiddleLabel(stringResource(R.string.toc)) }
         item { Spacer(Modifier.height(8.dp)) }
         items(chaptersList.size) {
-            ChapterItem(chaptersList[it])
+            ChapterItem(chaptersList[it]) { chapter -> onReadClick(chapter.id) }
         }
     }
 }
@@ -134,10 +151,10 @@ fun DetailsImage(image: ImageBitmap = ImageBitmap.imageResource(R.drawable.test_
 
 
 @Composable
-fun ButtonRow() {
+fun ButtonRow(onReadClick: () -> Unit, onAddToFavouriteClick: () -> Unit) {
     Row(Modifier.padding(horizontal = 16.dp)) {
         Button(
-            onClick = {},
+            onClick = onReadClick,
             modifier = Modifier
                 .weight(1f)
                 .offset(y = ((-24).dp)),
@@ -154,7 +171,7 @@ fun ButtonRow() {
         }
         Spacer(Modifier.width(8.dp))
         Button(
-            onClick = {},
+            onClick = onAddToFavouriteClick,
             modifier = Modifier
                 .weight(1f)
                 .offset(y = ((-24).dp)),
@@ -206,7 +223,8 @@ fun CommonDetailsText(text: String) {
 
 @Composable
 fun ChapterItem(
-    chapter: ChapterModel,
+    chapter: ShortChapterModel,
+    onClick: (ShortChapterModel) -> Unit,
 ) {
     Row(Modifier.padding(horizontal = 16.dp)) {
         when (chapter.state) {
@@ -241,12 +259,20 @@ fun ChapterItem(
                     painter = painterResource(R.drawable.any),
                     "",
                     tint = accent_dark,
-                    modifier = Modifier.padding(vertical = 13.5.dp),
+                    modifier = Modifier
+                        .padding(vertical = 13.5.dp)
+                        .clickable { onClick(chapter) },
                 )
             }
 
             is ChapterState.NotWatch -> {
-                Text(text = chapter.name, Modifier.weight(1f))
+                Text(
+                    text = chapter.name,
+                    Modifier
+                        .weight(1f)
+                        .padding(vertical = 13.5.dp),
+                    style = detailsBody
+                )
             }
 
             else -> {}

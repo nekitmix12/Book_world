@@ -1,5 +1,6 @@
 package hits.tsu.presentation
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -11,13 +12,11 @@ import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -29,8 +28,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -39,7 +40,11 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Devices
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import hits.tsu.R
 import hits.tsu.presentation.models.AuthorModel
 import hits.tsu.presentation.models.BookSearchModel
@@ -58,9 +63,9 @@ import hits.tsu.presentation.theme.textBarText
 import hits.tsu.presentation.theme.white
 import java.util.UUID
 
-
+@Preview(showSystemUi = true, device = Devices.PIXEL_5)
 @Composable
-fun SearchScreen() {
+fun SearchScreen(navController: NavController = rememberNavController()) {
     val requests = remember {
         mutableStateOf(
             listOf(
@@ -75,6 +80,12 @@ fun SearchScreen() {
         )
     }
 
+
+    var isActiveSearchBar by remember { mutableStateOf(false) }
+
+    val onSearch: (String) -> Unit = {}
+
+
     val genres = listOf(
         GenreModel(UUID.randomUUID().toString(), "Класика"),
         GenreModel(UUID.randomUUID().toString(), "Фэнтези"),
@@ -86,67 +97,60 @@ fun SearchScreen() {
         GenreModel(UUID.randomUUID().toString(), "Фэнтези"),
         GenreModel(UUID.randomUUID().toString(), "Фантастика"),
     )
-
     val authors = listOf(
         AuthorModel(
             UUID.randomUUID().toString(), ImageBitmap.imageResource(
                 R.drawable.test_new_carousel
-            ),
-            "Братья Стругацкие"
+            ), "Братья Стругацкие"
         ),
         AuthorModel(
             UUID.randomUUID().toString(), ImageBitmap.imageResource(
                 R.drawable.test_new_carousel
-            ),
-            "Братья Стругацкие"
+            ), "Братья Стругацкие"
         ),
         AuthorModel(
             UUID.randomUUID().toString(), ImageBitmap.imageResource(
                 R.drawable.test_new_carousel
-            ),
-            "Братья Стругацкие"
+            ), "Братья Стругацкие"
+        ),
+    )
+    val searchList = listOf(
+        BookSearchModel(
+            "SWift для детей", "Мэтт Маккарти, Глория Уинквист", ImageBitmap.imageResource(
+                R.drawable.test_new_carousel
+            )
+        ),
+        BookSearchModel(
+            "SWift для детей", "Мэтт Маккарти, Глория Уинквист", ImageBitmap.imageResource(
+                R.drawable.test_new_carousel
+            )
+        ),
+        BookSearchModel(
+            "SWift для детей", "Мэтт Маккарти, Глория Уинквист", ImageBitmap.imageResource(
+                R.drawable.test_new_carousel
+            )
         ),
     )
 
-    LazyColumn {
+
+    LazyColumn(Modifier.background(background)) {
         item {
-            SearchPanel(
-                listOf(
-                    BookSearchModel(
-                        "SWift для детей",
-                        "Мэтт Маккарти, Глория Уинквист",
-                        ImageBitmap.imageResource(
-                            R.drawable.test_new_carousel
-                        )
-                    ),
-                    BookSearchModel(
-                        "SWift для детей",
-                        "Мэтт Маккарти, Глория Уинквист",
-                        ImageBitmap.imageResource(
-                            R.drawable.test_new_carousel
-                        )
-                    ),
-                    BookSearchModel(
-                        "SWift для детей",
-                        "Мэтт Маккарти, Глория Уинквист",
-                        ImageBitmap.imageResource(
-                            R.drawable.test_new_carousel
-                        )
-                    ),
-                ),
-            )
+            if (!isActiveSearchBar) {
+                SearchPanel(searchList, false, { isActiveSearchBar = it }) { onSearch(it) }
+            }
         }
+
         item { Spacer(Modifier.height(24.dp)) }
         item { MiddleLabel(stringResource(R.string.last_request)) }
         item { Spacer(Modifier.height(8.dp)) }
         items(requests.value.size) { item ->
-            RequestItem(requests.value[item], { request ->
+            RequestItem(requests.value[item]) { request ->
                 val temp = mutableListOf<RequestModel>()
                 requests.value.forEach { item ->
                     if (item != request) temp.add(item)
                 }
                 requests.value = temp
-            })
+            }
         }
         item { Spacer(Modifier.height(24.dp)) }
         item { MiddleLabel(stringResource(R.string.genres)) }
@@ -162,7 +166,9 @@ fun SearchScreen() {
             AuthorItem(authors[item])
         }
     }
-
+    if (isActiveSearchBar) SearchPanel(
+        searchList, true, { isActiveSearchBar = it }, onSearch = onSearch
+    )
 }
 
 
@@ -170,24 +176,19 @@ fun SearchScreen() {
 @Composable
 fun SearchPanel(
     bookList: List<BookSearchModel>,
+    isActive: Boolean,
+    onClick: (Boolean) -> Unit,
+    onSearch: (String) -> Unit,
 ) {
     val searchText = remember { mutableStateOf("") }
-
-
-    val isActive = remember { mutableStateOf(false) }
-    Box(
-        Modifier
-            .fillMaxSize()
-            .background(background)
-    )
     SearchBar(
         inputField = {
             SearchBarDefaults.InputField(query = searchText.value, onQueryChange = { text ->
                 searchText.value = text
-            }, onSearch = { a ->
+            }, onSearch = onSearch, expanded = true, onExpandedChange = { active ->
+                onClick(active)
+                Log.d("Searchbar", "onExpandedChange: $active")
 
-            }, expanded = isActive.value, onExpandedChange = { active ->
-                isActive.value = active
             }, enabled = true, colors = TextFieldDefaults.colors(
                 focusedTextColor = accent_dark,
                 unfocusedTextColor = accent_dark,
@@ -196,51 +197,50 @@ fun SearchPanel(
             ), placeholder = {
                 Text(text = stringResource(R.string.search_by_book), style = textBarText)
             }, leadingIcon = {
-                if (!isActive.value) Icon(
+                if (!isActive) Icon(
                     painterResource(R.drawable.find), "", tint = accent_medium
                 )
                 else Icon(painterResource(
                     R.drawable.back
                 ), "", tint = accent_dark, modifier = Modifier.clickable {
-                    isActive.value = false
+                    onClick(false)
                 })
             }, trailingIcon = {
-                if (isActive.value) Icon(painterResource(R.drawable.close),
+                if (isActive) Icon(painterResource(R.drawable.close),
                     "",
                     tint = accent_dark,
                     modifier = Modifier.clickable {
                         searchText.value = ""
                     })
-            }, interactionSource = null, modifier = if (!isActive.value) Modifier.border(
+            }, interactionSource = null, modifier = if (!isActive) Modifier.border(
                 1.dp, accent_medium, RoundedCornerShape(32.dp)
             ) else Modifier
 
             )
         },
-        expanded = isActive.value,
+        expanded = isActive,
         onExpandedChange = { active ->
-            isActive.value = active
+            onClick(active)
+            Log.d("Searchbar", "onExpandedChange: $active")
+
         },
         modifier = Modifier
             .fillMaxWidth()
-            .wrapContentHeight()
-            .padding(horizontal = if (!isActive.value) 16.dp else 0.dp),
+            .padding(horizontal = if (!isActive) 16.dp else 0.dp),
         shape = SearchBarDefaults.inputFieldShape,
         colors = SearchBarDefaults.colors(
-            containerColor = if (!isActive.value) white else background,
+            containerColor = if (!isActive) white else background,
             dividerColor = accent_medium,
             inputFieldColors = TextFieldDefaults.colors(
                 focusedIndicatorColor = accent_dark, unfocusedIndicatorColor = accent_dark
             )
         ),
     ) {
-        LazyColumn {
-            items(bookList.size) { index ->
-                val item = bookList[index]
-                Spacer(Modifier.height(16.dp))
-                BookSearchItem(item.name, item.author, item.image)
-            }
+        bookList.forEach { item ->
+            Spacer(Modifier.height(16.dp))
+            BookSearchItem(item.name, item.author, item.image)
         }
+
     }
 }
 
@@ -301,8 +301,7 @@ fun GenreLine(list: List<GenreModel>) {
                     RoundedCornerShape(8.dp)
                 )
                 .background(accent_light)
-                .padding(16.dp),
-            contentAlignment = Alignment.Center
+                .padding(16.dp), contentAlignment = Alignment.Center
         ) {
             Text(
                 text = list[0].genre,
@@ -321,15 +320,13 @@ fun GenreLine(list: List<GenreModel>) {
                 .background(accent_light)
                 .fillMaxHeight()
                 .padding(16.dp)
-            else Modifier.weight(1f),
-            contentAlignment = Alignment.Center
+            else Modifier.weight(1f), contentAlignment = Alignment.Center
         ) {
-            if (list.size > 1)
-                Text(
-                    text = list[1].genre,
-                    style = bookAuthorSearch,
+            if (list.size > 1) Text(
+                text = list[1].genre,
+                style = bookAuthorSearch,
 
-                    )
+                )
         }
     }
 }
@@ -368,7 +365,8 @@ fun RequestItem(request: RequestModel, onDelete: (RequestModel) -> Unit) {
 
 @Composable
 fun AuthorItem(
-    author: AuthorModel) {
+    author: AuthorModel,
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -379,15 +377,16 @@ fun AuthorItem(
             .height(IntrinsicSize.Min)
     ) {
         Image(
-            author.img, "", modifier = Modifier
+            author.img,
+            "",
+            modifier = Modifier
                 .padding(top = 12.dp, bottom = 12.dp, start = 16.dp, end = 12.dp)
                 .size(48.dp)
                 .clip(CircleShape),
             contentScale = ContentScale.Crop
         )
         Box(
-            modifier = Modifier.fillMaxHeight(),
-            contentAlignment = Alignment.Center
+            modifier = Modifier.fillMaxHeight(), contentAlignment = Alignment.Center
         ) {
             Text(text = author.name, style = authorText)
         }
