@@ -1,10 +1,10 @@
 package hits.tsu.presentation
 
+import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.animateScrollBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -26,10 +27,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.snapshotFlow
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -55,7 +58,12 @@ import hits.tsu.presentation.theme.accent_medium
 import hits.tsu.presentation.theme.appName
 import hits.tsu.presentation.theme.signInSlogan
 import hits.tsu.presentation.theme.white
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.Locale
+
+private const val DELAY_BETWEEN_SCROLL_MS = 10L
+private const val SCROLL_DX = 1f
 
 @Preview(showSystemUi = true, device = Devices.PIXEL_5)
 @Composable
@@ -162,29 +170,15 @@ fun getScreenHeightDp(): Int {
     return configuration.screenHeightDp
 }
 
+@SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 @Stable
+//код частично подрезан вот с этого сайта https://www.droidcon.com/2021/06/04/infinite-auto-scrolling-lists-with-recyclerview-lazylists-in-compose/
 fun SingInCarousel(images: List<ImageBitmap>) {
-    val infiniteList = remember { mutableStateListOf<ImageBitmap>() }
-
-    infiniteList.addAll(images)
+    var infiniteList by remember { mutableStateOf(images) }
 
     val listState = rememberLazyListState()
 
-    LaunchedEffect(listState) {
-        while (true) {
-            listState.animateScrollBy(1f)
-        }
-    }
-
-
-    LaunchedEffect(listState) {
-        snapshotFlow { listState.firstVisibleItemIndex }.collect { index ->
-            if (index >= infiniteList.size - 5) {
-                infiniteList.addAll(images)
-            }
-        }
-    }
     val imageSize = when (getDeviceType()) {
         DeviceType.ExtraLargePhone -> 270.dp
         DeviceType.LargePhone -> 270.dp
@@ -193,7 +187,7 @@ fun SingInCarousel(images: List<ImageBitmap>) {
     }
 
     LazyRow(
-        state = listState, modifier = Modifier.fillMaxWidth()
+        state = listState, modifier = Modifier.fillMaxWidth(), userScrollEnabled = false
     ) {
 
 
@@ -206,10 +200,39 @@ fun SingInCarousel(images: List<ImageBitmap>) {
                     .padding(horizontal = 4.dp),
                 contentScale = ContentScale.FillHeight
             )
+            if (infiniteList[index] == infiniteList.last()) {
+                val currentList = infiniteList
+
+                val secondPart = currentList.subList(0, listState.firstVisibleItemIndex)
+                val firstPart =
+                    currentList.subList(listState.firstVisibleItemIndex, currentList.size)
+
+                rememberCoroutineScope().launch {
+                    listState.scrollToItem(
+                        0,
+                        maxOf(0, listState.firstVisibleItemScrollOffset - SCROLL_DX.toInt())
+                    )
+                }
+
+                infiniteList = firstPart + secondPart
+            }
         }
     }
-
+    LaunchedEffect(Unit) {
+        autoScroll(listState)
+    }
 }
+
+//tailrec возьму на заметку! топчик оптимизация
+private tailrec suspend fun autoScroll(lazyListState: LazyListState) {
+    lazyListState.scroll {
+        scrollBy(SCROLL_DX)
+    }
+    delay(DELAY_BETWEEN_SCROLL_MS)
+
+    autoScroll(lazyListState)
+}
+
 
 @Stable
 @Composable
@@ -278,8 +301,7 @@ fun ButtonSignIn(isActive: Boolean, navigateToLibrary: () -> Unit) {
     Button(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp)
-            , colors = ButtonColors(
+            .padding(horizontal = 16.dp), colors = ButtonColors(
             contentColor = accent_dark,
             containerColor = white,
             disabledContentColor = accent_light,

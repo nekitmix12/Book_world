@@ -2,7 +2,6 @@
 
 package hits.tsu.presentation
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -18,6 +17,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
@@ -27,8 +27,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Devices
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
@@ -94,11 +95,11 @@ fun Nav() {
             }
             composable<Screens.BookDetails> {
                 val args = it.toRoute<Screens.BookDetails>()
-                BookDetailsScreen(navController,args.bookId)
+                BookDetailsScreen(navController, args.bookId)
             }
             composable<Screens.Chapter> {
                 val args = it.toRoute<Screens.Chapter>()
-                ChapterScreen(navController,args.chapterId)
+                ChapterScreen(navController, args.chapterId)
             }
             composable<Screens.Bookmarks> {
                 BookmarksScreen(navController)
@@ -118,13 +119,13 @@ fun Nav() {
 
 }
 
-
+@Preview(showSystemUi = true, device = Devices.PIXEL_7)
 @Composable
 fun BottomBar(
-    navController: NavController,
+    navController: NavController = rememberNavController(),
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute = navBackStackEntry?.destination?.route
+    val currentRoute = navBackStackEntry?.destination?.route?.substringAfterLast('.')
 
     Box(
         contentAlignment = Alignment.Center,
@@ -144,55 +145,69 @@ fun BottomBar(
                 .padding(horizontal = 16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Icon(painterResource(R.drawable.bookshelf),
-                "",
-                tint = if (currentRoute == Screens.Library::class.simpleName) white else accent_medium,
+            IconButton(
+                onClick = { navController.navigate(Screens.Library) },
                 modifier = Modifier
                     .weight(1f)
-                    .clickable {
-                        navController.navigate(Screens.Library)
-                    })
-            Icon(
-                painter = painterResource(id = R.drawable.find),
-                contentDescription = "",
-                tint = if (currentRoute == Screens.Search::class.simpleName) white else accent_medium,
+            ) {
+                Icon(
+                    painterResource(R.drawable.bookshelf),
+                    "",
+                    tint = if (currentRoute == Screens.Library::class.simpleName) white else accent_medium,
+                )
+            }
+            IconButton(
+                onClick = { navController.navigate(Screens.Search) },
                 modifier = Modifier
                     .weight(1f)
-                    .clickable {
-
-                        navController.navigate(Screens.Search)
-                    },
-            )
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.find),
+                    contentDescription = "",
+                    tint = if (currentRoute == Screens.Search::class.simpleName) white else accent_medium,
+                )
+            }
             Spacer(Modifier.weight(1f))
-            Icon(painter = painterResource(R.drawable.bookmarks),
-                contentDescription = "",
-                tint = if (currentRoute == Screens.Bookmarks::class.simpleName) white else accent_medium,
+            IconButton(
+                onClick = { navController.navigate(Screens.Bookmarks) },
                 modifier = Modifier
                     .weight(1f)
-                    .clickable {
-                        navController.navigate(Screens.Bookmarks)
-                    })
-            Icon(painterResource(R.drawable.out),
-                "",
-                tint = white,
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.bookmarks),
+                    contentDescription = "",
+                    tint = if (currentRoute == Screens.Bookmarks::class.simpleName) white else accent_medium,
+                )
+            }
+            IconButton(
+                onClick = { navController.navigate(Screens.SignIn) },
                 modifier = Modifier
                     .weight(1f)
-                    .clickable {
-                        navController.navigate(Screens.SignIn)
-                    })
+            ) {
+                Icon(
+                    painterResource(R.drawable.out),
+                    "",
+                    tint = accent_medium
+                )
+            }
         }
-        Icon(
-            painterResource(R.drawable.play),
-            "",
-            Modifier
+        IconButton(
+            onClick = { navController.navigate(Screens.Chapter(UUID.randomUUID().toString())) },
+            modifier = Modifier
                 .clip(CircleShape)
                 .background(secondary)
-                .padding(28.dp)
+                .padding(16.dp)
                 .clickable {
                     navController.navigate(Screens.Chapter("${UUID.randomUUID()}"))
-                },
-            white
-        )
+                }
+        ) {
+            Icon(
+                painterResource(R.drawable.play),
+                "",
+                Modifier,
+                white
+            )
+        }
     }
 }
 

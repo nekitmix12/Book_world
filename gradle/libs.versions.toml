@@ -1,4 +1,5 @@
 [versions]
+accompanistSnapperVersion = "0.30.1"
 agp = "8.7.3"
 kotlin = "2.0.0"
 coreKtx = "1.15.0"
@@ -16,6 +17,7 @@ serialization = "1.6.3"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+gosyer-accompanist-snapper = { module = "ca.gosyer:accompanist-snapper", version.ref = "accompanistSnapperVersion" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }

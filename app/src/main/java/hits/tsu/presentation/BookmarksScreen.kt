@@ -18,6 +18,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -76,6 +77,7 @@ fun BookmarksScreen(navController: NavController = rememberNavController()) {
 
     val listFavoriteBook = listOf(
         BookSearchModel(
+            UUID.randomUUID().toString(),
             "SWift для детей",
             "Мэтт Маккарти, Глория Уинквист",
             ImageBitmap.imageResource(
@@ -83,6 +85,7 @@ fun BookmarksScreen(navController: NavController = rememberNavController()) {
             )
         ),
         BookSearchModel(
+            UUID.randomUUID().toString(),
             "SWift для детей",
             "Мэтт Маккарти, Глория Уинквист",
             ImageBitmap.imageResource(
@@ -90,6 +93,7 @@ fun BookmarksScreen(navController: NavController = rememberNavController()) {
             )
         ),
         BookSearchModel(
+            UUID.randomUUID().toString(),
             "SWift для детей",
             "Мэтт Маккарти, Глория Уинквист",
             ImageBitmap.imageResource(
@@ -128,6 +132,21 @@ fun BookmarksScreen(navController: NavController = rememberNavController()) {
         ),
     )
 
+
+    val onSearchItemClick: (BookSearchModel) -> Unit = {
+        navController.navigate(Screens.BookDetails(it.id))
+    }
+
+
+    val onReadNowBookClick: (ReadNowBookModel) -> Unit = {
+        navController.navigate(Screens.BookDetails(it.id))
+    }
+
+    val onPlayClick: () -> Unit = {
+        if (readNow.isNotEmpty())
+            navController.navigate(Screens.Chapter(readNow[0].id))
+    }
+
     LazyColumn(Modifier.background(background)) {
         item { Spacer(Modifier.height((LocalConfiguration.current.screenHeightDp * 0.085f).dp)) }
         item { TopLabel(stringResource(R.string.notes)) }
@@ -145,29 +164,31 @@ fun BookmarksScreen(navController: NavController = rememberNavController()) {
                         .background(accent_dark),
                     contentAlignment = Alignment.Center
                 ) {
-                    Icon(
-                        painterResource(R.drawable.play),
-                        "",
-                        tint = white,
-                        modifier = Modifier.clickable {
-                            if (readNow.isNotEmpty())
-                                navController.navigate(Screens.Chapter(readNow[0].id))
-                        }
-                    )
+                    IconButton(onPlayClick) {
+                        Icon(
+                            painterResource(R.drawable.play),
+                            "",
+                            tint = white,
+                            modifier = Modifier.clickable {
+                                if (readNow.isNotEmpty())
+                                    navController.navigate(Screens.Chapter(readNow[0].id))
+                            }
+                        )
+                    }
                 }
 
             }
         }
         items(readNow) {
             Spacer(Modifier.height(8.dp))
-            ReadNow(it)
+            ReadNow(it, onReadNowBookClick)
         }
         item { Spacer(Modifier.height(24.dp)) }
         item { MiddleLabel(stringResource(R.string.favourite_books)) }
         item { Spacer(Modifier.height(8.dp)) }
         items(listFavoriteBook) {
             Spacer(Modifier.height(8.dp))
-            BookSearchItem(it.name, it.author, it.image)
+            BookSearchItem(it, onSearchItemClick)
         }
         item { Spacer(Modifier.height(24.dp)) }
 
@@ -202,11 +223,13 @@ fun Quote(quote: QuoteModel) {
 @Composable
 fun ReadNow(
     readNowBookModel: ReadNowBookModel,
+    onClick: (ReadNowBookModel) -> Unit,
 ) {
     Row(
         Modifier
             .padding(horizontal = 16.dp)
             .fillMaxWidth()
+            .clickable { onClick(readNowBookModel) }
     ) {
         Image(
             readNowBookModel.image, "", modifier = Modifier

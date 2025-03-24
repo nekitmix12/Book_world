@@ -82,9 +82,12 @@ fun SearchScreen(navController: NavController = rememberNavController()) {
 
 
     var isActiveSearchBar by remember { mutableStateOf(false) }
+    var searchText by remember { mutableStateOf("") }
 
     val onSearch: (String) -> Unit = {}
-
+    val onSearchItemClick: (BookSearchModel) -> Unit = {
+        navController.navigate(Screens.BookDetails(it.id))
+    }
 
     val genres = listOf(
         GenreModel(UUID.randomUUID().toString(), "Класика"),
@@ -116,16 +119,19 @@ fun SearchScreen(navController: NavController = rememberNavController()) {
     )
     val searchList = listOf(
         BookSearchModel(
+            UUID.randomUUID().toString(),
             "SWift для детей", "Мэтт Маккарти, Глория Уинквист", ImageBitmap.imageResource(
                 R.drawable.test_new_carousel
             )
         ),
         BookSearchModel(
+            UUID.randomUUID().toString(),
             "SWift для детей", "Мэтт Маккарти, Глория Уинквист", ImageBitmap.imageResource(
                 R.drawable.test_new_carousel
             )
         ),
         BookSearchModel(
+            UUID.randomUUID().toString(),
             "SWift для детей", "Мэтт Маккарти, Глория Уинквист", ImageBitmap.imageResource(
                 R.drawable.test_new_carousel
             )
@@ -136,7 +142,15 @@ fun SearchScreen(navController: NavController = rememberNavController()) {
     LazyColumn(Modifier.background(background)) {
         item {
             if (!isActiveSearchBar) {
-                SearchPanel(searchList, false, { isActiveSearchBar = it }) { onSearch(it) }
+                SearchPanel(
+                    searchList,
+                    false,
+                    "",
+                    { isActiveSearchBar = it
+                    searchText = ""},
+                    { onSearch(it) },
+                    onSearchItemClick
+                )
             }
         }
 
@@ -155,19 +169,35 @@ fun SearchScreen(navController: NavController = rememberNavController()) {
         item { Spacer(Modifier.height(24.dp)) }
         item { MiddleLabel(stringResource(R.string.genres)) }
         items(genres.size / 2) { item ->
-            GenreLine(genres.slice(item * 2..item * 2 + 1))
+            GenreLine(genres.slice(item * 2..item * 2 + 1)) {
+                searchText = it.genre
+                isActiveSearchBar = true
+            }
         }
         if (genres.size % 2 == 1) {
-            item { GenreLine(listOf(genres[genres.size - 1])) }
+            item {
+                GenreLine(listOf(genres[genres.size - 1])) {
+                    searchText = it.genre
+                    isActiveSearchBar = true
+                }
+            }
         }
         item { Spacer(Modifier.height(24.dp)) }
         item { MiddleLabel(stringResource(R.string.authors)) }
         items(authors.size) { item ->
-            AuthorItem(authors[item])
+            AuthorItem(authors[item]) {
+                searchText = it.name
+                isActiveSearchBar = true
+            }
         }
     }
     if (isActiveSearchBar) SearchPanel(
-        searchList, true, { isActiveSearchBar = it }, onSearch = onSearch
+        searchList,
+        true,
+        searchText,
+        { isActiveSearchBar = it },
+        onSearch = onSearch,
+        onSearchItemClick
     )
 }
 
@@ -177,14 +207,17 @@ fun SearchScreen(navController: NavController = rememberNavController()) {
 fun SearchPanel(
     bookList: List<BookSearchModel>,
     isActive: Boolean,
+    searchText: String,
     onClick: (Boolean) -> Unit,
     onSearch: (String) -> Unit,
-) {
-    val searchText = remember { mutableStateOf("") }
+    onSearchItemClick: (BookSearchModel) -> Unit,
+
+    ) {
+    val searchTextLocal = remember { mutableStateOf(searchText) }
     SearchBar(
         inputField = {
-            SearchBarDefaults.InputField(query = searchText.value, onQueryChange = { text ->
-                searchText.value = text
+            SearchBarDefaults.InputField(query = searchTextLocal.value, onQueryChange = { text ->
+                searchTextLocal.value = text
             }, onSearch = onSearch, expanded = true, onExpandedChange = { active ->
                 onClick(active)
                 Log.d("Searchbar", "onExpandedChange: $active")
@@ -210,7 +243,7 @@ fun SearchPanel(
                     "",
                     tint = accent_dark,
                     modifier = Modifier.clickable {
-                        searchText.value = ""
+                        searchTextLocal.value = ""
                     })
             }, interactionSource = null, modifier = if (!isActive) Modifier.border(
                 1.dp, accent_medium, RoundedCornerShape(32.dp)
@@ -238,7 +271,7 @@ fun SearchPanel(
     ) {
         bookList.forEach { item ->
             Spacer(Modifier.height(16.dp))
-            BookSearchItem(item.name, item.author, item.image)
+            BookSearchItem(item, onSearchItemClick)
         }
 
     }
@@ -248,13 +281,16 @@ fun SearchPanel(
 @Stable
 @Composable
 fun BookSearchItem(
-    bookName: String, bookAuthors: String,
-    bookImage: ImageBitmap,
+    book: BookSearchModel,
+    onClick: (BookSearchModel) -> Unit,
 ) {
 
-    Row(Modifier.padding(horizontal = 16.dp)) {
+    Row(
+        Modifier
+            .padding(horizontal = 16.dp)
+            .clickable { onClick(book) }) {
         Image(
-            bookImage, "", modifier = Modifier
+            book.image, "", modifier = Modifier
                 .height(126.dp)
                 .clip(RoundedCornerShape(8.dp))
         )
@@ -265,8 +301,8 @@ fun BookSearchItem(
             verticalArrangement = Arrangement.Center
         ) {
             Spacer(Modifier.weight(1f))
-            Text(text = bookName, style = bookNameSearch)
-            Text(text = bookAuthors, style = bookAuthorSearch)
+            Text(text = book.name, style = bookNameSearch)
+            Text(text = book.author, style = bookAuthorSearch)
             Spacer(Modifier.weight(1f))
         }
     }
@@ -285,7 +321,7 @@ fun MiddleLabel(label: String) {
 
 @Composable
 @Stable
-fun GenreLine(list: List<GenreModel>) {
+fun GenreLine(list: List<GenreModel>, onClick: (GenreModel) -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -301,7 +337,9 @@ fun GenreLine(list: List<GenreModel>) {
                     RoundedCornerShape(8.dp)
                 )
                 .background(accent_light)
-                .padding(16.dp), contentAlignment = Alignment.Center
+                .padding(16.dp)
+                .clickable { onClick(list[0]) }, contentAlignment = Alignment.Center
+
         ) {
             Text(
                 text = list[0].genre,
@@ -320,6 +358,7 @@ fun GenreLine(list: List<GenreModel>) {
                 .background(accent_light)
                 .fillMaxHeight()
                 .padding(16.dp)
+                .clickable { onClick(list[1]) }
             else Modifier.weight(1f), contentAlignment = Alignment.Center
         ) {
             if (list.size > 1) Text(
@@ -366,6 +405,7 @@ fun RequestItem(request: RequestModel, onDelete: (RequestModel) -> Unit) {
 @Composable
 fun AuthorItem(
     author: AuthorModel,
+    onClick: (AuthorModel) -> Unit,
 ) {
     Row(
         modifier = Modifier
@@ -375,6 +415,7 @@ fun AuthorItem(
             .clip(RoundedCornerShape(12.dp))
             .background(accent_light)
             .height(IntrinsicSize.Min)
+            .clickable { onClick(author) }
     ) {
         Image(
             author.img,

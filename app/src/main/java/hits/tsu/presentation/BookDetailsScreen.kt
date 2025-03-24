@@ -12,19 +12,24 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -34,8 +39,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import hits.tsu.R
-import hits.tsu.presentation.models.ShortChapterModel
 import hits.tsu.presentation.models.ChapterState
+import hits.tsu.presentation.models.ShortChapterModel
 import hits.tsu.presentation.theme.accent_dark
 import hits.tsu.presentation.theme.accent_light
 import hits.tsu.presentation.theme.accent_medium
@@ -82,13 +87,16 @@ fun BookDetailsScreen(
     val onReadClick: (String) -> Unit =
         { if (it.isNotEmpty()) navController.navigate(Screens.Chapter(it)) }
     val onAddToFavoriteClick = {}
+    val onBackClick: () -> Unit = {
+        navController.popBackStack()
+    }
 
     LazyColumn(
         Modifier
             .background(background)
             .fillMaxSize()
     ) {
-        item { DetailsImage() }
+        item { DetailsImage(onBackClick = onBackClick) }
         item {
             ButtonRow({
                 onReadClick(
@@ -104,15 +112,17 @@ fun BookDetailsScreen(
                 "Секретный код скрыт в работах Леонардо да Винчи...\n" + "Только он поможет найти христианские святыни, дающие немыслимые власть и могущество... \n" + "Ключ к величайшей тайне, над которой человечество билось веками, наконец может быть найден..."
             )
         }
-        item { Spacer(Modifier.height(16.dp)) }
-        item { MiddleLabel(stringResource(R.string.was_read)) }
-        item {
-            ProgressReadBar(
-                0.1f,
-                Modifier
-                    .padding(top = 12.dp)
-                    .padding(horizontal = 16.dp)
-            )
+        if (chaptersList.find { it.state is ChapterState.Passed } != null) {
+            item { Spacer(Modifier.height(16.dp)) }
+            item { MiddleLabel(stringResource(R.string.was_read)) }
+            item {
+                ProgressReadBar(
+                    0.1f,
+                    Modifier
+                        .padding(top = 12.dp)
+                        .padding(horizontal = 16.dp)
+                )
+            }
         }
         item { Spacer(Modifier.height(24.dp)) }
         item { MiddleLabel(stringResource(R.string.toc)) }
@@ -124,7 +134,10 @@ fun BookDetailsScreen(
 }
 
 @Composable
-fun DetailsImage(image: ImageBitmap = ImageBitmap.imageResource(R.drawable.test_new_carousel)) {
+fun DetailsImage(
+    image: ImageBitmap = ImageBitmap.imageResource(R.drawable.test_new_carousel),
+    onBackClick: () -> Unit,
+) {
     Box() {
         Image(
             bitmap = image,
@@ -134,6 +147,7 @@ fun DetailsImage(image: ImageBitmap = ImageBitmap.imageResource(R.drawable.test_
                 .height(380.dp),
             contentScale = ContentScale.Crop
         )
+
         Spacer(
             modifier = Modifier
                 .fillMaxWidth()
@@ -145,6 +159,21 @@ fun DetailsImage(image: ImageBitmap = ImageBitmap.imageResource(R.drawable.test_
                     )
                 )
         )
+        Box(
+            Modifier
+                .padding(start = 20.dp)
+                .padding(top = (LocalConfiguration.current.screenHeightDp * 0.076).dp)
+                .size(40.dp)
+                .clip(CircleShape)
+                .background(accent_dark),
+            contentAlignment = Alignment.Center
+        ) {
+            IconButton(onBackClick) {
+                Icon(
+                    painter = painterResource(R.drawable.back), "", tint = white
+                )
+            }
+        }
     }
 
 }
@@ -226,7 +255,10 @@ fun ChapterItem(
     chapter: ShortChapterModel,
     onClick: (ShortChapterModel) -> Unit,
 ) {
-    Row(Modifier.padding(horizontal = 16.dp)) {
+    Row(
+        Modifier
+            .padding(horizontal = 16.dp)
+            .clickable { onClick(chapter) }) {
         when (chapter.state) {
             is ChapterState.Passed -> {
                 Text(

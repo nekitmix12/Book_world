@@ -1,11 +1,13 @@
 package hits.tsu.presentation
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -13,41 +15,38 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PageSize
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
-import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.carousel.CarouselLayoutManager
-import com.google.android.material.carousel.CarouselSnapHelper
-import com.google.android.material.carousel.HeroCarouselStrategy
 import hits.tsu.R
 import hits.tsu.presentation.models.NewCarouselModel
 import hits.tsu.presentation.models.PopularBookModel
-import hits.tsu.presentation.recycler_view.AdapterWithDelegates
-import hits.tsu.presentation.recycler_view.CarouselDelegate
 import hits.tsu.presentation.theme.LibraryLabelText
 import hits.tsu.presentation.theme.background
+import hits.tsu.presentation.theme.black
+import hits.tsu.presentation.theme.carouselDescription
+import hits.tsu.presentation.theme.carouselName
 import hits.tsu.presentation.theme.popularBookAuthor
 import hits.tsu.presentation.theme.popularBookName
 import java.util.UUID
@@ -57,32 +56,82 @@ import java.util.UUID
 fun LibraryScreen(navController: NavController = rememberNavController()) {
     val popularBooks = listOf(
         PopularBookModel(
-            UUID.randomUUID().toString(),
-            ImageBitmap.imageResource(
+            UUID.randomUUID().toString(), ImageBitmap.imageResource(
                 R.drawable.test_book
             ), "Дэн Браун", "Код да винчи"
         ),
         PopularBookModel(
-            UUID.randomUUID().toString(),
-            ImageBitmap.imageResource(
+            UUID.randomUUID().toString(), ImageBitmap.imageResource(
                 R.drawable.test_book
             ), "Дэн Браун", "Код да винчи"
         ),
         PopularBookModel(
-            UUID.randomUUID().toString(),
-            ImageBitmap.imageResource(
+            UUID.randomUUID().toString(), ImageBitmap.imageResource(
                 R.drawable.test_book
             ), "Дэн Браун", "Код да винчи"
         ),
         PopularBookModel(
-            UUID.randomUUID().toString(),
-            ImageBitmap.imageResource(
+            UUID.randomUUID().toString(), ImageBitmap.imageResource(
                 R.drawable.test_book
             ), "Дэн Браун", "Код да винчи"
         ),
     )
 
+    val carouselList = listOf(
+        NewCarouselModel(
+            UUID.randomUUID().toString(),
+            ImageBitmap.imageResource(
+                R.drawable.test_new_carousel
+            ), "Дэн Браун", "Ко"
+        ),
+        NewCarouselModel(
+            UUID.randomUUID().toString(),
+            ImageBitmap.imageResource(
+                R.drawable.test_book
+            ), "Дэн Браун", "Код"
+        ),
+        NewCarouselModel(
+            UUID.randomUUID().toString(),
+            ImageBitmap.imageResource(
+                R.drawable.test_new_carousel
+            ), "Дэн Браун", "Код д"
+        ),
+        NewCarouselModel(
+            UUID.randomUUID().toString(),
+            ImageBitmap.imageResource(
+                R.drawable.test_book
+            ), "Дэн Браун", "Код да"
+        ),
+        NewCarouselModel(
+            UUID.randomUUID().toString(),
+            ImageBitmap.imageResource(
+                R.drawable.test_new_carousel
+            ), "Дэн Браун", "Код да в"
+        ),
+        NewCarouselModel(
+            UUID.randomUUID().toString(),
+            ImageBitmap.imageResource(
+                R.drawable.test_book
+            ), "Дэн Браун", "Код да ви"
+        ),
+        NewCarouselModel(
+            UUID.randomUUID().toString(),
+            ImageBitmap.imageResource(
+                R.drawable.test_new_carousel
+            ), "Дэн Браун", "Код да вин"
+        ),
+        NewCarouselModel(
+            UUID.randomUUID().toString(),
+            ImageBitmap.imageResource(
+                R.drawable.test_book
+            ), "Дэн Браун", "Код да винч"
+        ),
+    )
+
     val onPopularBookClick: (PopularBookModel) -> Unit = {
+        navController.navigate(Screens.BookDetails(it.id))
+    }
+    val onCardClick: (NewCarouselModel) -> Unit = {
         navController.navigate(Screens.BookDetails(it.id))
     }
 
@@ -90,9 +139,10 @@ fun LibraryScreen(navController: NavController = rememberNavController()) {
     LazyColumn(Modifier.background(background)) {
         item { Spacer(Modifier.height((LocalConfiguration.current.screenHeightDp * 0.085f).dp)) }
         item { TopLabel(stringResource(R.string.library)) }
+        item { Spacer(Modifier.height(20.dp)) }
         item { MiddleLabel(stringResource(R.string.nova)) }
-        item { Spacer(Modifier.height(256.dp)) }
-        //item { CarouselView() }
+        item { Spacer(Modifier.height(16.dp)) }
+        item { ModalCarousel(carouselList, onCardClick) }
         item { Spacer(Modifier.height(24.dp)) }
         item { MiddleLabel(stringResource(R.string.popular_book)) }
         items(popularBooks.size / 3) {
@@ -115,31 +165,79 @@ fun TopLabel(label: String) {
 @Composable
 @Stable
 fun ImageBox(
-    image: ImageBitmap,
-    description: String,
-    name: String,
+    newCarouselModel: NewCarouselModel,
+    onClick: (NewCarouselModel) -> Unit,
 ) {
     Box(
         Modifier
-            .size(252.dp, 256.dp)
+            .fillMaxSize()
             .clip(RoundedCornerShape(10.dp))
+
+            .clickable { onClick(newCarouselModel) }
     ) {
         Image(
-            image, "", contentScale = ContentScale.Crop, modifier = Modifier.fillMaxSize()
+            newCarouselModel.image,
+            "",
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.fillMaxSize()
         )
-        Column {
-            Spacer(Modifier.weight(1f, true))
+        Spacer(
+            Modifier
+                .background(
+                    brush = Brush.verticalGradient(
+                        0.0f to Color.Transparent, 1f to black.copy(alpha = 0.5f)
+                    )
+                )
+                .fillMaxSize()
+        )
+        Column(modifier = Modifier.fillMaxSize()) {
+            Spacer(Modifier.weight(1f))
             Text(
-                text = description,
-                modifier = Modifier.padding(bottom = 4.dp, start = 16.dp, end = 16.dp)
+                text = newCarouselModel.description,
+                modifier = Modifier.padding(bottom = 4.dp, start = 16.dp, end = 16.dp),
+                style = carouselDescription
             )
             Text(
-                text = name, modifier = Modifier.padding(bottom = 16.dp, start = 16.dp, end = 16.dp)
+                text = newCarouselModel.name.uppercase(),
+                modifier = Modifier.padding(bottom = 16.dp, start = 16.dp, end = 16.dp),
+                style = carouselName
+
             )
         }
 
+
     }
 }
+
+@SuppressLint("CoroutineCreationDuringComposition")
+@Composable
+fun ModalCarousel(
+    items: List<NewCarouselModel>,
+    onClick: (NewCarouselModel) -> Unit,
+
+    ) {
+    val pagerState =
+        rememberPagerState(initialPage = Int.MAX_VALUE / 2, pageCount = { Int.MAX_VALUE })
+
+    val pageSize = LocalConfiguration.current.screenWidthDp * 0.62136f
+    val pagePadding = ((LocalConfiguration.current.screenWidthDp * (1 - 0.62136f)) / 2)
+
+    Column {
+        HorizontalPager(
+            state = pagerState,
+            modifier = Modifier
+                .height(pageSize.dp),
+            pageSize = PageSize.Fixed(pageSize.dp),
+            pageSpacing = 8.dp,
+            contentPadding = PaddingValues(horizontal = pagePadding.dp),
+        ) {
+            ImageBox(items[it % items.size], onClick)
+
+        }
+    }
+
+}
+
 
 @Composable
 fun PopularItem(
@@ -199,46 +297,42 @@ fun ListPopularBook(list: List<PopularBookModel>, onClick: (PopularBookModel) ->
     }
 }
 
+/*
 
 @Composable
 fun CarouselView(
     listItems: List<NewCarouselModel> = listOf(
         NewCarouselModel(
             ContextCompat.getDrawable(
-                LocalContext.current,
-                R.drawable.test_new_carousel
+                LocalContext.current, R.drawable.test_new_carousel
             ) ?: throw IllegalArgumentException("Not found Drawable"),
             "Долгожданное продолжение «Голодных игр»",
             "рассвет жатвы"
         ),
         NewCarouselModel(
             ContextCompat.getDrawable(
-                LocalContext.current,
-                R.drawable.test_new_carousel
+                LocalContext.current, R.drawable.test_new_carousel
             ) ?: throw IllegalArgumentException("Not found Drawable"),
             "Долгожданное продолжение «Голодных игр»",
             "рассвет жатвы"
         ),
         NewCarouselModel(
             ContextCompat.getDrawable(
-                LocalContext.current,
-                R.drawable.test_new_carousel
+                LocalContext.current, R.drawable.test_new_carousel
             ) ?: throw IllegalArgumentException("Not found Drawable"),
             "Долгожданное продолжение «Голодных игр»",
             "рассвет жатвы"
         ),
         NewCarouselModel(
             ContextCompat.getDrawable(
-                LocalContext.current,
-                R.drawable.test_new_carousel
+                LocalContext.current, R.drawable.test_new_carousel
             ) ?: throw IllegalArgumentException("Not found Drawable"),
             "Долгожданное продолжение «Голодных игр»",
             "рассвет жатвы"
         ),
         NewCarouselModel(
             ContextCompat.getDrawable(
-                LocalContext.current,
-                R.drawable.test_new_carousel
+                LocalContext.current, R.drawable.test_new_carousel
             ) ?: throw IllegalArgumentException("Not found Drawable"),
             "Долгожданное продолжение «Голодных игр»",
             "рассвет жатвы"
@@ -253,16 +347,12 @@ fun CarouselView(
         )
     )
     adapters.submitList(listItems)
-    AndroidView(
-        modifier = Modifier,
-        factory = {
-            recyclerView
-        },
-        update = { view ->
-            view.layoutManager = CarouselLayoutManager(HeroCarouselStrategy())
-            view.adapter = adapters
-            CarouselSnapHelper().attachToRecyclerView(view)
+    AndroidView(modifier = Modifier, factory = {
+        recyclerView
+    }, update = { view ->
+        view.layoutManager = CarouselLayoutManager(HeroCarouselStrategy())
+        view.adapter = adapters
+        CarouselSnapHelper().attachToRecyclerView(view)
 
-        }
-    )
-}
+    })
+}*/

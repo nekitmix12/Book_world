@@ -9,6 +9,6 @@ class CarouselHolder(
 ) :
     BaseViewHolder<CarouselLayoutBinding, NewCarouselModel>(binding) {
     override fun onBinding(item: NewCarouselModel) = with(binding) {
-            imageView.setImageDrawable(item.image)
+           // imageView.setImageDrawable(item.image)
     }
 }

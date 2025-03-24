@@ -192,3 +192,26 @@ val appName = TextStyle(
     lineHeight = 76.8.sp
 )
 
+
+val carouselDescription = TextStyle(
+    color = white,
+    fontWeight = FontWeight(400),
+    fontFamily = Vela_Sans,
+    fontSize = 14.sp,
+    lineHeight = 18.2.sp
+)
+
+val carouselName = TextStyle(
+    color = white,
+    fontWeight = FontWeight(700),
+    fontFamily = Alumni_Sans,
+    fontSize = 24.sp,
+)
+
+val sliderText = TextStyle(
+    color = white,
+    fontWeight = FontWeight(500),
+    fontFamily = Vela_Sans,
+    fontSize = 14.sp,
+    lineHeight = 20.sp
+)
