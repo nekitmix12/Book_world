@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -147,7 +148,7 @@ fun BookmarksScreen(navController: NavController = rememberNavController()) {
             navController.navigate(Screens.Chapter(readNow[0].id))
     }
 
-    LazyColumn(Modifier.background(background)) {
+    LazyColumn(Modifier.background(background).testTag("bookmarks")) {
         item { Spacer(Modifier.height((LocalConfiguration.current.screenHeightDp * 0.085f).dp)) }
         item { TopLabel(stringResource(R.string.notes)) }
         item { Spacer(Modifier.height(24.dp)) }
@@ -188,7 +189,7 @@ fun BookmarksScreen(navController: NavController = rememberNavController()) {
         item { Spacer(Modifier.height(8.dp)) }
         items(listFavoriteBook) {
             Spacer(Modifier.height(8.dp))
-            BookSearchItem(it, onSearchItemClick)
+            BookSearchItem(it, onSearchItemClick,"markup")
         }
         item { Spacer(Modifier.height(24.dp)) }
 
@@ -229,7 +230,7 @@ fun ReadNow(
         Modifier
             .padding(horizontal = 16.dp)
             .fillMaxWidth()
-            .clickable { onClick(readNowBookModel) }
+            .clickable { onClick(readNowBookModel) }.testTag("read now book")
     ) {
         Image(
             readNowBookModel.image, "", modifier = Modifier

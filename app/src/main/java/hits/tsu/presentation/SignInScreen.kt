@@ -39,6 +39,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -106,7 +107,8 @@ fun SignInScreen(navController: NavController = rememberNavController()) {
             text = stringResource(R.string.open_for_you).uppercase(Locale.ROOT),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp),
+                .padding(horizontal = 16.dp)
+                .testTag("open_for_you"),
             style = signInSlogan
         )
         Text(
@@ -114,7 +116,8 @@ fun SignInScreen(navController: NavController = rememberNavController()) {
             modifier = Modifier
                 .fillMaxWidth()
                 .offset(y = (-18).dp)
-                .padding(horizontal = 16.dp),
+                .padding(horizontal = 16.dp)
+                .testTag("book_world"),
             style = appName
         )
         Spacer(
@@ -247,7 +250,8 @@ fun InputField(
         OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth(1f)
-                .padding(horizontal = 16.dp),
+                .padding(horizontal = 16.dp)
+                .testTag(hint),
             trailingIcon = {
 
                 Icon(
@@ -260,7 +264,8 @@ fun InputField(
                         .clickable {
                             if (iconRes.size == 1) message.value = ""
                             else isSeeAndClickable.value = !isSeeAndClickable.value
-                        },
+                        }
+                        .testTag("$hint icon"),
                     tint = accent_light
                 )
 
@@ -301,7 +306,8 @@ fun ButtonSignIn(isActive: Boolean, navigateToLibrary: () -> Unit) {
     Button(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp), colors = ButtonColors(
+            .padding(horizontal = 16.dp)
+            .testTag("signInButton"), colors = ButtonColors(
             contentColor = accent_dark,
             containerColor = white,
             disabledContentColor = accent_light,

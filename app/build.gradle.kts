@@ -9,6 +9,15 @@ android {
     namespace = "hits.tsu"
     compileSdk = 35
 
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+            all {
+                it.systemProperty("robolectric.enabled", "true")
+            }
+        }
+    }
+
     defaultConfig {
         applicationId = "hits.tsu"
         minSdk = 24
@@ -55,11 +64,25 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.recyclerview)
     implementation(libs.material)
+    implementation(libs.androidx.navigation.testing)
+    implementation(libs.circuit.foundation)
+
     testImplementation(libs.junit)
+
+    testImplementation(libs.robolectric)
+    testImplementation(libs.roborazzi)
+    testImplementation(libs.roborazzi.compose)
+    testImplementation(libs.androidx.core)
+    testImplementation(libs.androidx.runner)
+    testImplementation(libs.androidx.rules)
+    testImplementation(libs.androidx.compose.ui.test.junit4)
+    testImplementation(libs.kotlinx.coroutines.test)
+
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
+
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 

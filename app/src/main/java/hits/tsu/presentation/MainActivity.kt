@@ -27,6 +27,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
@@ -149,6 +150,7 @@ fun BottomBar(
                 onClick = { navController.navigate(Screens.Library) },
                 modifier = Modifier
                     .weight(1f)
+                    .testTag("library")
             ) {
                 Icon(
                     painterResource(R.drawable.bookshelf),
@@ -160,6 +162,7 @@ fun BottomBar(
                 onClick = { navController.navigate(Screens.Search) },
                 modifier = Modifier
                     .weight(1f)
+                    .testTag("search")
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.find),
@@ -172,6 +175,7 @@ fun BottomBar(
                 onClick = { navController.navigate(Screens.Bookmarks) },
                 modifier = Modifier
                     .weight(1f)
+                    .testTag("markup")
             ) {
                 Icon(
                     painter = painterResource(R.drawable.bookmarks),
@@ -183,6 +187,7 @@ fun BottomBar(
                 onClick = { navController.navigate(Screens.SignIn) },
                 modifier = Modifier
                     .weight(1f)
+                    .testTag("out")
             ) {
                 Icon(
                     painterResource(R.drawable.out),
@@ -200,6 +205,7 @@ fun BottomBar(
                 .clickable {
                     navController.navigate(Screens.Chapter("${UUID.randomUUID()}"))
                 }
+                .testTag("play")
         ) {
             Icon(
                 painterResource(R.drawable.play),

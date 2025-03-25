@@ -52,6 +52,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -243,6 +244,7 @@ fun ChapterScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(background)
+            .testTag("chapter screen")
     ) {
         Spacer(Modifier.weight(0.1f))
         ChapterLabel(chapter.bookName, chapter.chapter.name, onBackClick)
@@ -333,7 +335,8 @@ fun ChapterLabel(
                 .padding(4.dp)
                 .size(40.dp)
                 .clip(CircleShape)
-                .background(accent_dark),
+                .background(accent_dark)
+                .testTag("back from chapter"),
             contentAlignment = Alignment.Center
         ) {
             IconButton(onBackClick) {

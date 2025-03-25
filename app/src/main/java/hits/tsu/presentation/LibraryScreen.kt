@@ -32,6 +32,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Devices
@@ -136,7 +137,7 @@ fun LibraryScreen(navController: NavController = rememberNavController()) {
     }
 
 
-    LazyColumn(Modifier.background(background)) {
+    LazyColumn(Modifier.background(background).testTag("libraryScreen")) {
         item { Spacer(Modifier.height((LocalConfiguration.current.screenHeightDp * 0.085f).dp)) }
         item { TopLabel(stringResource(R.string.library)) }
         item { Spacer(Modifier.height(20.dp)) }
@@ -159,7 +160,7 @@ fun LibraryScreen(navController: NavController = rememberNavController()) {
 
 @Composable
 fun TopLabel(label: String) {
-    Text(text = label.uppercase(), Modifier.padding(horizontal = 16.dp), style = LibraryLabelText)
+    Text(text = label.uppercase(), Modifier.padding(horizontal = 16.dp).testTag("библиотека"), style = LibraryLabelText)
 }
 
 @Composable
@@ -174,6 +175,7 @@ fun ImageBox(
             .clip(RoundedCornerShape(10.dp))
 
             .clickable { onClick(newCarouselModel) }
+            .testTag("carousel model")
     ) {
         Image(
             newCarouselModel.image,
@@ -267,7 +269,8 @@ fun ListPopularBook(list: List<PopularBookModel>, onClick: (PopularBookModel) ->
         Box(
             modifier = Modifier
                 .weight(1f)
-                .fillMaxHeight(), contentAlignment = Alignment.Center
+                .fillMaxHeight()
+                .testTag("popular book"), contentAlignment = Alignment.Center
         ) {
             PopularItem(list[0], onClick)
         }
@@ -277,7 +280,7 @@ fun ListPopularBook(list: List<PopularBookModel>, onClick: (PopularBookModel) ->
         Box(
             modifier = if (list.size > 1) Modifier
                 .weight(1f)
-                .fillMaxHeight()
+                .fillMaxHeight().testTag("popular book")
             else Modifier.weight(1f), contentAlignment = Alignment.Center
         ) {
             if (list.size > 1) PopularItem(list[1], onClick)
@@ -288,7 +291,7 @@ fun ListPopularBook(list: List<PopularBookModel>, onClick: (PopularBookModel) ->
         Box(
             modifier = if (list.size > 2) Modifier
                 .weight(1f)
-
+                .testTag("popular book")
                 .fillMaxHeight()
             else Modifier.weight(1f), contentAlignment = Alignment.Center
         ) {

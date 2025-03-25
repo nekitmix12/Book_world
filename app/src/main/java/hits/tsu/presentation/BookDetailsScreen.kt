@@ -30,6 +30,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -95,6 +96,7 @@ fun BookDetailsScreen(
         Modifier
             .background(background)
             .fillMaxSize()
+            .testTag("Book details")
     ) {
         item { DetailsImage(onBackClick = onBackClick) }
         item {
@@ -168,7 +170,7 @@ fun DetailsImage(
                 .background(accent_dark),
             contentAlignment = Alignment.Center
         ) {
-            IconButton(onBackClick) {
+            IconButton(onBackClick, modifier = Modifier.testTag("back from details")) {
                 Icon(
                     painter = painterResource(R.drawable.back), "", tint = white
                 )
@@ -186,7 +188,7 @@ fun ButtonRow(onReadClick: () -> Unit, onAddToFavouriteClick: () -> Unit) {
             onClick = onReadClick,
             modifier = Modifier
                 .weight(1f)
-                .offset(y = ((-24).dp)),
+                .offset(y = ((-24).dp)).testTag("read button"),
             colors = ButtonColors(
                 containerColor = accent_dark,
                 contentColor = white,

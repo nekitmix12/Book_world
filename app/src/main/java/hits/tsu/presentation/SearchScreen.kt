@@ -37,6 +37,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -139,7 +140,7 @@ fun SearchScreen(navController: NavController = rememberNavController()) {
     )
 
 
-    LazyColumn(Modifier.background(background)) {
+    LazyColumn(Modifier.background(background).testTag("search screen")) {
         item {
             if (!isActiveSearchBar) {
                 SearchPanel(
@@ -271,7 +272,7 @@ fun SearchPanel(
     ) {
         bookList.forEach { item ->
             Spacer(Modifier.height(16.dp))
-            BookSearchItem(item, onSearchItemClick)
+            BookSearchItem(item, onSearchItemClick,"search")
         }
 
     }
@@ -283,12 +284,13 @@ fun SearchPanel(
 fun BookSearchItem(
     book: BookSearchModel,
     onClick: (BookSearchModel) -> Unit,
+    tag:String,
 ) {
 
     Row(
         Modifier
             .padding(horizontal = 16.dp)
-            .clickable { onClick(book) }) {
+            .clickable { onClick(book) }.testTag("book search item $tag")) {
         Image(
             book.image, "", modifier = Modifier
                 .height(126.dp)
@@ -338,7 +340,8 @@ fun GenreLine(list: List<GenreModel>, onClick: (GenreModel) -> Unit) {
                 )
                 .background(accent_light)
                 .padding(16.dp)
-                .clickable { onClick(list[0]) }, contentAlignment = Alignment.Center
+                .clickable { onClick(list[0]) }
+                .testTag("genre"), contentAlignment = Alignment.Center
 
         ) {
             Text(
@@ -357,7 +360,7 @@ fun GenreLine(list: List<GenreModel>, onClick: (GenreModel) -> Unit) {
                 )
                 .background(accent_light)
                 .fillMaxHeight()
-                .padding(16.dp)
+                .padding(16.dp).testTag("genre")
                 .clickable { onClick(list[1]) }
             else Modifier.weight(1f), contentAlignment = Alignment.Center
         ) {
@@ -414,7 +417,7 @@ fun AuthorItem(
             .padding(horizontal = 16.dp)
             .clip(RoundedCornerShape(12.dp))
             .background(accent_light)
-            .height(IntrinsicSize.Min)
+            .height(IntrinsicSize.Min).testTag("author")
             .clickable { onClick(author) }
     ) {
         Image(
