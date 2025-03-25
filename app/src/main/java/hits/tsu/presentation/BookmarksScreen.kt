@@ -256,7 +256,7 @@ fun ReadNow(
 
 @Composable
 fun ProgressReadBar(part: Float, modifier: Modifier) {
-    Row(modifier) {
+    Row(modifier.testTag("progress bar")) {
         Spacer(
             Modifier
                 .weight(part)

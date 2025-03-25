@@ -146,7 +146,8 @@ fun DetailsImage(
             "",
             modifier = Modifier
                 .fillMaxWidth()
-                .height(380.dp),
+                .height(380.dp)
+                .testTag("detail image"),
             contentScale = ContentScale.Crop
         )
 
@@ -205,7 +206,7 @@ fun ButtonRow(onReadClick: () -> Unit, onAddToFavouriteClick: () -> Unit) {
             onClick = onAddToFavouriteClick,
             modifier = Modifier
                 .weight(1f)
-                .offset(y = ((-24).dp)),
+                .offset(y = ((-24).dp)).testTag("toFavorite button"),
             colors = ButtonColors(
                 containerColor = accent_light,
                 contentColor = accent_dark,
@@ -231,7 +232,7 @@ fun DetailsName(name: String) {
     Text(
         text = name.uppercase(),
         style = detailsLabel,
-        modifier = Modifier.padding(horizontal = 16.dp)
+        modifier = Modifier.padding(horizontal = 16.dp).testTag("details name")
     )
 }
 
@@ -239,7 +240,7 @@ fun DetailsName(name: String) {
 fun CommonDetailsText(text: String) {
     val paragraphs = text.split("\n")
 
-    Column {
+    Column(Modifier.testTag("CommonDetailsText")) {
         paragraphs.forEach { paragraph ->
             Text(
                 text = paragraph,
@@ -260,7 +261,8 @@ fun ChapterItem(
     Row(
         Modifier
             .padding(horizontal = 16.dp)
-            .clickable { onClick(chapter) }) {
+            .clickable { onClick(chapter) }
+            .testTag("chapters")) {
         when (chapter.state) {
             is ChapterState.Passed -> {
                 Text(

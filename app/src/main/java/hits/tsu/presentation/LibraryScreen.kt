@@ -196,12 +196,12 @@ fun ImageBox(
             Spacer(Modifier.weight(1f))
             Text(
                 text = newCarouselModel.description,
-                modifier = Modifier.padding(bottom = 4.dp, start = 16.dp, end = 16.dp),
+                modifier = Modifier.padding(bottom = 4.dp, start = 16.dp, end = 16.dp).testTag("description"),
                 style = carouselDescription
             )
             Text(
                 text = newCarouselModel.name.uppercase(),
-                modifier = Modifier.padding(bottom = 16.dp, start = 16.dp, end = 16.dp),
+                modifier = Modifier.padding(bottom = 16.dp, start = 16.dp, end = 16.dp).testTag("name"),
                 style = carouselName
 
             )
@@ -228,7 +228,7 @@ fun ModalCarousel(
         HorizontalPager(
             state = pagerState,
             modifier = Modifier
-                .height(pageSize.dp),
+                .height(pageSize.dp).testTag("horizontal pager"),
             pageSize = PageSize.Fixed(pageSize.dp),
             pageSpacing = 8.dp,
             contentPadding = PaddingValues(horizontal = pagePadding.dp),

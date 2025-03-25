@@ -316,7 +316,7 @@ fun BookSearchItem(
 @Stable
 fun MiddleLabel(label: String) {
     Text(
-        text = label.uppercase(), style = labelText, modifier = Modifier.padding(horizontal = 16.dp)
+        text = label.uppercase(), style = labelText, modifier = Modifier.padding(horizontal = 16.dp).testTag("H2")
     )
 }
 
