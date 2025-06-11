@@ -39,11 +39,11 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import hits.tsu.R
-import hits.tsu.presentation.theme.BookWorldTheme
-import hits.tsu.presentation.theme.accent_dark
-import hits.tsu.presentation.theme.accent_medium
-import hits.tsu.presentation.theme.secondary
-import hits.tsu.presentation.theme.white
+import nekit.corporation.common.theme.BookWorldTheme
+import nekit.corporation.common.theme.accent_dark
+import nekit.corporation.common.theme.accent_medium
+import nekit.corporation.common.theme.secondary
+import nekit.corporation.common.theme.white
 import java.util.UUID
 
 class MainActivity : ComponentActivity() {

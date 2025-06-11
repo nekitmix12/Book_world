@@ -1,10 +1,6 @@
 <resources>
     <string name="app_name">Book world</string>
-    <string name="open_for_you">открой для себя</string>
-    <string name="book_world">книжный мир</string>
-    <string name="email">Электронная почта</string>
-    <string name="password">Пароль</string>
-    <string name="sign_in">Войти</string>
+
     <string name="search_by_book">Поиск по книгам</string>
     <string name="last_request">Недавние запросы</string>
     <string name="genres">Жанры</string>

@@ -39,15 +39,15 @@ import hits.tsu.R
 import hits.tsu.presentation.models.BookSearchModel
 import hits.tsu.presentation.models.QuoteModel
 import hits.tsu.presentation.models.ReadNowBookModel
-import hits.tsu.presentation.theme.accent_dark
-import hits.tsu.presentation.theme.accent_light
-import hits.tsu.presentation.theme.accent_medium
-import hits.tsu.presentation.theme.background
-import hits.tsu.presentation.theme.bookAuthorSearch
-import hits.tsu.presentation.theme.bookNameSearch
-import hits.tsu.presentation.theme.popularBookAuthor
-import hits.tsu.presentation.theme.quoteContent
-import hits.tsu.presentation.theme.white
+import nekit.corporation.common.theme.accent_dark
+import nekit.corporation.common.theme.accent_light
+import nekit.corporation.common.theme.accent_medium
+import nekit.corporation.common.theme.background
+import nekit.corporation.common.theme.bookAuthorSearch
+import nekit.corporation.common.theme.bookNameSearch
+import nekit.corporation.common.theme.popularBookAuthor
+import nekit.corporation.common.theme.quoteContent
+import nekit.corporation.common.theme.white
 import java.util.UUID
 
 

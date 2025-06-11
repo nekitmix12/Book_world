@@ -42,15 +42,15 @@ import androidx.navigation.compose.rememberNavController
 import hits.tsu.R
 import hits.tsu.presentation.models.ChapterState
 import hits.tsu.presentation.models.ShortChapterModel
-import hits.tsu.presentation.theme.accent_dark
-import hits.tsu.presentation.theme.accent_light
-import hits.tsu.presentation.theme.accent_medium
-import hits.tsu.presentation.theme.background
-import hits.tsu.presentation.theme.detailsBody
-import hits.tsu.presentation.theme.detailsBodyButton
-import hits.tsu.presentation.theme.detailsLabel
-import hits.tsu.presentation.theme.detailsSelectedBody
-import hits.tsu.presentation.theme.white
+import nekit.corporation.common.theme.accent_dark
+import nekit.corporation.common.theme.accent_light
+import nekit.corporation.common.theme.accent_medium
+import nekit.corporation.common.theme.background
+import nekit.corporation.common.theme.detailsBody
+import nekit.corporation.common.theme.detailsBodyButton
+import nekit.corporation.common.theme.detailsLabel
+import nekit.corporation.common.theme.detailsSelectedBody
+import nekit.corporation.common.theme.white
 import java.util.UUID
 
 

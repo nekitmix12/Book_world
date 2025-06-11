@@ -43,13 +43,13 @@ import androidx.navigation.compose.rememberNavController
 import hits.tsu.R
 import hits.tsu.presentation.models.NewCarouselModel
 import hits.tsu.presentation.models.PopularBookModel
-import hits.tsu.presentation.theme.LibraryLabelText
-import hits.tsu.presentation.theme.background
-import hits.tsu.presentation.theme.black
-import hits.tsu.presentation.theme.carouselDescription
-import hits.tsu.presentation.theme.carouselName
-import hits.tsu.presentation.theme.popularBookAuthor
-import hits.tsu.presentation.theme.popularBookName
+import nekit.corporation.common.theme.LibraryLabelText
+import nekit.corporation.common.theme.background
+import nekit.corporation.common.theme.black
+import nekit.corporation.common.theme.carouselDescription
+import nekit.corporation.common.theme.carouselName
+import nekit.corporation.common.theme.popularBookAuthor
+import nekit.corporation.common.theme.popularBookName
 import java.util.UUID
 
 @Preview(showSystemUi = true, device = Devices.PIXEL_7)

@@ -23,4 +23,9 @@ dependencyResolutionManagement {
 
 rootProject.name = "Book world"
 include(":app")
- 
+include(":common")
+include(":auth")
+include(":library")
+include(":search")
+include(":details")
+include(":bookmarks")

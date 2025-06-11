@@ -51,17 +51,17 @@ import hits.tsu.presentation.models.AuthorModel
 import hits.tsu.presentation.models.BookSearchModel
 import hits.tsu.presentation.models.GenreModel
 import hits.tsu.presentation.models.RequestModel
-import hits.tsu.presentation.theme.accent_dark
-import hits.tsu.presentation.theme.accent_light
-import hits.tsu.presentation.theme.accent_medium
-import hits.tsu.presentation.theme.authorText
-import hits.tsu.presentation.theme.background
-import hits.tsu.presentation.theme.bookAuthorSearch
-import hits.tsu.presentation.theme.bookNameSearch
-import hits.tsu.presentation.theme.labelText
-import hits.tsu.presentation.theme.requestText
-import hits.tsu.presentation.theme.textBarText
-import hits.tsu.presentation.theme.white
+import nekit.corporation.common.theme.accent_dark
+import nekit.corporation.common.theme.accent_light
+import nekit.corporation.common.theme.accent_medium
+import nekit.corporation.common.theme.authorText
+import nekit.corporation.common.theme.background
+import nekit.corporation.common.theme.bookAuthorSearch
+import nekit.corporation.common.theme.bookNameSearch
+import nekit.corporation.common.theme.labelText
+import nekit.corporation.common.theme.requestText
+import nekit.corporation.common.theme.textBarText
+import nekit.corporation.common.theme.white
 import java.util.UUID
 
 @Preview(showSystemUi = true, device = Devices.PIXEL_5)
