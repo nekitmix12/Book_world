@@ -33,8 +33,15 @@ interface HomeComponent {
     fun interface Factory {
         operator fun invoke(
             componentContext: ComponentContext,
-            openChapter: (String) -> Unit,
-            openDetails: (String) -> Unit
+            openChapter: OpenDetails,
+            openDetails: OpenChapter
         ): HomeComponent
+    }
+    fun interface OpenDetails {
+        fun open(id: String)
+    }
+
+    fun interface OpenChapter {
+        fun open(id: String)
     }
 }

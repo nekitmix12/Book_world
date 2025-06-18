@@ -5,6 +5,7 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
+
 class SearchComponentImpl(componentContext:ComponentContext) : SearchComponent,
     ComponentContext by componentContext {
     override val state = MutableStateFlow(

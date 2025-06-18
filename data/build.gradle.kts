@@ -42,9 +42,9 @@ dependencies {
     implementation(project(":domain"))
 
     //retrofit and okHttp
-    implementation(libs.retrofit2.kotlinx.serialization.converter)
-    implementation(libs.okhttp)
-    implementation(libs.retrofit)
+    api(libs.retrofit2.kotlinx.serialization.converter)
+    api(libs.okhttp)
+    api(libs.retrofit)
     //anvil
     ksp(libs.anvilUtils.compiler)
 

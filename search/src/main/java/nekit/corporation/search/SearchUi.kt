@@ -41,7 +41,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import nekit.corporation.common.R.drawable
+import nekit.corporation.common_ui.R.drawable
 import nekit.corporation.common.models.BookSearchModel
 import nekit.corporation.common_ui.theme.accent_dark
 import nekit.corporation.common_ui.theme.accent_light
@@ -58,7 +58,7 @@ import nekit.corporation.search.models.AuthorModel
 import nekit.corporation.search.models.GenreModel
 import nekit.corporation.search.models.RequestModel
 import java.lang.Integer.min
-import nekit.corporation.common.R.drawable.close
+import nekit.corporation.common_ui.R.drawable.close
 
 @Composable
 fun SearchUi(component: SearchComponent) {

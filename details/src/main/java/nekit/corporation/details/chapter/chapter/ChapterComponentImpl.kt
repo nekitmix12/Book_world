@@ -25,7 +25,7 @@ import nekit.corporation.details.models.ShortChapterModel
 
 @ContributesAssistedFactory(AppScope::class, ChapterComponent.Factory::class)
 class ChapterComponentImpl @AssistedInject constructor(
-    @Assisted componentContext: ComponentContext, chapterId: String, onClose: () -> Unit
+    @Assisted componentContext: ComponentContext,@Assisted chapterId: String,@Assisted onClose: () -> Unit
 ) : ComponentContext by componentContext, ChapterComponent {
 
     private val bottomNavigation = SlotNavigation<ChildConfig.BottomSheet>()

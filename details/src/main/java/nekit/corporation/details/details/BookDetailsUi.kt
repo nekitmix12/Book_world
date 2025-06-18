@@ -36,21 +36,11 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import nekit.corporation.common.R.drawable
-import nekit.corporation.common_ui.theme.accent_dark
-import nekit.corporation.common_ui.theme.accent_light
-import nekit.corporation.common_ui.theme.accent_medium
-import nekit.corporation.common_ui.theme.background
-import nekit.corporation.common_ui.theme.detailsBody
-import nekit.corporation.common_ui.theme.detailsBodyButton
-import nekit.corporation.common_ui.theme.detailsLabel
-import nekit.corporation.common_ui.theme.detailsSelectedBody
-import nekit.corporation.common_ui.theme.white
-import nekit.corporation.common_ui.ui_kit.MiddleLabel
+import nekit.corporation.common_ui.R.drawable
+import nekit.corporation.common_ui.R.drawable.bookmarks
 import nekit.corporation.details.R
 import nekit.corporation.details.models.ChapterState
 import nekit.corporation.details.models.ShortChapterModel
-import nekit.corporation.common.R.drawable.bookmarks
 
 //@Preview(showSystemUi = true, device = Devices.PIXEL_5)
 @Composable
@@ -104,7 +94,7 @@ fun BookDetailUi(
 
 @Composable
 fun DetailsImage(
-    image: ImageBitmap ,
+    image: ImageBitmap,
     onBackClick: () -> Unit,
 ) {
     Box() {
@@ -125,7 +115,8 @@ fun DetailsImage(
                 .align(Alignment.BottomCenter)
                 .background(
                     brush = Brush.verticalGradient(
-                        0.0f to Color.Transparent, 1f to nekit.corporation.common_ui.theme.background
+                        0.0f to Color.Transparent,
+                        1f to nekit.corporation.common_ui.theme.background
                     )
                 )
         )
@@ -140,7 +131,9 @@ fun DetailsImage(
         ) {
             IconButton(onBackClick, modifier = Modifier.testTag("back from details")) {
                 Icon(
-                    painter = painterResource(drawable.back), "", tint = nekit.corporation.common_ui.theme.white
+                    painter = painterResource(drawable.back),
+                    "",
+                    tint = nekit.corporation.common_ui.theme.white
                 )
             }
         }
@@ -156,7 +149,8 @@ fun ButtonRow(onReadClick: () -> Unit, onAddToFavouriteClick: () -> Unit) {
             onClick = onReadClick,
             modifier = Modifier
                 .weight(1f)
-                .offset(y = ((-24).dp)).testTag("read button"),
+                .offset(y = ((-24).dp))
+                .testTag("read button"),
             colors = ButtonColors(
                 containerColor = nekit.corporation.common_ui.theme.accent_dark,
                 contentColor = nekit.corporation.common_ui.theme.white,
@@ -166,14 +160,18 @@ fun ButtonRow(onReadClick: () -> Unit, onAddToFavouriteClick: () -> Unit) {
         ) {
             Icon(painter = painterResource(drawable.play), "", Modifier.padding(vertical = 5.dp))
             Spacer(Modifier.width(8.dp))
-            Text(text = stringResource(R.string.read), style = nekit.corporation.common_ui.theme.detailsBodyButton)
+            Text(
+                text = stringResource(R.string.read),
+                style = nekit.corporation.common_ui.theme.detailsBodyButton
+            )
         }
         Spacer(Modifier.width(8.dp))
         Button(
             onClick = onAddToFavouriteClick,
             modifier = Modifier
                 .weight(1f)
-                .offset(y = ((-24).dp)).testTag("toFavorite button"),
+                .offset(y = ((-24).dp))
+                .testTag("toFavorite button"),
             colors = ButtonColors(
                 containerColor = nekit.corporation.common_ui.theme.accent_light,
                 contentColor = nekit.corporation.common_ui.theme.accent_dark,
@@ -188,7 +186,8 @@ fun ButtonRow(onReadClick: () -> Unit, onAddToFavouriteClick: () -> Unit) {
             )
             Spacer(Modifier.width(8.dp))
             Text(
-                text = stringResource(R.string.in_favorite), style = nekit.corporation.common_ui.theme.detailsBodyButton
+                text = stringResource(R.string.in_favorite),
+                style = nekit.corporation.common_ui.theme.detailsBodyButton
             )
         }
     }
@@ -199,7 +198,9 @@ fun DetailsName(name: String) {
     Text(
         text = name.uppercase(),
         style = nekit.corporation.common_ui.theme.detailsLabel,
-        modifier = Modifier.padding(horizontal = 16.dp).testTag("details name")
+        modifier = Modifier
+            .padding(horizontal = 16.dp)
+            .testTag("details name")
     )
 }
 

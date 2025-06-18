@@ -131,23 +131,7 @@ fun SignInUi(component: SignInComponent ) {
 
 }
 
-@Composable
-fun getScreenWidthDp(): Int {
-    val configuration = LocalConfiguration.current
-    return configuration.screenWidthDp
-}
 
-/*@Composable
-fun getDeviceType(): DeviceType {
-    val screenWidthDp = getScreenWidthDp()
-    val screenHeightDp = getScreenHeightDp()
-    return when {
-        screenWidthDp < 360 && screenHeightDp < 640 -> DeviceType.SmallPhone
-        screenWidthDp < 420 && screenHeightDp < 800 -> DeviceType.MediumPhone
-        screenWidthDp >= 411 && screenHeightDp >= 914 -> DeviceType.ExtraLargePhone
-        else -> DeviceType.LargePhone
-    }
-}*/
 
 @Composable
 fun getScreenHeightDp(): Int {

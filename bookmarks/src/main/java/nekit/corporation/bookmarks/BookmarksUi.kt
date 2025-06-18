@@ -47,7 +47,7 @@ import nekit.corporation.common_ui.theme.white
 import nekit.corporation.common_ui.ui_kit.BookItem
 import nekit.corporation.common_ui.ui_kit.MiddleLabel
 import nekit.corporation.common_ui.ui_kit.TopLabel
-import nekit.corporation.common.R.drawable
+import nekit.corporation.common_ui.R.drawable.play
 
 
 @Composable
@@ -73,7 +73,7 @@ fun BookmarksUi(component: BookmarksComponent) {
                 ) {
                     IconButton(component::onPlayClick) {
                         Icon(
-                            painterResource(drawable.play),
+                            painterResource(play),
                             "",
                             tint = nekit.corporation.common_ui.theme.white,
                             modifier = Modifier.clickable(onClick = component::onPlayClick)

@@ -4,4 +4,10 @@
     <string name="email">Электронная почта</string>
     <string name="password">Пароль</string>
     <string name="sign_in">Войти</string>
+    <string name="empty_name">Имя не должно быть пустым!</string>
+    <string name="empty_password">Пароль не должен быть пуст!</string>
+    <string name="empty_email">Почта не должна быть поустой!</string>
+    <string name="incorrect_email">некоректная почта</string>
+    <string name="repeat_email_or_username">Пользователь с такой почтой или паролем уже существует</string>
+    <string name="strangeError">Странная ошибка</string>
 </resources>

@@ -34,7 +34,7 @@ import nekit.corporation.common_ui.theme.detailsBody
 import nekit.corporation.common_ui.theme.detailsSelectedBody
 import nekit.corporation.common_ui.theme.labelText
 import nekit.corporation.details.R
-import nekit.corporation.common.R.drawable
+import nekit.corporation.common_ui.R.drawable
 import nekit.corporation.details.models.ChapterState
 
 @SuppressLint("UseOfNonLambdaOffsetOverload")

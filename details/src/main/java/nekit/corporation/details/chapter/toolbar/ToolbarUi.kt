@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.painterResource
-import nekit.corporation.common.R.drawable
+import nekit.corporation.common_ui.R.drawable
 import nekit.corporation.common_ui.theme.accent_dark
 import nekit.corporation.common_ui.theme.accent_light
 import nekit.corporation.common_ui.theme.white

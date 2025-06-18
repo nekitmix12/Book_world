@@ -29,14 +29,10 @@ import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.jetpack.stack.Children
 import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
 import nekit.corporation.bookmarks.BookmarksUi
-import nekit.corporation.common.R.drawable.play
-import nekit.corporation.common_ui.theme.accent_dark
-import nekit.corporation.common_ui.theme.accent_medium
-import nekit.corporation.common_ui.theme.secondary
-import nekit.corporation.common_ui.theme.white
+import nekit.corporation.common_ui.R.drawable.bookmarks
+import nekit.corporation.common_ui.R.drawable.play
 import nekit.corporation.library.LibraryUi
 import nekit.corporation.search.R.drawable.find
-import nekit.corporation.common.R.drawable.bookmarks
 import nekit.corporation.search.SearchUi
 
 @Composable

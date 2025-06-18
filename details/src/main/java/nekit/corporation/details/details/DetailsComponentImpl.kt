@@ -12,8 +12,8 @@ import nekit.corporation.common.AppScope
 @ContributesAssistedFactory(AppScope::class, DetailsComponent.Factory::class)
 class DetailsComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
-    val close: () -> Unit,
-    val openChapter: (String) -> Unit
+    @Assisted val close: () -> Unit,
+    @Assisted val openChapter: (String) -> Unit
 ) :
     ComponentContext by componentContext, DetailsComponent {
     override val state: StateFlow<DetailsState> = MutableStateFlow(

@@ -56,11 +56,12 @@ dependencies {
     implementation(project(":common"))
     implementation(project(":home-nav"))
     implementation(project(":details"))
+    implementation(project(":domain"))
+    implementation(project(":data"))
     implementation(project(":library"))
     implementation(project(":root"))
     implementation(project(":search"))
     implementation(project(":common-ui"))
-
     //core
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

@@ -5,16 +5,17 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.arkivanov.decompose.defaultComponentContext
-import nekit.corporation.root.RootComponentImpl
+import nekit.corporation.common_ui.theme.BookWorldTheme
 import nekit.corporation.root.RootUi
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val rootComponent = RootComponentImpl(defaultComponentContext())
+        val rootComponent =
+            DaggerAppDaggerComponent.create().rootComponentFactory(defaultComponentContext())
         enableEdgeToEdge()
         setContent {
-            nekit.corporation.common_ui.theme.BookWorldTheme {
+            BookWorldTheme {
                 RootUi(rootComponent)
             }
         }

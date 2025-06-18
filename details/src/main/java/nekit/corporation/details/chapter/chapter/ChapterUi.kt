@@ -43,7 +43,7 @@ import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
-import nekit.corporation.common.R.drawable
+import nekit.corporation.common_ui.R.drawable
 import nekit.corporation.common_ui.theme.accent_dark
 import nekit.corporation.common_ui.theme.background
 import nekit.corporation.common_ui.theme.black

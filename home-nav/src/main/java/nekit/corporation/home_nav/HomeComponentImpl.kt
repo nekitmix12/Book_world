@@ -16,8 +16,8 @@ import nekit.corporation.search.SearchComponentImpl
 @ContributesAssistedFactory(AppScope::class, HomeComponent.Factory::class)
 class HomeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
-    val openDetails: (String) -> Unit,
-    val openChapter: (String) -> Unit,
+    @Assisted val openDetails: HomeComponent.OpenDetails,
+    @Assisted val openChapter: HomeComponent.OpenChapter,
 ) : ComponentContext by componentContext, HomeComponent {
     private val navigation = StackNavigation<BottomTab>()
     override val childStack = childStack(
