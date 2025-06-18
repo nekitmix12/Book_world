@@ -3,29 +3,22 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
+    id("kotlin-parcelize")
+    alias(libs.plugins.anvil)
+    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.ksp)
 }
 
 android {
     namespace = "hits.tsu"
-    compileSdk = 35
-
-    testOptions {
-        unitTests {
-            isIncludeAndroidResources = true
-            all {
-                it.systemProperty("robolectric.enabled", "true")
-            }
-        }
-    }
+    compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
-        applicationId = "hits.tsu"
-        minSdk = 24
-        targetSdk = 35
+        applicationId = "nekit.corporation.yurtify"
+        minSdk = libs.versions.android.minSdk.get().toInt()
+        targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -42,38 +35,47 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = libs.versions.jvmTarget.get()
     }
     buildFeatures {
         compose = true
     }
-    viewBinding {
-        enable = true
-    }
 }
 
 dependencies {
+/*
     implementation(libs.gosyer.accompanist.snapper)
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.ui.tooling.preview)
+
     implementation(libs.androidx.navigation.testing)
     implementation(libs.circuit.foundation)
+*/
 
 
     implementation(project(":auth"))
     implementation(project(":bookmarks"))
     implementation(project(":common"))
+    implementation(project(":home-nav"))
     implementation(project(":details"))
     implementation(project(":library"))
+    implementation(project(":root"))
     implementation(project(":search"))
+    implementation(project(":common-ui"))
+
+    //core
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+
+    implementation(libs.androidx.material3)
+    debugImplementation(libs.androidx.ui.tooling)
+    debugImplementation(libs.androidx.ui.test.manifest)
 
 
+    kapt(libs.dagger.compiler)
 
 
+/*
 
     implementation(libs.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
-    implementation(libs.androidx.material3.android)
+    implementation(libs.androidx.material3.android)*/
 }

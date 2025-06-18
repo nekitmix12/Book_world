@@ -1,16 +1,16 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
+    id("kotlin-parcelize")
 }
 
 android {
     namespace = "nekit.corporation.common"
-    compileSdk = 35
+    compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
-        minSdk = 24
+        minSdk = libs.versions.android.minSdk.get().toInt()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -30,13 +30,13 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = libs.versions.jvmTarget.get()
     }
 }
 
 
 dependencies {
-    testImplementation(libs.robolectric)
+/*    testImplementation(libs.robolectric)
     testImplementation(libs.roborazzi)
     testImplementation(libs.roborazzi.compose)
     testImplementation(libs.androidx.core)
@@ -44,26 +44,31 @@ dependencies {
     testImplementation(libs.androidx.rules)
     testImplementation(libs.androidx.compose.ui.test.junit4)
     testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.junit)
+    testImplementation(libs.junit)*/
 
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
 
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
-    implementation(libs.androidx.material3.android)
-    implementation(libs.androidx.material3)
-    implementation(libs.androidx.activity.compose)
-    implementation(libs.androidx.ui)
-    implementation(libs.decompose.compose)
-    implementation(libs.decompose)
-    implementation(libs.lifecycle)
+    testApi(libs.junit)
+    androidTestApi(libs.androidx.junit)
+    androidTestApi(libs.androidx.espresso.core)
+    androidTestApi(platform(libs.androidx.compose.bom))
+    androidTestApi(libs.androidx.ui.test.junit4)
+    debugApi(libs.androidx.ui.tooling)
+    debugApi(libs.androidx.ui.test.manifest)
+    api(libs.kotlinx.collections.immutable)
+    //decompose
+    api(libs.decompose.compose)
+    api(libs.decompose)
+    //dagger2
+    api(libs.dagger)
+
+    //anvil
+    api(libs.anvil.annotations)
+    api(libs.anvilUtils.annotations)
+    //util
+    api(libs.kotlinx.serialization.json)
+    //
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(libs.material)
-    implementation(libs.androidx.ui.graphics.android)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+/*    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)*/
 }

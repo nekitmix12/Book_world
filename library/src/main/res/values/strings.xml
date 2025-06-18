@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="library">библиотека</string>
+    <string name="popular_book">Популярные книги</string>
+    <string name="nova">Новинки</string>
+</resources>

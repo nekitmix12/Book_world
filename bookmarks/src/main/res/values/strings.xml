@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notes">закладки</string>
+    <string name="read_now">Читаете сейчас</string>
+    <string name="favourite_books">Избранные книги</string>
+    <string name="quotes">Цитаты</string>
+</resources>

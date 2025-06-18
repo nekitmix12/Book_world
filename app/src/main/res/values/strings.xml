@@ -1,22 +1,5 @@
 <resources>
     <string name="app_name">Book world</string>
 
-    <string name="search_by_book">Поиск по книгам</string>
-    <string name="last_request">Недавние запросы</string>
-    <string name="genres">Жанры</string>
-    <string name="authors">Авторы</string>
-    <string name="popular_book">Популярные книги</string>
-    <string name="nova">Новинки</string>
-    <string name="library">библиотека</string>
-    <string name="read_now">Читаете сейчас</string>
-    <string name="notes">закладки</string>
-    <string name="favourite_books">Избранные книги</string>
-    <string name="quotes">Цитаты</string>
-    <string name="read">Читать</string>
-    <string name="in_favorite">В избранное</string>
-    <string name="was_read">Прочитано</string>
-    <string name="toc">Оглавление</string>
-    <string name="string_space">Расстояние между строками</string>
-    <string name="font_size">Размер шрифта</string>
-    <string name="settings">Настройки</string>
+
     </resources>
