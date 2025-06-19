@@ -15,6 +15,6 @@ import javax.inject.Inject
     boundType = Repository::class
 )
 class RepositoryImpl @Inject constructor(private val authApi: AuthApi) : Repository {
-    override fun register(registerRequest: RegisterRequest): TokenResponse =
+    suspend  override fun register(registerRequest: RegisterRequest): TokenResponse =
         authApi.register(registerRequest.toRegisterRequestDto()).toTokenResponse()
 }

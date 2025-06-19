@@ -8,7 +8,11 @@ interface SignInComponent {
 
     fun onSignInClick()
     fun onEmailChange(email: String)
+    fun onNameChange(name: String)
     fun onPasswordChange(password: String)
+    fun onPasswordImageClick()
+    fun onEmailImageClick()
+    fun onNameImageClick()
 
     fun interface Factory {
         operator fun invoke(

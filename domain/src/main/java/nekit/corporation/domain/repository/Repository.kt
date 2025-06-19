@@ -4,5 +4,5 @@ import nekit.corporation.domain.models.RegisterRequest
 import nekit.corporation.domain.models.TokenResponse
 
 interface Repository {
-    fun register(registerRequest: RegisterRequest): TokenResponse
+    suspend  fun register(registerRequest: RegisterRequest): TokenResponse
 }

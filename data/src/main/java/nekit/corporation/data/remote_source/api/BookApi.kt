@@ -9,31 +9,31 @@ import retrofit2.http.Query
 interface BookApi {
 
     @GET("books")
-    fun getBooks(
+    suspend fun getBooks(
         @Query("pagination[page]") page: Int,
         @Query("pagination[pageSize]") pageSize: Int
-    ): nekit.corporation.data.remote_source.dto.book.BooksDto
+    ): BooksDto
 
     @GET("books")
-    fun getBooksById(@Query("filters[id]") id: Long): nekit.corporation.data.remote_source.dto.book.BooksDto
+    suspend  fun getBooksById(@Query("filters[id]") id: Long): BooksDto
 
     @GET("books")
-    fun getBooksByName(@Query("filters[title][\$containsi]") name: String): nekit.corporation.data.remote_source.dto.book.BooksDto
+    suspend  fun getBooksByName(@Query("filters[title][\$containsi]") name: String): BooksDto
 
     @GET("books")
-    fun getBooksByGenre(@Query("filters[genres][id][\$eq]") genre: String): nekit.corporation.data.remote_source.dto.book.BooksDto
+    suspend  fun getBooksByGenre(@Query("filters[genres][id][\$eq]") genre: String): BooksDto
 
     @GET("books")
-    fun getBooksByAuthor(@Query("filters[authors][id][\$eq]") authors: String): nekit.corporation.data.remote_source.dto.book.BooksDto
+    suspend fun getBooksByAuthor(@Query("filters[authors][id][\$eq]") authors: String): BooksDto
 
     @GET("books")
-    fun getNewBooks(@Query("filters[isNew]") isNew: Boolean): nekit.corporation.data.remote_source.dto.book.BooksDto
+    suspend fun getNewBooks(@Query("filters[isNew]") isNew: Boolean): BooksDto
 
     @GET("authors")
-    fun getAuthors(): nekit.corporation.data.remote_source.dto.author.AuthorsDto
+    suspend fun getAuthors():AuthorsDto
 
     @GET("genres")
-    fun getGenres(): nekit.corporation.data.remote_source.dto.genre.GenresDto
+    suspend fun getGenres(): GenresDto
 
 
 

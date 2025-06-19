@@ -1,6 +1,7 @@
 <resources>
     <string name="open_for_you">открой для себя</string>
     <string name="book_world">книжный мир</string>
+    <string name="username">Имя</string>
     <string name="email">Электронная почта</string>
     <string name="password">Пароль</string>
     <string name="sign_in">Войти</string>
@@ -8,6 +9,7 @@
     <string name="empty_password">Пароль не должен быть пуст!</string>
     <string name="empty_email">Почта не должна быть поустой!</string>
     <string name="incorrect_email">некоректная почта</string>
+    <string name="incorrect_password">некоррекстный пароль ,он должен состоять из 6 символов,числа и спец. символа и буквы</string>
     <string name="repeat_email_or_username">Пользователь с такой почтой или паролем уже существует</string>
     <string name="strangeError">Странная ошибка</string>
 </resources>

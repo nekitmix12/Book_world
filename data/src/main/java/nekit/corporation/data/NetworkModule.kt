@@ -26,8 +26,8 @@ object NetworkModule {
     fun provideOkHttpClient(
         interceptor: Interceptor
     ): OkHttpClient = OkHttpClient.Builder()
-        .readTimeout(15, TimeUnit.SECONDS)
-        .connectTimeout(15, TimeUnit.SECONDS)
+        .readTimeout(150, TimeUnit.SECONDS)
+        .connectTimeout(150, TimeUnit.SECONDS)
         .addInterceptor(interceptor) .build()
 
 
@@ -36,7 +36,7 @@ object NetworkModule {
     @Provides
     @Reusable
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit = Retrofit.Builder()
-        .baseUrl("http://77.110.105.134:8080/")
+        .baseUrl("https://brilliant-delight-92875246ff.strapiapp.com/")
         .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
         .client(okHttpClient)
         .build()

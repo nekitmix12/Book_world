@@ -47,21 +47,22 @@ import nekit.corporation.common_ui.theme.popularBookName
 import nekit.corporation.common_ui.ui_kit.MiddleLabel
 import nekit.corporation.common_ui.ui_kit.TopLabel
 
+@Preview(showSystemUi = true, device = Devices.PIXEL_7)
 @Composable
-fun LibraryUi(component: LibraryComponent) {
+fun LibraryUi(component: LibraryComponent = FakeLibraryComponent()) {
     val state by component.state.collectAsState()
 
 
 
-    LazyColumn(Modifier.background(nekit.corporation.common_ui.theme.background).testTag("libraryScreen")) {
+    LazyColumn(Modifier.background(background).testTag("libraryScreen")) {
         item { Spacer(Modifier.height((LocalConfiguration.current.screenHeightDp * 0.085f).dp)) }
-        item { nekit.corporation.common_ui.ui_kit.TopLabel(stringResource(R.string.library)) }
+        item { TopLabel(stringResource(R.string.library)) }
         item { Spacer(Modifier.height(20.dp)) }
-        item { nekit.corporation.common_ui.ui_kit.MiddleLabel(stringResource(R.string.nova)) }
+        item { MiddleLabel(stringResource(R.string.nova)) }
         item { Spacer(Modifier.height(16.dp)) }
         item { ModalCarousel(state.newBooks, component::onBookClick) }
         item { Spacer(Modifier.height(24.dp)) }
-        item { nekit.corporation.common_ui.ui_kit.MiddleLabel(stringResource(R.string.popular_book)) }
+        item { MiddleLabel(stringResource(R.string.popular_book)) }
         items(state.popularBooks.size / 3) {
             ListPopularBook(state.popularBooks.slice(it * 3..it * 3 + 2), component::onBookClick)
         }
@@ -93,7 +94,7 @@ fun ImageBox(
         Spacer(
             Modifier.background(
                     brush = Brush.verticalGradient(
-                        0.0f to Color.Transparent, 1f to nekit.corporation.common_ui.theme.black.copy(alpha = 0.5f)
+                        0.0f to Color.Transparent, 1f to black.copy(alpha = 0.5f)
                     )
                 ).fillMaxSize()
         )
@@ -103,13 +104,13 @@ fun ImageBox(
                 text = newCarouselModel.description,
                 modifier = Modifier.padding(bottom = 4.dp, start = 16.dp, end = 16.dp)
                     .testTag("description"),
-                style = nekit.corporation.common_ui.theme.carouselDescription
+                style = carouselDescription
             )
             Text(
                 text = newCarouselModel.name.uppercase(),
                 modifier = Modifier.padding(bottom = 16.dp, start = 16.dp, end = 16.dp)
                     .testTag("name"),
-                style = nekit.corporation.common_ui.theme.carouselName
+                style = carouselName
 
             )
         }
@@ -154,8 +155,8 @@ fun PopularItem(
 ) {
     Column(Modifier.padding(top = 16.dp).clickable { onClick(item.id) }) {
         Image(item.image, "", modifier = Modifier.clip(RoundedCornerShape(8.dp)))
-        Text(item.name, style = nekit.corporation.common_ui.theme.popularBookName)
-        Text(item.author, style = nekit.corporation.common_ui.theme.popularBookAuthor)
+        Text(item.name, style = popularBookName)
+        Text(item.author, style = popularBookAuthor)
     }
 }
 

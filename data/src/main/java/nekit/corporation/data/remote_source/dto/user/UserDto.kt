@@ -1,5 +1,8 @@
 package nekit.corporation.data.remote_source.dto.user
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class UserDto(
     val id: Long,
     val documentId: String,

@@ -1,5 +1,8 @@
 package nekit.corporation.data.remote_source.dto.quote
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class QuoteDto(
     val id: Long,
     val documentId: String,

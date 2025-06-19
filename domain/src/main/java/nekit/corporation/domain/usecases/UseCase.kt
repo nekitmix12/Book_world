@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import nekit.corporation.yurtify.domain.Result
+import nekit.corporation.common.Result
 
 abstract class UseCase<
         I : UseCase.Request,
@@ -16,7 +16,7 @@ abstract class UseCase<
 
         Result.Success(it) as Result<O>
     }.flowOn(configuration.dispatcher).catch {
-        emit(Result.Error(it.message.toString()))
+        emit(Result.Error(it.message.orEmpty()))
     }
 
 

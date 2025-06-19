@@ -1,5 +1,8 @@
 package nekit.corporation.data.remote_source.dto.book
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class BookDto(
     val id: Long,
     val documentId: String,

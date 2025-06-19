@@ -1,5 +1,8 @@
 package nekit.corporation.data.remote_source.dto.favorites
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class FavoriteDto(
     val id: Long,
     val documentId: String,

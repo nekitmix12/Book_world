@@ -26,6 +26,6 @@ class AuthorizeRepositoryImpl @Inject constructor(
     private val authApi: AuthApi
 ) : AuthorizeRepository {
 
-    override fun refreshToken(refreshRequest: RefreshRequest): TokenResponse =
+    override suspend fun refreshToken(refreshRequest: RefreshRequest): TokenResponse =
         authApi.refreshToken(refreshRequest.toRefreshRequestDto()).toTokenResponse()
 }
