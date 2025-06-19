@@ -1,7 +1,17 @@
 package nekit.corporation.domain.repository
 
+import nekit.corporation.data.remote_source.dto.favorites.Favorites
+import nekit.corporation.data.remote_source.dto.genre.Genres
+import nekit.corporation.data.remote_source.dto.progress.Progresses
+import nekit.corporation.data.remote_source.dto.progress.SaveProgress
+import nekit.corporation.data.remote_source.dto.quote.Quote
 import nekit.corporation.domain.models.auth.RefreshRequest
 import nekit.corporation.domain.models.auth.TokenResponse
+import nekit.corporation.domain.models.author.Authors
+import nekit.corporation.domain.models.book.Books
+import nekit.corporation.domain.models.favorites.AddFavoriteRequest
+import nekit.corporation.domain.models.quote.CreateQuote
+import nekit.corporation.domain.models.quote.Quotes
 
 interface AuthorizeRepository {
     suspend fun refreshToken(refreshRequest: RefreshRequest): TokenResponse

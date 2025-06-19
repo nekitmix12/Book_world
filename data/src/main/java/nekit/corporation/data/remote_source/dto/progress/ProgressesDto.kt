@@ -1,10 +1,10 @@
 package nekit.corporation.data.remote_source.dto.progress
 
 import kotlinx.serialization.Serializable
-import nekit.corporation.domain.models.common.Meta
+import nekit.corporation.data.remote_source.dto.common.MetaDto
 
 @Serializable
 data class ProgressesDto(
     val data: List<ProgressDto>,
-    val meta: Meta
+    val meta: MetaDto
 )

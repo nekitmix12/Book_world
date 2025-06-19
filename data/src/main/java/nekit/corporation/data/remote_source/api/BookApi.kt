@@ -2,7 +2,7 @@ package nekit.corporation.data.remote_source.api
 
 import nekit.corporation.data.remote_source.dto.author.AuthorsDto
 import nekit.corporation.data.remote_source.dto.book.BooksDto
-import nekit.corporation.data.remote_source.dto.genre.Genres
+import nekit.corporation.data.remote_source.dto.genre.GenresDto
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -15,13 +15,13 @@ interface BookApi {
     ): BooksDto
 
     @GET("books")
-    suspend  fun getBooksById(@Query("filters[id]") id: Long): BooksDto
+    suspend fun getBooksById(@Query("filters[id]") id: Long): BooksDto
 
     @GET("books")
-    suspend  fun getBooksByName(@Query("filters[title][\$containsi]") name: String): BooksDto
+    suspend fun getBooksByName(@Query("filters[title][\$containsi]") name: String): BooksDto
 
     @GET("books")
-    suspend  fun getBooksByGenre(@Query("filters[genres][id][\$eq]") genre: String): BooksDto
+    suspend fun getBooksByGenre(@Query("filters[genres][id][\$eq]") genre: String): BooksDto
 
     @GET("books")
     suspend fun getBooksByAuthor(@Query("filters[authors][id][\$eq]") authors: String): BooksDto
@@ -30,12 +30,10 @@ interface BookApi {
     suspend fun getNewBooks(@Query("filters[isNew]") isNew: Boolean): BooksDto
 
     @GET("authors")
-    suspend fun getAuthors():AuthorsDto
+    suspend fun getAuthors(): AuthorsDto
 
     @GET("genres")
-    suspend fun getGenres(): Genres
-
-
+    suspend fun getGenres(): GenresDto
 
 
 }
