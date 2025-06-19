@@ -18,7 +18,7 @@ import nekit.corporation.domain.EmptyPassword
 import nekit.corporation.domain.InvalidEmail
 import nekit.corporation.domain.InvalidPassword
 import nekit.corporation.domain.RepeatNameOrEmail
-import nekit.corporation.domain.models.RegisterRequest
+import nekit.corporation.domain.models.auth.RegisterRequest
 import nekit.corporation.domain.usecases.RegisterUseCase
 import nekit.corporation.domain.usecases.ValidateRegisterFormUseCase
 import nekit.corporation.common.Result

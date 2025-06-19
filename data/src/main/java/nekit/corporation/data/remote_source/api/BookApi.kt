@@ -2,7 +2,7 @@ package nekit.corporation.data.remote_source.api
 
 import nekit.corporation.data.remote_source.dto.author.AuthorsDto
 import nekit.corporation.data.remote_source.dto.book.BooksDto
-import nekit.corporation.data.remote_source.dto.genre.GenresDto
+import nekit.corporation.data.remote_source.dto.genre.Genres
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -33,7 +33,7 @@ interface BookApi {
     suspend fun getAuthors():AuthorsDto
 
     @GET("genres")
-    suspend fun getGenres(): GenresDto
+    suspend fun getGenres(): Genres
 
 
 

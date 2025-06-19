@@ -9,8 +9,8 @@ import nekit.corporation.data.remote_source.api.BookApi
 import nekit.corporation.data.remote_source.api.FavoritesApi
 import nekit.corporation.data.remote_source.api.ProgressApi
 import nekit.corporation.data.remote_source.api.QuotesApi
-import nekit.corporation.domain.models.RefreshRequest
-import nekit.corporation.domain.models.TokenResponse
+import nekit.corporation.domain.models.auth.RefreshRequest
+import nekit.corporation.domain.models.auth.TokenResponse
 import nekit.corporation.domain.repository.AuthorizeRepository
 import javax.inject.Inject
 

@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 import nekit.corporation.domain.models.common.Meta
 
 @Serializable
-data class ProgressesDto(
-    val data: List<ProgressDto>,
+data class Progresses(
+    val data: List<Progress>,
     val meta: Meta
 )

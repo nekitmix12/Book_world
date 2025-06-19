@@ -1,10 +1,9 @@
 package nekit.corporation.domain.usecases
 
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import nekit.corporation.common.Error
-import nekit.corporation.domain.models.RegisterRequest
+import nekit.corporation.domain.models.auth.RegisterRequest
 import nekit.corporation.domain.validator.EmailValidate
 import nekit.corporation.domain.validator.NameValidate
 import nekit.corporation.domain.validator.ValidatePassword

@@ -1,10 +1,10 @@
 package nekit.corporation.data.remote_source.dto.quote
 
 import kotlinx.serialization.Serializable
-import nekit.corporation.data.remote_source.dto.common.MetaDto
+import nekit.corporation.domain.models.common.Meta
 
 @Serializable
 data class QuotesDto(
-    val data: List<nekit.corporation.data.remote_source.dto.quote.QuoteDto>,
-    val meta: nekit.corporation.data.remote_source.dto.common.MetaDto?
+    val data: List<QuoteDto>,
+    val meta: Meta?
 )

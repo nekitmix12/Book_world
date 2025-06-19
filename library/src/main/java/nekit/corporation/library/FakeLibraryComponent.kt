@@ -17,6 +17,8 @@ class FakeLibraryComponent : LibraryComponent {
 
     override fun onBookClick(bookId: String) {
     }
+
+    @Preview(showSystemUi = true, device = Devices.PIXEL_7)
     @Composable
     fun LibraryUiPreview(){
         LibraryUi(FakeLibraryComponent())

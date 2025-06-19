@@ -1,6 +1,6 @@
 [versions]
 agp = "8.7.3"
-kotlin = "2.0.21"
+kotlin = "2.0.0"
 coreKtx = "1.16.0"
 lifecycleRuntimeKtx = "2.9.1"
 activityCompose = "1.10.1"
@@ -21,7 +21,7 @@ anvil = "0.4.0"
 anvil-utils = "0.3.0-beta02"
 #retrofit and okHttp
 okhttp = "4.11.0"
-retrofit = "2.9.0"
+retrofit = "2.11.0"
 retrofit2KotlinxSerializationConverter = "1.0.0"
 #util
 kotlinxSerializationJson = "1.5.1"
@@ -32,8 +32,8 @@ android-minSdk = "26"
 android-compileSdk = "35"
 android-targetSdk = "35"
 jvmTarget = "11"
-foundationLayoutAndroid = "1.8.2"
-foundationAndroid = "1.8.2"
+foundationLayoutAndroid = "1.8.3"
+foundationAndroid = "1.8.3"
 material3Android = "1.3.2"
 
 [libraries]

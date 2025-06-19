@@ -7,9 +7,9 @@ import nekit.corporation.domain.models.auth.TokenResponse
 import nekit.corporation.domain.repository.Repository
 import javax.inject.Inject
 
-class RegisterUseCase @Inject constructor(
+class GetNewBooksUseCase @Inject constructor(
     private val repository: Repository, configuration: Configuration
-) : UseCase<RegisterUseCase.Request, RegisterUseCase.Response>(configuration) {
+) : UseCase<GetNewBooksUseCase.Request, GetNewBooksUseCase.Response>(configuration) {
     override fun process(request: Request): Flow<Response> =
         flow {
             Response(repository.register(request.registerRequest))

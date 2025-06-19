@@ -1,8 +1,9 @@
 package nekit.corporation.data.remote_source.dto.common
 
 import kotlinx.serialization.Serializable
+import nekit.corporation.domain.models.common.Pagination
 
 @Serializable
 data class MetaDto(
-    val pagination: nekit.corporation.data.remote_source.dto.common.PaginationDto
+    val pagination: PaginationDto
 )

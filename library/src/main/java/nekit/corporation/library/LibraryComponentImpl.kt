@@ -5,7 +5,10 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-class LibraryComponentImpl(componentContext: ComponentContext) : LibraryComponent,
+class LibraryComponentImpl(
+    componentContext: ComponentContext,
+    val goToBook: (String) -> Unit
+) : LibraryComponent,
     ComponentContext by componentContext {
     override var state: StateFlow<LibraryState> = MutableStateFlow(
         LibraryState(
@@ -15,5 +18,6 @@ class LibraryComponentImpl(componentContext: ComponentContext) : LibraryComponen
     )
 
     override fun onBookClick(bookId: String) {
+
     }
 }

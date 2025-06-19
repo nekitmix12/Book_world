@@ -46,8 +46,8 @@ dependencies {
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.junit)*/
 
-
-    testApi(libs.junit)
+    compileOnlyApi(libs.junit)
+    //testApi(libs.junit)
     androidTestApi(libs.androidx.junit)
     androidTestApi(libs.androidx.espresso.core)
     androidTestApi(platform(libs.androidx.compose.bom))

@@ -3,7 +3,7 @@ package nekit.corporation.data.remote_source.dto.genre
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class GenreDto(
+data class Genre(
     val id: Long,
     val documentId: String,
     val name: String,

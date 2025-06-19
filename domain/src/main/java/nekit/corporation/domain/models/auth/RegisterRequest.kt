@@ -1,4 +1,4 @@
-package nekit.corporation.domain.models
+package nekit.corporation.domain.models.auth
 
 data class RegisterRequest(
     val email: String,

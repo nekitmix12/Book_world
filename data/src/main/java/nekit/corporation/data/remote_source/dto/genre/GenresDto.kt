@@ -1,11 +1,10 @@
 package nekit.corporation.data.remote_source.dto.genre
 
 import kotlinx.serialization.Serializable
-import nekit.corporation.data.remote_source.dto.common.MetaDto
-import nekit.corporation.data.remote_source.dto.author.AuthorDto
+import nekit.corporation.domain.models.common.Meta
 
 @Serializable
 data class GenresDto(
-    val data:List<nekit.corporation.data.remote_source.dto.author.AuthorDto>,
-    val meta: nekit.corporation.data.remote_source.dto.common.MetaDto
+    val data: List<GenreDto>,
+    val meta: Meta
 )

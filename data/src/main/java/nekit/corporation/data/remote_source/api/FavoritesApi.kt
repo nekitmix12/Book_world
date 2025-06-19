@@ -1,6 +1,8 @@
 package nekit.corporation.data.remote_source.api
 
 import nekit.corporation.data.remote_source.dto.favorites.AddFavoriteRequestDto
+import nekit.corporation.domain.models.favorites.AddFavoriteRequest
+import nekit.corporation.data.remote_source.dto.favorites.Favorites
 import nekit.corporation.data.remote_source.dto.favorites.FavoritesDto
 import retrofit2.http.DELETE
 import retrofit2.http.GET
