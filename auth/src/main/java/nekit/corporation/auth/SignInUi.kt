@@ -108,12 +108,15 @@ fun SignInUi(component: SignInComponent) {
             onImageClick = component::onPasswordImageClick,
             visualTransformation = state.passwordImageTransformation
         )
-       // Spacer(Modifier.weight(0.027f))
+        // Spacer(Modifier.weight(0.027f))
         ButtonSignIn(state.isButtonActive, component::onSignInClick)
         Spacer(Modifier.weight(0.054f))
     }
     if (state.inProgress) {
-        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        Box(
+            Modifier
+                .fillMaxSize()
+                .clickable { }, contentAlignment = Alignment.Center) {
             CircularProgressIndicator()
         }
     }

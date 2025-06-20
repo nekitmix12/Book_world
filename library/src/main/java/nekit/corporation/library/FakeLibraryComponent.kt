@@ -12,10 +12,12 @@ class FakeLibraryComponent : LibraryComponent {
         LibraryState(
             newBooks = persistentListOf(),
             popularBooks = persistentListOf(),
+            isLoading = false,
+            booksPage = 1,
         )
     )
 
-    override fun onBookClick(bookId: String) {
+    override fun onBookClick(bookId: Long) {
     }
 
     @Preview(showSystemUi = true, device = Devices.PIXEL_7)

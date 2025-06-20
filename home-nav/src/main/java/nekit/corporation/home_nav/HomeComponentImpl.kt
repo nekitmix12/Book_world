@@ -7,17 +7,21 @@ import com.arkivanov.decompose.router.stack.push
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import me.gulya.anvil.assisted.ContributesAssistedFactory
+import nekit.corporation.bookmarks.BookmarksComponent
 import nekit.corporation.bookmarks.BookmarksComponentImpl
 import nekit.corporation.common.AppScope
 import nekit.corporation.home_nav.HomeComponent.BottomTab
-import nekit.corporation.library.LibraryComponentImpl
-import nekit.corporation.search.SearchComponentImpl
+import nekit.corporation.library.LibraryComponent
+import nekit.corporation.search.SearchComponent
 
 @ContributesAssistedFactory(AppScope::class, HomeComponent.Factory::class)
 class HomeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted val openDetails: HomeComponent.OpenDetails,
     @Assisted val openChapter: HomeComponent.OpenChapter,
+    private val libraryFactory: LibraryComponent.Factory,
+    private val searchFactory: SearchComponent.Factory,
+    private val bookmarksFactory: BookmarksComponent.Factory,
 ) : ComponentContext by componentContext, HomeComponent {
     private val navigation = StackNavigation<BottomTab>()
     override val childStack = childStack(
@@ -45,21 +49,25 @@ class HomeComponentImpl @AssistedInject constructor(
         context: ComponentContext
     ): HomeComponent.BottomTabComponent =
         when (tab) {
-            BottomTab.LibraryChild -> HomeComponent.LibraryChild(
-                LibraryComponentImpl(
-                    componentContext = context
+            BottomTab.LibraryChild -> HomeComponent.BottomTabComponent.LibraryChild(
+                libraryFactory(
+                    componentContext = context,
+                    goToBook = openDetails::open,
                 )
             )
 
-            BottomTab.SearchChild -> HomeComponent.SearchChild(
-                SearchComponentImpl(
-                    componentContext = context
+            BottomTab.SearchChild -> HomeComponent.BottomTabComponent.SearchChild(
+                searchFactory(
+                    componentContext = context,
+                    goToBook = openDetails::open
                 )
             )
 
-            BottomTab.BookmarksChild -> HomeComponent.BookmarksChild(
-                BookmarksComponentImpl(
-                    componentContext = context
+            BottomTab.BookmarksChild -> HomeComponent.BottomTabComponent.BookmarksChild(
+                bookmarksFactory(
+                    componentContext = context,
+                    goToChapter = openChapter::open,
+                    goToDetails = openDetails::open
                 )
             )
         }

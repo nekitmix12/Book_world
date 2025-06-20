@@ -45,8 +45,6 @@ class AuthorizeRepositoryImpl @Inject constructor(
     private val authApi: AuthApi
 ) : AuthorizeRepository {
 
-    override suspend fun refreshToken(refreshRequest: RefreshRequest): TokenResponse =
-        authApi.refreshToken(refreshRequest.toRefreshRequestDto()).toTokenResponse()
 
     override suspend fun getBooks(page: Int, pageSize: Int): Books =
         bookApi.getBooks(page, pageSize).toBooks()

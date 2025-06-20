@@ -1,5 +1,6 @@
 package nekit.corporation.search
 
+import com.arkivanov.decompose.ComponentContext
 import kotlinx.coroutines.flow.StateFlow
 
 interface SearchComponent {
@@ -16,4 +17,11 @@ interface SearchComponent {
     fun onSearchClick()
 
     fun setSearchText(text: String)
+
+    fun interface Factory {
+        operator fun invoke(
+            componentContext: ComponentContext,
+            goToBook: (Long) -> Unit
+        ): SearchComponent
+    }
 }

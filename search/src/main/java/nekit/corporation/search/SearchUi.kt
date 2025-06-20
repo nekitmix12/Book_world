@@ -65,15 +65,15 @@ fun SearchUi(component: SearchComponent) {
 
     val state by component.state.collectAsState()
 
-    LazyColumn(Modifier.background(nekit.corporation.common_ui.theme.background).testTag("search screen")) {
+    LazyColumn(Modifier.background(background).testTag("search screen")) {
         item { Spacer(Modifier.height(24.dp)) }
-        item { nekit.corporation.common_ui.ui_kit.MiddleLabel(stringResource(R.string.last_request)) }
+        item { MiddleLabel(stringResource(R.string.last_request)) }
         item { Spacer(Modifier.height(8.dp)) }
         items(state.requests) {
             RequestItem(it, component::onRequestClose)
         }
         item { Spacer(Modifier.height(24.dp)) }
-        item { nekit.corporation.common_ui.ui_kit.MiddleLabel(stringResource(R.string.genres)) }
+        item { MiddleLabel(stringResource(R.string.genres)) }
         items(state.genres.size / 2) { item ->
             GenreLine(state.genres.slice(item * 2..item * 2 + 1), component::setSearchText)
         }
@@ -83,7 +83,7 @@ fun SearchUi(component: SearchComponent) {
             }
         }
         item { Spacer(Modifier.height(24.dp)) }
-        item { nekit.corporation.common_ui.ui_kit.MiddleLabel(stringResource(R.string.authors)) }
+        item { MiddleLabel(stringResource(R.string.authors)) }
         items(state.authors.size) { item ->
             AuthorItem(state.authors[item], component::setSearchText)
         }
@@ -113,30 +113,30 @@ fun SearchPanel(
                 Log.d("Searchbar", "onExpandedChange: $active")
 
             }, enabled = true, colors = TextFieldDefaults.colors(
-                focusedTextColor = nekit.corporation.common_ui.theme.accent_dark,
-                unfocusedTextColor = nekit.corporation.common_ui.theme.accent_dark,
-                focusedIndicatorColor = nekit.corporation.common_ui.theme.accent_dark,
-                unfocusedIndicatorColor = nekit.corporation.common_ui.theme.accent_dark
+                focusedTextColor = accent_dark,
+                unfocusedTextColor = accent_dark,
+                focusedIndicatorColor = accent_dark,
+                unfocusedIndicatorColor = accent_dark
             ), placeholder = {
-                Text(text = stringResource(R.string.search_by_book), style = nekit.corporation.common_ui.theme.textBarText)
+                Text(text = stringResource(R.string.search_by_book), style = textBarText)
             }, leadingIcon = {
                 if (!isActive) Icon(
-                    painterResource(R.drawable.find), "", tint = nekit.corporation.common_ui.theme.accent_medium
+                    painterResource(R.drawable.find), "", tint = accent_medium
                 )
                 else Icon(painterResource(
                     drawable.back
-                ), "", tint = nekit.corporation.common_ui.theme.accent_dark, modifier = Modifier.clickable {
+                ), "", tint = accent_dark, modifier = Modifier.clickable {
                     onClick(false)
                 })
             }, trailingIcon = {
                 if (isActive) Icon(painterResource(close),
                     "",
-                    tint = nekit.corporation.common_ui.theme.accent_dark,
+                    tint = accent_dark,
                     modifier = Modifier.clickable {
                         searchTextLocal.value = ""
                     })
             }, interactionSource = null, modifier = if (!isActive) Modifier.border(
-                1.dp, nekit.corporation.common_ui.theme.accent_medium, RoundedCornerShape(32.dp)
+                1.dp, accent_medium, RoundedCornerShape(32.dp)
             ) else Modifier
 
             )
@@ -150,16 +150,16 @@ fun SearchPanel(
         modifier = Modifier.fillMaxWidth().padding(horizontal = if (!isActive) 16.dp else 0.dp),
         shape = SearchBarDefaults.inputFieldShape,
         colors = SearchBarDefaults.colors(
-            containerColor = if (!isActive) nekit.corporation.common_ui.theme.white else nekit.corporation.common_ui.theme.background,
-            dividerColor = nekit.corporation.common_ui.theme.accent_medium,
+            containerColor = if (!isActive) white else background,
+            dividerColor = accent_medium,
             inputFieldColors = TextFieldDefaults.colors(
-                focusedIndicatorColor = nekit.corporation.common_ui.theme.accent_dark, unfocusedIndicatorColor = nekit.corporation.common_ui.theme.accent_dark
+                focusedIndicatorColor = accent_dark, unfocusedIndicatorColor = accent_dark
             )
         ),
     ) {
         bookList.forEach { item ->
             Spacer(Modifier.height(16.dp))
-            nekit.corporation.common_ui.ui_kit.BookItem(item, onSearchItemClick, "search")
+            BookItem(item, onSearchItemClick, "search")
         }
 
     }
@@ -208,13 +208,13 @@ fun Genre(
 ) {
     Box(modifier = modifier.fillMaxHeight().clip(
         RoundedCornerShape(8.dp)
-    ).background(nekit.corporation.common_ui.theme.accent_light).padding(16.dp).clickable { onClick(genre.genre) }
+    ).background(accent_light).padding(16.dp).clickable { onClick(genre.genre) }
         .testTag("genre"), contentAlignment = Alignment.Center
 
     ) {
         Text(
             text = genre.genre,
-            style = nekit.corporation.common_ui.theme.bookAuthorSearch,
+            style = bookAuthorSearch,
         )
     }
 }
@@ -227,13 +227,13 @@ fun GenreLine(list: List<GenreModel>, onClick: (String) -> Unit) {
     ) {
         Box(modifier = Modifier.weight(1f).fillMaxHeight().clip(
             RoundedCornerShape(8.dp)
-        ).background(nekit.corporation.common_ui.theme.accent_light).padding(16.dp).clickable { onClick(list[0].genre) }
+        ).background(accent_light).padding(16.dp).clickable { onClick(list[0].genre) }
             .testTag("genre"), contentAlignment = Alignment.Center
 
         ) {
             Text(
                 text = list[0].genre,
-                style = nekit.corporation.common_ui.theme.bookAuthorSearch,
+                style = bookAuthorSearch,
             )
         }
 
@@ -241,12 +241,12 @@ fun GenreLine(list: List<GenreModel>, onClick: (String) -> Unit) {
 
         Box(modifier = if (list.size > 1) Modifier.weight(1f).clip(
             RoundedCornerShape(8.dp)
-        ).background(nekit.corporation.common_ui.theme.accent_light).fillMaxHeight().padding(16.dp).testTag("genre")
+        ).background(accent_light).fillMaxHeight().padding(16.dp).testTag("genre")
             .clickable { onClick(list[1].genre) }
         else Modifier.weight(1f), contentAlignment = Alignment.Center) {
             if (list.size > 1) Text(
                 text = list[1].genre,
-                style = nekit.corporation.common_ui.theme.bookAuthorSearch,
+                style = bookAuthorSearch,
 
                 )
         }
@@ -257,13 +257,13 @@ fun GenreLine(list: List<GenreModel>, onClick: (String) -> Unit) {
 fun RequestItem(request: RequestModel, onDelete: (String) -> Unit) {
     Row(
         modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, top = 8.dp)
-            .clip(RoundedCornerShape(8.dp)).background(nekit.corporation.common_ui.theme.accent_light).padding(16.dp)
+            .clip(RoundedCornerShape(8.dp)).background(accent_light).padding(16.dp)
     ) {
-        Icon(painterResource(R.drawable.time_back), "", tint = nekit.corporation.common_ui.theme.accent_dark)
+        Icon(painterResource(R.drawable.time_back), "", tint = accent_dark)
         Text(
             text = request.name,
             modifier = Modifier.padding(start = 8.dp).align(Alignment.CenterVertically),
-            style = nekit.corporation.common_ui.theme.requestText
+            style = requestText
         )
         Spacer(Modifier.weight(1f))
         Icon(
@@ -271,7 +271,7 @@ fun RequestItem(request: RequestModel, onDelete: (String) -> Unit) {
             "",
             modifier = Modifier.align(Alignment.CenterVertically)
                 .clickable { onDelete(request.id) },
-            tint = nekit.corporation.common_ui.theme.accent_dark
+            tint = accent_dark
         )
     }
 }
@@ -283,7 +283,7 @@ fun AuthorItem(
     onClick: (String) -> Unit,
 ) {
     Row(modifier = Modifier.fillMaxWidth().padding(top = 8.dp).padding(horizontal = 16.dp)
-        .clip(RoundedCornerShape(12.dp)).background(nekit.corporation.common_ui.theme.accent_light).height(IntrinsicSize.Min)
+        .clip(RoundedCornerShape(12.dp)).background(accent_light).height(IntrinsicSize.Min)
         .testTag("author").clickable { onClick(author.name) }) {
         Image(
             author.img,
@@ -295,7 +295,7 @@ fun AuthorItem(
         Box(
             modifier = Modifier.fillMaxHeight(), contentAlignment = Alignment.Center
         ) {
-            Text(text = author.name, style = nekit.corporation.common_ui.theme.authorText)
+            Text(text = author.name, style = authorText)
         }
     }
 }

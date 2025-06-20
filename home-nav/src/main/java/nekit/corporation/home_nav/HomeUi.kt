@@ -42,9 +42,9 @@ fun HomeUi(component: HomeComponent) {
     Box() {
         Children(state) {
             when (val instance = it.instance) {
-                is HomeComponent.LibraryChild -> LibraryUi(instance.component)
-                is HomeComponent.SearchChild -> SearchUi(instance.component)
-                is HomeComponent.BookmarksChild -> BookmarksUi(instance.component)
+                is HomeComponent.BottomTabComponent.LibraryChild -> LibraryUi(instance.component)
+                is HomeComponent.BottomTabComponent.SearchChild -> SearchUi(instance.component)
+                is HomeComponent.BottomTabComponent.BookmarksChild -> BookmarksUi(instance.component)
             }
         }
         BottomBar(

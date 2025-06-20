@@ -1,12 +1,19 @@
 package nekit.corporation.search
 
 import com.arkivanov.decompose.ComponentContext
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import me.gulya.anvil.assisted.ContributesAssistedFactory
+import nekit.corporation.common.AppScope
 
 
-class SearchComponentImpl(componentContext:ComponentContext) : SearchComponent,
+@ContributesAssistedFactory(AppScope::class, SearchComponent.Factory::class)
+class SearchComponentImpl @AssistedInject constructor(
+    @Assisted componentContext: ComponentContext,
+    @Assisted private val goToBook: (Long) -> Unit
+) : SearchComponent,
     ComponentContext by componentContext {
     override val state = MutableStateFlow(
         SearchState(

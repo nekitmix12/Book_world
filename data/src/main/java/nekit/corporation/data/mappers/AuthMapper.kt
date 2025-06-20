@@ -1,5 +1,6 @@
 package nekit.corporation.data.mappers
 
+import nekit.corporation.data.remote_source.dto.auth.RefreshRequestDto
 import nekit.corporation.domain.models.auth.RefreshRequest
 import nekit.corporation.domain.models.auth.RegisterRequest
 import nekit.corporation.domain.models.auth.TokenResponse
@@ -28,7 +29,16 @@ fun nekit.corporation.data.remote_source.dto.user.UserDto.toUser() = User(
 )
 
 fun RefreshRequest.toRefreshRequestDto() =
-    nekit.corporation.data.remote_source.dto.auth.RefreshRequestDto(
+    RefreshRequestDto(
         identifier = identifier,
         password = password
     )
+
+fun RefreshRequestDto.toRefreshRequest() =
+   RefreshRequest(
+        identifier = identifier,
+        password = password
+    )
+
+
+

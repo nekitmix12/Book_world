@@ -13,10 +13,11 @@ interface HomeComponent {
     fun onTabSelected(tab: BottomTab)
     fun onPlay()
     fun onOut()
-    interface BottomTabComponent
-    class LibraryChild(val component: LibraryComponent) : BottomTabComponent
-    class SearchChild(val component: SearchComponent) : BottomTabComponent
-    class BookmarksChild(val component: BookmarksComponent) : BottomTabComponent
+    sealed interface BottomTabComponent {
+        class LibraryChild(val component: LibraryComponent) : BottomTabComponent
+        class SearchChild(val component: SearchComponent) : BottomTabComponent
+        class BookmarksChild(val component: BookmarksComponent) : BottomTabComponent
+    }
 
     @Serializable
     sealed class BottomTab {
@@ -37,11 +38,12 @@ interface HomeComponent {
             openDetails: OpenChapter
         ): HomeComponent
     }
+
     fun interface OpenDetails {
-        fun open(id: String)
+        fun open(id: Long)
     }
 
     fun interface OpenChapter {
-        fun open(id: String)
+        fun open(id: Long)
     }
 }

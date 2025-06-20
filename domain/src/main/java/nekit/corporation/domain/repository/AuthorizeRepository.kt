@@ -14,7 +14,6 @@ import nekit.corporation.domain.models.quote.CreateQuote
 import nekit.corporation.domain.models.quote.Quotes
 
 interface AuthorizeRepository {
-    suspend fun refreshToken(refreshRequest: RefreshRequest): TokenResponse
     suspend fun getBooks(
         page: Int,
         pageSize: Int

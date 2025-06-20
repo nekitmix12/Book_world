@@ -1,7 +1,6 @@
 package nekit.corporation.library
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -38,6 +37,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import com.valentinilk.shimmer.shimmer
 import nekit.corporation.common_ui.theme.background
 import nekit.corporation.common_ui.theme.black
 import nekit.corporation.common_ui.theme.carouselDescription
@@ -46,6 +47,8 @@ import nekit.corporation.common_ui.theme.popularBookAuthor
 import nekit.corporation.common_ui.theme.popularBookName
 import nekit.corporation.common_ui.ui_kit.MiddleLabel
 import nekit.corporation.common_ui.ui_kit.TopLabel
+import nekit.corporation.library.models.NewCarouselModel
+import nekit.corporation.library.models.PopularBookModel
 
 @Preview(showSystemUi = true, device = Devices.PIXEL_7)
 @Composable
@@ -54,7 +57,11 @@ fun LibraryUi(component: LibraryComponent = FakeLibraryComponent()) {
 
 
 
-    LazyColumn(Modifier.background(background).testTag("libraryScreen")) {
+    LazyColumn(
+        Modifier
+            .background(background)
+            .testTag("libraryScreen")
+    ) {
         item { Spacer(Modifier.height((LocalConfiguration.current.screenHeightDp * 0.085f).dp)) }
         item { TopLabel(stringResource(R.string.library)) }
         item { Spacer(Modifier.height(20.dp)) }
@@ -80,35 +87,44 @@ fun LibraryUi(component: LibraryComponent = FakeLibraryComponent()) {
 @Stable
 fun ImageBox(
     newCarouselModel: NewCarouselModel,
-    onClick: (String) -> Unit,
+    onClick: (Long) -> Unit,
 ) {
-    Box(Modifier.fillMaxSize().clip(RoundedCornerShape(10.dp))
+    Box(Modifier
+        .fillMaxSize()
+        .clip(RoundedCornerShape(10.dp))
 
-        .clickable { onClick(newCarouselModel.id) }.testTag("carousel model")) {
-        Image(
-            newCarouselModel.image,
-            "",
+        .clickable { onClick(newCarouselModel.id) }
+        .testTag("carousel model")) {
+        AsyncImage(
+            model = newCarouselModel.imageUrl,
+            contentDescription = null,
+            modifier = Modifier
+                .fillMaxSize()
+                .shimmer(),
             contentScale = ContentScale.Crop,
-            modifier = Modifier.fillMaxSize()
         )
         Spacer(
-            Modifier.background(
+            Modifier
+                .background(
                     brush = Brush.verticalGradient(
                         0.0f to Color.Transparent, 1f to black.copy(alpha = 0.5f)
                     )
-                ).fillMaxSize()
+                )
+                .fillMaxSize()
         )
         Column(modifier = Modifier.fillMaxSize()) {
             Spacer(Modifier.weight(1f))
             Text(
                 text = newCarouselModel.description,
-                modifier = Modifier.padding(bottom = 4.dp, start = 16.dp, end = 16.dp)
+                modifier = Modifier
+                    .padding(bottom = 4.dp, start = 16.dp, end = 16.dp)
                     .testTag("description"),
                 style = carouselDescription
             )
             Text(
                 text = newCarouselModel.name.uppercase(),
-                modifier = Modifier.padding(bottom = 16.dp, start = 16.dp, end = 16.dp)
+                modifier = Modifier
+                    .padding(bottom = 16.dp, start = 16.dp, end = 16.dp)
                     .testTag("name"),
                 style = carouselName
 
@@ -123,7 +139,7 @@ fun ImageBox(
 @Composable
 fun ModalCarousel(
     items: List<NewCarouselModel>,
-    onClick: (String) -> Unit,
+    onClick: (Long) -> Unit,
 
     ) {
     val pagerState =
@@ -135,7 +151,9 @@ fun ModalCarousel(
     Column {
         HorizontalPager(
             state = pagerState,
-            modifier = Modifier.height(pageSize.dp).testTag("horizontal pager"),
+            modifier = Modifier
+                .height(pageSize.dp)
+                .testTag("horizontal pager"),
             pageSize = PageSize.Fixed(pageSize.dp),
             pageSpacing = 8.dp,
             contentPadding = PaddingValues(horizontal = pagePadding.dp),
@@ -151,10 +169,19 @@ fun ModalCarousel(
 @Composable
 fun PopularItem(
     item: PopularBookModel,
-    onClick: (String) -> Unit,
+    onClick: (Long) -> Unit,
 ) {
-    Column(Modifier.padding(top = 16.dp).clickable { onClick(item.id) }) {
-        Image(item.image, "", modifier = Modifier.clip(RoundedCornerShape(8.dp)))
+    Column(
+        Modifier
+            .padding(top = 16.dp)
+            .clickable { onClick(item.id) }) {
+        AsyncImage(
+            model = item.imageUrl,
+            contentDescription = null,
+            modifier = Modifier
+                .shimmer()
+                .clip(RoundedCornerShape(8.dp))
+        )
         Text(item.name, style = popularBookName)
         Text(item.author, style = popularBookAuthor)
     }
@@ -162,13 +189,19 @@ fun PopularItem(
 
 
 @Composable
-fun ListPopularBook(list: List<PopularBookModel>, onClick: (String) -> Unit) {
+fun ListPopularBook(list: List<PopularBookModel>, onClick: (Long) -> Unit) {
     Row(
-        modifier = Modifier.fillMaxWidth().padding(top = 8.dp).padding(horizontal = 16.dp)
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 8.dp)
+            .padding(horizontal = 16.dp)
             .height(IntrinsicSize.Min)
     ) {
         Box(
-            modifier = Modifier.weight(1f).fillMaxHeight().testTag("popular book"),
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxHeight()
+                .testTag("popular book"),
             contentAlignment = Alignment.Center
         ) {
             PopularItem(list[0], onClick)
@@ -177,7 +210,9 @@ fun ListPopularBook(list: List<PopularBookModel>, onClick: (String) -> Unit) {
         Spacer(modifier = Modifier.width(8.dp))
 
         Box(
-            modifier = if (list.size > 1) Modifier.weight(1f).fillMaxHeight()
+            modifier = if (list.size > 1) Modifier
+                .weight(1f)
+                .fillMaxHeight()
                 .testTag("popular book")
             else Modifier.weight(1f), contentAlignment = Alignment.Center
         ) {
@@ -187,7 +222,9 @@ fun ListPopularBook(list: List<PopularBookModel>, onClick: (String) -> Unit) {
         Spacer(modifier = Modifier.width(8.dp))
 
         Box(
-            modifier = if (list.size > 2) Modifier.weight(1f).testTag("popular book")
+            modifier = if (list.size > 2) Modifier
+                .weight(1f)
+                .testTag("popular book")
                 .fillMaxHeight()
             else Modifier.weight(1f), contentAlignment = Alignment.Center
         ) {
