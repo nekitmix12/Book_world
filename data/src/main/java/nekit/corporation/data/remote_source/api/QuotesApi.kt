@@ -11,9 +11,9 @@ import retrofit2.http.POST
 
 interface QuotesApi {
 
-    @GET("quotes")
+    @GET("api/quotes")
     suspend fun getQuotes(): QuotesDto
 
-    @POST("quotes")
+    @POST("api/quotes")
     suspend  fun createQuote(@Body createQuoteDto: CreateQuote): QuoteDto
 }

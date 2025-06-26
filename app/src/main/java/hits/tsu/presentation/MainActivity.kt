@@ -12,7 +12,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val rootComponent =
-            DaggerAppDaggerComponent.create().rootComponentFactory(defaultComponentContext())
+            DaggerAppDaggerComponent.factory().create(this)
+                .rootComponentFactory(defaultComponentContext())
         enableEdgeToEdge()
         setContent {
             BookWorldTheme {

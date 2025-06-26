@@ -1,14 +1,13 @@
 package nekit.corporation.home_nav
 
 import com.arkivanov.decompose.ComponentContext
-import com.arkivanov.decompose.router.stack.StackNavigation
-import com.arkivanov.decompose.router.stack.childStack
-import com.arkivanov.decompose.router.stack.push
+import com.arkivanov.decompose.router.slot.SlotNavigation
+import com.arkivanov.decompose.router.slot.activate
+import com.arkivanov.decompose.router.slot.childSlot
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import me.gulya.anvil.assisted.ContributesAssistedFactory
 import nekit.corporation.bookmarks.BookmarksComponent
-import nekit.corporation.bookmarks.BookmarksComponentImpl
 import nekit.corporation.common.AppScope
 import nekit.corporation.home_nav.HomeComponent.BottomTab
 import nekit.corporation.library.LibraryComponent
@@ -23,21 +22,20 @@ class HomeComponentImpl @AssistedInject constructor(
     private val searchFactory: SearchComponent.Factory,
     private val bookmarksFactory: BookmarksComponent.Factory,
 ) : ComponentContext by componentContext, HomeComponent {
-    private val navigation = StackNavigation<BottomTab>()
-    override val childStack = childStack(
+    private val navigation = SlotNavigation<BottomTab>()
+    override val slot = childSlot(
         source = navigation,
         serializer = BottomTab.serializer(),
-        initialConfiguration = BottomTab.LibraryChild,
+        initialConfiguration = { BottomTab.LibraryChild },
         handleBackButton = true,
         childFactory = ::createChild
     )
 
     override fun onTabSelected(tab: BottomTab) {
-        navigation.push(tab)
+        navigation.activate(tab)
     }
 
     override fun onPlay() {
-        TODO("Not yet implemented")
     }
 
     override fun onOut() {
@@ -66,8 +64,15 @@ class HomeComponentImpl @AssistedInject constructor(
             BottomTab.BookmarksChild -> HomeComponent.BottomTabComponent.BookmarksChild(
                 bookmarksFactory(
                     componentContext = context,
-                    goToChapter = openChapter::open,
-                    goToDetails = openDetails::open
+                    methods = object : BookmarksComponent.Methods {
+                        override fun goToChapter(chapterId: Long) {
+                            openChapter.open(chapterId)
+                        }
+
+                        override fun goToDetails(detailsId: Long) {
+                            openDetails.open(detailsId)
+                        }
+                    }
                 )
             )
         }

@@ -1,4 +1,4 @@
-package nekit.corporation.data.remote_source.dto.favorites
+package nekit.corporation.domain.models.favorites
 
 import kotlinx.serialization.Serializable
 import nekit.corporation.domain.models.common.Meta

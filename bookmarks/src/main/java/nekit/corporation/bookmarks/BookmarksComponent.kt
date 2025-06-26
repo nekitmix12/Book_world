@@ -4,16 +4,20 @@ import com.arkivanov.decompose.ComponentContext
 import kotlinx.coroutines.flow.StateFlow
 
 interface BookmarksComponent {
-    var state: StateFlow<BookmarksState>
+    val state: StateFlow<BookmarksState>
 
-    fun onBookClick(bookId: String)
+    fun onBookClick(bookId: Long)
 
     fun onPlayClick()
     fun interface Factory {
         operator fun invoke(
             componentContext: ComponentContext,
-            goToDetails: (Long) -> Unit,
-            goToChapter: (Long) -> Unit
+            methods: Methods
         ): BookmarksComponent
+    }
+
+    interface Methods {
+        fun goToDetails(detailsId: Long)
+        fun goToChapter(chapterId: Long)
     }
 }

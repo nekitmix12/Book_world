@@ -1,6 +1,7 @@
 package nekit.corporation.home_nav
 
 import com.arkivanov.decompose.ComponentContext
+import com.arkivanov.decompose.router.slot.ChildSlot
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.value.Value
 import kotlinx.serialization.Serializable
@@ -9,7 +10,7 @@ import nekit.corporation.library.LibraryComponent
 import nekit.corporation.search.SearchComponent
 
 interface HomeComponent {
-    val childStack: Value<ChildStack<*, BottomTabComponent>>
+    val slot: Value<ChildSlot<*, BottomTabComponent>>
     fun onTabSelected(tab: BottomTab)
     fun onPlay()
     fun onOut()

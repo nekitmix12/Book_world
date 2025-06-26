@@ -10,13 +10,13 @@ import kotlinx.coroutines.flow.StateFlow
 class FakeBookmarksComponent : BookmarksComponent {
     override var state: StateFlow<BookmarksState> = MutableStateFlow(
         BookmarksState(
-            quotes = persistentListOf(),
-            books = persistentListOf(),
+            quotes = null,
+            books = null,
             reading = null
         )
     )
 
-    override fun onBookClick(bookId: String) {
+    override fun onBookClick(bookId: Long) {
     }
 
     override fun onPlayClick() {

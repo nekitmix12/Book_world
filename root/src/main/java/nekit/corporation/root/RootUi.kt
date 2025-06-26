@@ -1,7 +1,9 @@
 package nekit.corporation.root
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.extensions.compose.jetpack.stack.Children
 import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
 import nekit.corporation.auth.SignInUi
@@ -13,7 +15,7 @@ import nekit.corporation.home_nav.HomeUi
 fun RootUi(component: RootComponent) {
     val childStack by component.childStack.subscribeAsState()
 
-    Children(childStack) {
+    Children(childStack, modifier = Modifier.fillMaxSize()) {
         when (val instance = it.instance) {
             is RootComponent.Child.HomeChild -> HomeUi(instance.component)
             is RootComponent.Child.ChapterChild -> ChapterUi(instance.component)

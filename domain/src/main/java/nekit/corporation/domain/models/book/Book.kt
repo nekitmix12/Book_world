@@ -1,6 +1,7 @@
 package nekit.corporation.domain.models.book
 
 import kotlinx.serialization.Serializable
+import nekit.corporation.data.remote_source.dto.author.Author
 
 @Serializable
 data class Book(
@@ -12,5 +13,6 @@ data class Book(
     val updatedAt: String,
     val publishedAt: String,
     val isNew: Boolean,
-    val illustrationURL: String?
+    val illustrationURL: String?,
+    val author: List<Author>
 )

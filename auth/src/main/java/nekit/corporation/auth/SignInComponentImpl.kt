@@ -12,16 +12,19 @@ import kotlinx.coroutines.launch
 import me.gulya.anvil.assisted.ContributesAssistedFactory
 import nekit.corporation.common.AppScope
 import nekit.corporation.common.Error
+import nekit.corporation.common.Result
 import nekit.corporation.common.componentCoroutineScope
 import nekit.corporation.domain.EmptyEmail
 import nekit.corporation.domain.EmptyPassword
 import nekit.corporation.domain.InvalidEmail
 import nekit.corporation.domain.InvalidPassword
 import nekit.corporation.domain.RepeatNameOrEmail
+import nekit.corporation.domain.models.auth.RefreshRequest
 import nekit.corporation.domain.models.auth.RegisterRequest
-import nekit.corporation.domain.usecases.RegisterUseCase
+import nekit.corporation.domain.usecases.auth.GetTokenUseCase
+import nekit.corporation.domain.usecases.auth.RegisterUseCase
+import nekit.corporation.domain.usecases.auth.SaveUserUseCase
 import nekit.corporation.domain.usecases.ValidateRegisterFormUseCase
-import nekit.corporation.common.Result
 
 @ContributesAssistedFactory(AppScope::class, SignInComponent.Factory::class)
 class SignInComponentImpl @AssistedInject constructor(
@@ -29,6 +32,8 @@ class SignInComponentImpl @AssistedInject constructor(
     @Assisted val onComplete: () -> Unit,
     private val validateRegisterFormUseCase: ValidateRegisterFormUseCase,
     private val registerUseCase: RegisterUseCase,
+    private val saveUserUseCase: SaveUserUseCase,
+    private val getTokenUseCase: GetTokenUseCase,
 ) : ComponentContext by componentContext, SignInComponent {
     override val state = MutableStateFlow(
         SignInState(carouselImages = persistentListOf())
@@ -38,15 +43,29 @@ class SignInComponentImpl @AssistedInject constructor(
 
     init {
         coroutineScope.launch {
-            state.collect {
-                if (it.password != "" && it.userName != "" && it.email != "")
-                    state.value = state.value.copy(
-                        isButtonActive = true
-                    )
-                else
-                    state.value = state.value.copy(
+            launch {
+                state.collect {
+                    if (it.password != "" && it.userName != "" && it.email != "") state.value =
+                        state.value.copy(
+                            isButtonActive = true
+                        )
+                    else state.value = state.value.copy(
                         isButtonActive = false
                     )
+                }
+            }
+            launch {
+                getTokenUseCase.execute(GetTokenUseCase.Request).collect {
+                    when (it) {
+                        is Result.Success -> {
+                            if (it.data.token != null)
+                                onComplete()
+                        }
+
+                        is Result.Error -> Log.e(TAG, it.exception)
+                    }
+                    state.value = state.value.copy(inProgress = false)
+                }
             }
         }
     }
@@ -80,7 +99,21 @@ class SignInComponentImpl @AssistedInject constructor(
                             Log.i(TAG, "request come in")
                             when (registerResult) {
                                 is Result.Success -> {
-                                    onComplete()
+                                    saveUserUseCase.execute(
+                                        SaveUserUseCase.Request(
+                                            RefreshRequest(
+                                                localState.userName,
+                                                localState.password,
+                                            ), registerResult.data.tokenResponse.jwt
+                                        )
+                                    ).collect { saveResult ->
+                                        when (saveResult) {
+                                            is Result.Success -> onComplete()
+                                            is Result.Error -> Log.e(TAG, saveResult.exception)
+                                        }
+                                    }
+
+
                                 }
 
                                 is Result.Error -> {
@@ -90,8 +123,8 @@ class SignInComponentImpl @AssistedInject constructor(
                                         userNameError = null,
                                         inProgress = false
                                     )
-                                    when(registerResult.exception){
-                                        ""->{}
+                                    when (registerResult.exception) {
+                                        "" -> {}
                                     }
                                     Log.e(TAG, registerResult.exception)
                                 }
@@ -138,16 +171,14 @@ class SignInComponentImpl @AssistedInject constructor(
 
     override fun onEmailChange(email: String) {
         state.value = state.value.copy(
-            email = email,
-            emailIconRes = if (email.isBlank()) null else R.drawable.close
+            email = email, emailIconRes = if (email.isBlank()) null else R.drawable.close
         )
 
     }
 
     override fun onNameChange(name: String) {
         state.value = state.value.copy(
-            userName = name,
-            nameIconRes = if (name.isBlank()) null else R.drawable.close
+            userName = name, nameIconRes = if (name.isBlank()) null else R.drawable.close
         )
     }
 
@@ -159,29 +190,26 @@ class SignInComponentImpl @AssistedInject constructor(
     }
 
     override fun onPasswordImageClick() {
-        if (state.value.passwordImageTransformation == VisualTransformation.None)
-            state.value = state.value.copy(
+        if (state.value.passwordImageTransformation == VisualTransformation.None) state.value =
+            state.value.copy(
                 passwordImageTransformation = PasswordVisualTransformation(),
                 passwordIconRes = R.drawable.not_see
             )
-        else
-            state.value = state.value.copy(
-                passwordImageTransformation = VisualTransformation.None,
-                passwordIconRes = R.drawable.eye
-            )
+        else state.value = state.value.copy(
+            passwordImageTransformation = VisualTransformation.None,
+            passwordIconRes = R.drawable.eye
+        )
     }
 
     override fun onEmailImageClick() {
         state.value = state.value.copy(
-            email = "",
-            emailIconRes = null
+            email = "", emailIconRes = null
         )
     }
 
     override fun onNameImageClick() {
         state.value = state.value.copy(
-            userName = "",
-            nameIconRes = null
+            userName = "", nameIconRes = null
         )
     }
 

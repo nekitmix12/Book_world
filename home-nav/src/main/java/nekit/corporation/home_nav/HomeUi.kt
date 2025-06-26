@@ -26,31 +26,31 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.arkivanov.decompose.extensions.compose.jetpack.stack.Children
 import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
 import nekit.corporation.bookmarks.BookmarksUi
 import nekit.corporation.common_ui.R.drawable.bookmarks
 import nekit.corporation.common_ui.R.drawable.play
 import nekit.corporation.library.LibraryUi
 import nekit.corporation.search.R.drawable.find
-import nekit.corporation.search.SearchUi
+import nekit.corporation.search.ui.SearchUi
 
 @Composable
 fun HomeUi(component: HomeComponent) {
-    val state by component.childStack.subscribeAsState()
+    val slot by component.slot.subscribeAsState()
 
-    Box() {
-        Children(state) {
-            when (val instance = it.instance) {
-                is HomeComponent.BottomTabComponent.LibraryChild -> LibraryUi(instance.component)
-                is HomeComponent.BottomTabComponent.SearchChild -> SearchUi(instance.component)
-                is HomeComponent.BottomTabComponent.BookmarksChild -> BookmarksUi(instance.component)
-            }
+    Box {
+        when (val state = slot.child?.instance) {
+            is HomeComponent.BottomTabComponent.LibraryChild -> LibraryUi(state.component)
+            is HomeComponent.BottomTabComponent.SearchChild -> SearchUi(state.component)
+            is HomeComponent.BottomTabComponent.BookmarksChild -> BookmarksUi(state.component)
+            null -> {}
         }
+
         BottomBar(
             onSelect = component::onTabSelected,
             onPlayClick = component::onPlay,
-            onOutClick = component::onOut
+            onOutClick = component::onOut,
+            modifier = Modifier.align(Alignment.BottomCenter)
         )
     }
 
@@ -60,12 +60,13 @@ fun HomeUi(component: HomeComponent) {
 fun BottomBar(
     onSelect: (HomeComponent.BottomTab) -> Unit,
     onPlayClick: () -> Unit,
-    onOutClick: () -> Unit
+    onOutClick: () -> Unit,
+    modifier: Modifier
 ) {
     var selected by remember { mutableStateOf<HomeComponent.BottomTab>(HomeComponent.BottomTab.LibraryChild) }
     Box(
         contentAlignment = Alignment.Center,
-        modifier = Modifier
+        modifier = modifier
             .padding(vertical = 40.dp)
             .background(
                 Color.Transparent

@@ -10,4 +10,5 @@ data class AuthorDto(
     val createdAt: String,
     val updatedAt: String,
     val publishedAt: String,
+    val avatarURL: String,
 )

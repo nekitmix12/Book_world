@@ -5,28 +5,29 @@ import nekit.corporation.common.AppScope
 import nekit.corporation.data.mappers.toAddFavoriteRequest
 import nekit.corporation.data.mappers.toAuthors
 import nekit.corporation.data.mappers.toBooks
+import nekit.corporation.data.mappers.toBooksWithAuthors
+import nekit.corporation.data.mappers.toChaptersWithBookAndAuthor
 import nekit.corporation.data.mappers.toFavorites
 import nekit.corporation.data.mappers.toGenresDto
 import nekit.corporation.data.mappers.toProgresses
 import nekit.corporation.data.mappers.toQuote
 import nekit.corporation.data.mappers.toQuotes
-import nekit.corporation.data.mappers.toRefreshRequestDto
 import nekit.corporation.data.mappers.toSaveProgressDto
-import nekit.corporation.data.mappers.toTokenResponse
 import nekit.corporation.data.remote_source.api.AuthApi
 import nekit.corporation.data.remote_source.api.BookApi
 import nekit.corporation.data.remote_source.api.FavoritesApi
 import nekit.corporation.data.remote_source.api.ProgressApi
 import nekit.corporation.data.remote_source.api.QuotesApi
-import nekit.corporation.data.remote_source.dto.favorites.Favorites
+import nekit.corporation.domain.models.favorites.Favorites
 import nekit.corporation.data.remote_source.dto.genre.Genres
 import nekit.corporation.data.remote_source.dto.progress.Progresses
 import nekit.corporation.data.remote_source.dto.progress.SaveProgress
 import nekit.corporation.data.remote_source.dto.quote.Quote
-import nekit.corporation.domain.models.auth.RefreshRequest
-import nekit.corporation.domain.models.auth.TokenResponse
 import nekit.corporation.domain.models.author.Authors
+import nekit.corporation.domain.models.book.BookId
 import nekit.corporation.domain.models.book.Books
+import nekit.corporation.domain.models.book.BooksWithAuthors
+import nekit.corporation.domain.models.book.ChaptersWithBookAndAuthor
 import nekit.corporation.domain.models.favorites.AddFavoriteRequest
 import nekit.corporation.domain.models.quote.CreateQuote
 import nekit.corporation.domain.models.quote.Quotes
@@ -55,10 +56,10 @@ class AuthorizeRepositoryImpl @Inject constructor(
     override suspend fun getBooksByName(name: String): Books =
         bookApi.getBooksByName(name).toBooks()
 
-    override suspend fun getBooksByGenre(genre: String): Books =
+    override suspend fun getBooksByGenre(genre: Long): Books =
         bookApi.getBooksByGenre(genre).toBooks()
 
-    override suspend fun getBooksByAuthor(authors: String): Books =
+    override suspend fun getBooksByAuthor(authors: Long): Books =
         bookApi.getBooksByAuthor(authors).toBooks()
 
     override suspend fun getNewBooks(isNew: Boolean): Books =
@@ -73,8 +74,8 @@ class AuthorizeRepositoryImpl @Inject constructor(
     override suspend fun getFavorites(): Favorites =
         favoritesApi.getFavorites().toFavorites()
 
-    override suspend fun addFavorites(): AddFavoriteRequest =
-        favoritesApi.addFavorites().toAddFavoriteRequest()
+    override suspend fun addFavorites(bookId: BookId): AddFavoriteRequest =
+        favoritesApi.addFavorites(bookId).toAddFavoriteRequest()
 
     override suspend fun deleteFavorites() =
         favoritesApi.deleteFavorites()
@@ -93,4 +94,10 @@ class AuthorizeRepositoryImpl @Inject constructor(
 
     override suspend fun createQuote(createQuote: CreateQuote): Quote =
         quotesApi.createQuote(createQuote).toQuote()
+
+    override suspend fun getBooksWithAuthors(page: Int, pageSize: Int): BooksWithAuthors =
+        bookApi.getBooksWithAuthors(page, pageSize).toBooksWithAuthors()
+
+    override suspend fun getBookByChapterId(chapterId: Long): ChaptersWithBookAndAuthor =
+        bookApi.getBookByChapterId(chapterId).toChaptersWithBookAndAuthor()
 }

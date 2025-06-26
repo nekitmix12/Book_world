@@ -1,6 +1,6 @@
 package nekit.corporation.data.mappers
 
-import nekit.corporation.data.remote_source.dto.progress.Progress
+import nekit.corporation.domain.models.progress.Progress
 import nekit.corporation.data.remote_source.dto.progress.ProgressDto
 import nekit.corporation.data.remote_source.dto.progress.Progresses
 import nekit.corporation.data.remote_source.dto.progress.ProgressesDto

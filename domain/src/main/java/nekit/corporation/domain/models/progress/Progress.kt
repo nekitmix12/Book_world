@@ -1,4 +1,4 @@
-package nekit.corporation.data.remote_source.dto.progress
+package nekit.corporation.domain.models.progress
 
 import kotlinx.serialization.Serializable
 

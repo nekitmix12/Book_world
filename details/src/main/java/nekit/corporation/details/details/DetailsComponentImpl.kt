@@ -13,7 +13,7 @@ import nekit.corporation.common.AppScope
 class DetailsComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted val close: () -> Unit,
-    @Assisted val openChapter: (String) -> Unit
+    @Assisted val openChapter: (Long) -> Unit,
 ) :
     ComponentContext by componentContext, DetailsComponent {
     override val state: StateFlow<DetailsState> = MutableStateFlow(
@@ -34,15 +34,7 @@ class DetailsComponentImpl @AssistedInject constructor(
     override fun onAddToFavoriteClick() {
     }
 
-    override fun onBackClick() {
+    override fun onBackClick() = close()
 
-    }
 
-    override fun nextChapter() {
-        TODO("Not yet implemented")
-    }
-
-    override fun prevChapter() {
-        TODO("Not yet implemented")
-    }
 }

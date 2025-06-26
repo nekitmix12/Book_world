@@ -6,8 +6,8 @@ import nekit.corporation.bookmarks.model.ReadNowBookModel
 import nekit.corporation.common.models.BookSearchModel
 
 data class BookmarksState(
-    val quotes: ImmutableList<QuoteModel>,
-    val books: ImmutableList<BookSearchModel>,
-    val reading: ReadNowBookModel?,
-
-    )
+    val quotes: ImmutableList<QuoteModel>? = null,
+    val books: ImmutableList<BookSearchModel>? = null,
+    val reading: List<ReadNowBookModel>? = null,
+    val isLoading: Boolean = true,
+)

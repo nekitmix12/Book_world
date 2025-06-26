@@ -16,7 +16,8 @@ import nekit.corporation.domain.repository.Repository
 import javax.inject.Inject
 
 @ContributesBinding(
-    scope = AppScope::class, boundType = Repository::class
+    scope = AppScope::class,
+    boundType = Repository::class
 )
 class RepositoryImpl @Inject constructor(
     private val authApi: AuthApi,

@@ -84,10 +84,10 @@ class RootComponentImpl @AssistedInject constructor(
         data object SignIn : ChildConfig, Parcelable
 
         @Parcelize
-        data class Chapter(val chapterId: String) : ChildConfig, Parcelable
+        data class Chapter(val chapterId: Long) : ChildConfig, Parcelable
 
         @Parcelize
-        data class Details(val bookId: String) : ChildConfig, Parcelable
+        data class Details(val bookId: Long) : ChildConfig, Parcelable
 
         @Parcelize
         data object Home : ChildConfig, Parcelable

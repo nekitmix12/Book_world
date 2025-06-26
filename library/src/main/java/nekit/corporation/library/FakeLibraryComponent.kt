@@ -10,8 +10,8 @@ import kotlinx.coroutines.flow.StateFlow
 class FakeLibraryComponent : LibraryComponent {
     override var state: StateFlow<LibraryState> = MutableStateFlow(
         LibraryState(
-            newBooks = persistentListOf(),
-            popularBooks = persistentListOf(),
+            newBooks = null,
+            popularBooks = null,
             isLoading = false,
             booksPage = 1,
         )

@@ -14,15 +14,12 @@ interface DetailsComponent {
 
     fun onBackClick()
 
-    fun nextChapter()
-
-    fun prevChapter()
 
     fun interface Factory {
         operator fun invoke(
             componentContext: ComponentContext,
             close: () -> Unit,
-            openChapter: (String) -> Unit
+            openChapter: (Long) -> Unit
         ): DetailsComponent
     }
 }

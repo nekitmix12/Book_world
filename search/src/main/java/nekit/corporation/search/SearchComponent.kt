@@ -6,15 +6,21 @@ import kotlinx.coroutines.flow.StateFlow
 interface SearchComponent {
     val state: StateFlow<SearchState>
 
-    fun onAuthorClick(authorId: String)
+    fun onAuthorClick(authorId: Long)
 
-    fun onGenreClick(genreId: String)
+    fun onGenreClick(genreId: Long)
 
-    fun onRequestClick(requestId: String)
+    fun onRequestClick(request: String)
 
     fun onRequestClose(requestId: String)
 
-    fun onSearchClick()
+    fun onSearchByText(text: String)
+
+    fun onQueryChange(query: String)
+
+    fun onSearchClick(isActive: Boolean)
+
+    fun onBookClick(bookId: Long)
 
     fun setSearchText(text: String)
 

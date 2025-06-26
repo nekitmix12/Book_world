@@ -9,13 +9,13 @@ import retrofit2.http.PUT
 import retrofit2.http.Path
 
 interface ProgressApi {
-    @GET("progresses")
+    @GET("api/progresses")
     suspend fun getProgress(): ProgressesDto
 
-    @POST("progresses")
+    @POST("api/progresses")
     suspend fun saveProgress(@Body progress: SaveProgressDto): ProgressesDto
 
-    @PUT("progresses")
+    @PUT("api/progresses")
     suspend fun editProgress(
         @Body progress: SaveProgressDto,
         @Path("") bookId: String

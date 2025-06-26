@@ -39,7 +39,7 @@ interface ChapterComponent {
     fun interface Factory {
         operator fun invoke(
             componentContext: ComponentContext,
-            chapterId: String,
+            chapterId: Long,
             onClose: () -> Unit
         ): ChapterComponent
     }

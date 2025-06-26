@@ -1,16 +1,21 @@
 package nekit.corporation.library
 
-import nekit.corporation.domain.models.book.Book
+import nekit.corporation.domain.models.book.BookWithAuthor
 import nekit.corporation.library.models.NewCarouselModel
 import nekit.corporation.library.models.PopularBookModel
 
-fun Book.toPopularBook() =
-    PopularBookModel(id = id, imageUrl = coverURL, author = "Какой то автор", name = title)
+fun BookWithAuthor.toPopularBook() =
+    PopularBookModel(
+        id = id,
+        imageUrl = coverURL,
+        author = if (author.isNotEmpty()) author[0].name else "",
+        name = title
+    )
 
-fun Book.toNewCarouselBooks() =
+fun BookWithAuthor.toNewCarouselBooks() =
     NewCarouselModel(
         id = id,
         imageUrl = coverURL,
-        description = "Какое то очееень крутое описание",
+        description = description,
         name = title
     )

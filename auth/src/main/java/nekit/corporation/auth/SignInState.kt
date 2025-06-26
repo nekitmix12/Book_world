@@ -18,5 +18,5 @@ data class SignInState(
     val nameIconRes: Int? = null,
     val emailIconRes: Int? = null,
     val passwordImageTransformation: VisualTransformation = PasswordVisualTransformation(),
-    val isButtonActive: Boolean = false
+    val isButtonActive: Boolean = false,
 )
