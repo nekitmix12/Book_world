@@ -14,7 +14,7 @@ class GetBooksByAuthorUseCase @Inject constructor(
 ) : UseCase<GetBooksByAuthorUseCase.Request, GetBooksByAuthorUseCase.Response>(configuration) {
     override fun process(request: Request): Flow<Response> = flow {
         tokenRefreshUseCase.process()
-        Response(repository.getBooksByAuthor(request.authorId))
+        emit(Response(repository.getBooksByAuthor(request.authorId)))
     }
 
     data class Request(val authorId: Long) : UseCase.Request

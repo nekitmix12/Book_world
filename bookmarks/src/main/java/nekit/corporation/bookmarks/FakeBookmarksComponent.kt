@@ -6,6 +6,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import nekit.corporation.bookmarks.model.BookmarksState
 
 class FakeBookmarksComponent : BookmarksComponent {
     override var state: StateFlow<BookmarksState> = MutableStateFlow(

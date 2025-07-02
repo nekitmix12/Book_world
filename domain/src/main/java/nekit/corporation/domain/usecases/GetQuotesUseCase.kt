@@ -1,5 +1,6 @@
 package nekit.corporation.domain.usecases
 
+import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.coroutineScope
@@ -22,17 +23,22 @@ class GetQuotesUseCase @Inject constructor(
         val quotes = repository.getQuotes()
         val result = mutableListOf<Pair<Quote, Book>>()
         val jobs = mutableListOf<Job>()
-        quotes.data.forEach {
-            coroutineScope {
+        coroutineScope {
+            quotes.data.forEach {
                 jobs.add(launch(Dispatchers.IO) {
                     result.add(it to repository.getBooksById(it.bookId).data[0])
                 })
             }
         }
-        jobs.forEach { it.join() }
+        jobs.forEach { it.join();Log.i(TAG, it.key.toString()) }
+        Log.i(TAG, "finish: $result")
+
         emit(Response(result))
     }
 
     data object Request : UseCase.Request
     data class Response(val books: List<Pair<Quote, Book>>) : UseCase.Response
+    companion object {
+        private const val TAG = "GetQuotesUseCase"
+    }
 }

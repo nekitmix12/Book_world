@@ -1,7 +1,6 @@
 package nekit.corporation.details.models
 
 data class ShortChapterModel(
-    val id: String,
+    val id: Long,
     val name: String,
-    val state: ChapterState,
 )

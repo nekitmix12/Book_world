@@ -1,6 +1,6 @@
 package nekit.corporation.domain.usecases.favorite
 
-import kotlinx.coroutines.Dispatchers
+import android.util.Log
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
@@ -19,28 +19,28 @@ class GetFavoriteUseCase @Inject constructor(
 ) : UseCase<GetFavoriteUseCase.Request, GetFavoriteUseCase.Response>(configuration) {
     override fun process(request: Request): Flow<Response> = flow {
         tokenRefreshUseCase.process()
+        val books = repository.getFavorites()
+        val result = mutableListOf<Books>()
+        val jobs = mutableListOf<Job>()
         coroutineScope {
-            launch(Dispatchers.IO) {
-                val books = repository.getFavorites()
-                val result = mutableListOf<Books>()
-                val jobs = mutableListOf<Job>()
-                books.data.forEach {
-                    jobs.add(
-                        launch {
-                            result.add(
-                                repository.getBooksById(it.bookId)
-                            )
-                        })
-                }
-                jobs.forEach { it.join() }
-                emit(Response(result))
-
+            books.data.forEach {
+                jobs.add(
+                    launch {
+                        result.add(
+                            repository.getBooksById(it.bookId)
+                        )
+                    })
             }
-        }
 
+        }
+        jobs.forEach { it.join(); Log.d(TAG, it.key.toString()) }
+        Log.i(TAG, "finish $result")
+        emit(Response(result))
     }
 
     data object Request : UseCase.Request
     data class Response(val books: List<Books>) : UseCase.Response
-
+    companion object {
+        private const val TAG = "GetFavoriteUseCase"
+    }
 }

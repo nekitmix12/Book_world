@@ -39,9 +39,9 @@ fun BookDto.toBook() = Book(
     publishedAt = publishedAt,
     isNew = isNew,
     illustrationURL = illustrationURL,
-    author = authorDto.map { it.toAuthor() }
+    description = description,
+    author = authors.map { it.toAuthor() }
 )
-
 
 
 fun BooksWithAuthorDto.toBooksWithAuthors() =

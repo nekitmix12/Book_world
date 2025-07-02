@@ -33,7 +33,7 @@ class ChapterComponentImpl @AssistedInject constructor(
 
 
     override val bottomSheet: Value<ChildSlot<*, BottomSheetComponent>> = childSlot(
-        source = bottomNavigation, key = "BottomSlot", handleBackButton = true
+        source = bottomNavigation, key = NAVIGATION_BOTTOM_SLOT_KEY, handleBackButton = true
     ) { _, childCtx ->
         BottomSheetComponentImpl(
             componentContext = childCtx, onDismissClick = bottomNavigation::dismiss
@@ -41,7 +41,7 @@ class ChapterComponentImpl @AssistedInject constructor(
     }
 
     override val sideSheet: Value<ChildSlot<*, SideSheetComponent>> = childSlot(
-        source = sideNavigation, key = "BottomSlot", handleBackButton = true
+        source = sideNavigation, key =NAVIGATION_SIDE_SLOT_KEY, handleBackButton = true
     ) { _, childCtx ->
         SideSheetComponentImpl(
             componentContext = childCtx, onDismissClick = sideNavigation::dismiss
@@ -107,5 +107,9 @@ class ChapterComponentImpl @AssistedInject constructor(
 
         @Parcelize
         data class SideSheet(val chapterId: String) : ChildConfig, Parcelable
+    }
+    companion object{
+        private const val NAVIGATION_BOTTOM_SLOT_KEY = "bottomNavigation"
+        private const val NAVIGATION_SIDE_SLOT_KEY = "sideNavigation"
     }
 }

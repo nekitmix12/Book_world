@@ -14,9 +14,12 @@ fun Progress.toReadNowBookModel(chapters: ChaptersWithBookAndAuthor) = ReadNowBo
     imageUrl = chapters.data[0].book.illustrationURL.toString()
 )
 
-fun List<Books>.toSearchModel() = this.map {
+fun List<Books>.toSearchModel() = this.filter { it.data.isNotEmpty() }.map {
     val book = it.data[0]
     BookSearchModel(
-        book.id, book.title, book.author[0].name, book.illustrationURL.toString()
+        book.id,
+        book.title,
+        if (book.author.isNotEmpty()) book.author[0].name else "",
+        book.illustrationURL.toString()
     )
 }

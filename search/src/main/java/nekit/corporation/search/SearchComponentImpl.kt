@@ -36,9 +36,9 @@ class SearchComponentImpl @AssistedInject constructor(
 ) : SearchComponent, ComponentContext by componentContext {
     override val state = MutableStateFlow(
         SearchState(
-            requests = persistentListOf(),
-            genres = persistentListOf(),
-            authors = persistentListOf(),
+            requests = null,
+            genres = null,
+            authors = null,
             searchIsOpen = false,
             searchText = "",
             isLoading = true,
@@ -62,6 +62,7 @@ class SearchComponentImpl @AssistedInject constructor(
                                     )
                                 }.toImmutableList()
                             )
+                            Log.i(TAG,"set genre")
                         }
 
                         is Result.Error -> Log.e(TAG, it.exception)
@@ -81,6 +82,7 @@ class SearchComponentImpl @AssistedInject constructor(
                                     )
                                 }.toImmutableList()
                             )
+                            Log.i(TAG,"set authors")
                         }
 
                         is Result.Error -> Log.e(TAG, it.exception)
@@ -159,6 +161,7 @@ class SearchComponentImpl @AssistedInject constructor(
                                 isSearching = false,
                                 books = it.data.books.toSearchModels()
                             )
+
                         }
 
                         is Result.Error -> Log.e(TAG, it.exception)

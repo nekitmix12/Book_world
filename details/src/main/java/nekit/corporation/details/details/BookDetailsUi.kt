@@ -224,7 +224,7 @@ fun CommonDetailsText(text: String) {
 @Composable
 fun ChapterItem(
     chapter: ShortChapterModel,
-    onClick: (String) -> Unit,
+    onClick: (Long) -> Unit,
 ) {
     Row(
         Modifier

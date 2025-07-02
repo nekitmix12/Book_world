@@ -14,5 +14,6 @@ data class Book(
     val publishedAt: String,
     val isNew: Boolean,
     val illustrationURL: String?,
+    val description: String,
     val author: List<Author>
 )

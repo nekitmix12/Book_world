@@ -15,7 +15,7 @@ class GetGenresUseCase @Inject constructor(
 ) : UseCase<GetGenresUseCase.Request, GetGenresUseCase.Response>(configuration) {
     override fun process(request: Request): Flow<Response> = flow {
         tokenRefreshUseCase.process()
-        Response(repository.getGenres())
+        emit(Response(repository.getGenres()))
     }
 
     data object Request : UseCase.Request

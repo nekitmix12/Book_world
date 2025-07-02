@@ -18,9 +18,7 @@ import nekit.corporation.data.remote_source.api.BookApi
 import nekit.corporation.data.remote_source.api.FavoritesApi
 import nekit.corporation.data.remote_source.api.ProgressApi
 import nekit.corporation.data.remote_source.api.QuotesApi
-import nekit.corporation.domain.models.favorites.Favorites
 import nekit.corporation.data.remote_source.dto.genre.Genres
-import nekit.corporation.data.remote_source.dto.progress.Progresses
 import nekit.corporation.data.remote_source.dto.progress.SaveProgress
 import nekit.corporation.data.remote_source.dto.quote.Quote
 import nekit.corporation.domain.models.author.Authors
@@ -29,6 +27,8 @@ import nekit.corporation.domain.models.book.Books
 import nekit.corporation.domain.models.book.BooksWithAuthors
 import nekit.corporation.domain.models.book.ChaptersWithBookAndAuthor
 import nekit.corporation.domain.models.favorites.AddFavoriteRequest
+import nekit.corporation.domain.models.favorites.Favorites
+import nekit.corporation.domain.models.progress.Progresses
 import nekit.corporation.domain.models.quote.CreateQuote
 import nekit.corporation.domain.models.quote.Quotes
 import nekit.corporation.domain.repository.AuthorizeRepository
@@ -77,8 +77,8 @@ class AuthorizeRepositoryImpl @Inject constructor(
     override suspend fun addFavorites(bookId: BookId): AddFavoriteRequest =
         favoritesApi.addFavorites(bookId).toAddFavoriteRequest()
 
-    override suspend fun deleteFavorites() =
-        favoritesApi.deleteFavorites()
+    override suspend fun deleteFavorites(documentBookId: String) =
+        favoritesApi.deleteFavorites(documentBookId)
 
     override suspend fun getProgress(): Progresses =
         progressApi.getProgress().toProgresses()
@@ -100,4 +100,7 @@ class AuthorizeRepositoryImpl @Inject constructor(
 
     override suspend fun getBookByChapterId(chapterId: Long): ChaptersWithBookAndAuthor =
         bookApi.getBookByChapterId(chapterId).toChaptersWithBookAndAuthor()
+
+    override suspend fun getChapterByBookId(bookId: Long): ChaptersWithBookAndAuthor =
+        bookApi.getBookByChapterId(bookId).toChaptersWithBookAndAuthor()
 }

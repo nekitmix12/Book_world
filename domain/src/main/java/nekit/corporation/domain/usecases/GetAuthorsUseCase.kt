@@ -14,7 +14,7 @@ class GetAuthorsUseCase @Inject constructor(
 ) : UseCase<GetAuthorsUseCase.Request, GetAuthorsUseCase.Response>(configuration) {
     override fun process(request: Request): Flow<Response> = flow {
         tokenRefreshUseCase.process()
-        Response(repository.getAuthors())
+        emit(Response(repository.getAuthors()))
     }
 
     data object Request : UseCase.Request

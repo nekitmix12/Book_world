@@ -15,5 +15,5 @@ data class BookDto(
     val isNew: Boolean,
     val illustrationURL: String?,
     val description: String,
-    val authorDto: List<AuthorDto>
+    val authors: List<AuthorDto>
 )

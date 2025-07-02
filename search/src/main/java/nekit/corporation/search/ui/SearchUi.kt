@@ -190,20 +190,7 @@ class FakeSearchComponent : SearchComponent {
     override val state = MutableStateFlow(
         SearchState(
             requests = persistentListOf(RequestModel("", "IOS")),
-            genres = persistentListOf(
-                GenreModel(1, "Classic"),
-                GenreModel(1, "Fantasy"),
-                GenreModel(1, "Fantastic"),
-                GenreModel(1, "Detective"),
-                GenreModel(1, "Thriller"),
-                GenreModel(1, "History roman"),
-                GenreModel(1, "Love story"),
-                GenreModel(1, "Adventures"),
-                GenreModel(1, "Poems"),
-                GenreModel(1, "Biography"),
-                GenreModel(1, "For guys"),
-                GenreModel(1, "For children"),
-            ),
+            genres = null,
             authors = persistentListOf(),
             searchIsOpen = false,
             searchText = "IOS",

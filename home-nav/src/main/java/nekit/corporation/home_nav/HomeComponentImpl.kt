@@ -26,6 +26,7 @@ class HomeComponentImpl @AssistedInject constructor(
     override val slot = childSlot(
         source = navigation,
         serializer = BottomTab.serializer(),
+        key = NAVIGATION_SLOT_KEY,
         initialConfiguration = { BottomTab.LibraryChild },
         handleBackButton = true,
         childFactory = ::createChild
@@ -77,6 +78,8 @@ class HomeComponentImpl @AssistedInject constructor(
             )
         }
 
-
+    companion object{
+        private const val NAVIGATION_SLOT_KEY = "HomeComponentImpl"
+    }
 }
 

@@ -2,6 +2,7 @@ package nekit.corporation.bookmarks
 
 import com.arkivanov.decompose.ComponentContext
 import kotlinx.coroutines.flow.StateFlow
+import nekit.corporation.bookmarks.model.BookmarksState
 
 interface BookmarksComponent {
     val state: StateFlow<BookmarksState>

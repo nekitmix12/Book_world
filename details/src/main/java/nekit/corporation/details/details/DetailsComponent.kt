@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.StateFlow
 interface DetailsComponent {
     val state: StateFlow<DetailsState>
 
-    fun onChapterClick(chapterId: String)
+    fun onChapterClick(chapterId: Long)
 
     fun onReadClick()
 
@@ -17,9 +17,10 @@ interface DetailsComponent {
 
     fun interface Factory {
         operator fun invoke(
+            bookId: Long,
             componentContext: ComponentContext,
             close: () -> Unit,
-            openChapter: (Long) -> Unit
+            openChapter: (Long) -> Unit,
         ): DetailsComponent
     }
 }

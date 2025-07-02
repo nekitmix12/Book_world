@@ -11,21 +11,17 @@ import dagger.assisted.AssistedInject
 import kotlinx.parcelize.Parcelize
 import me.gulya.anvil.assisted.ContributesAssistedFactory
 import nekit.corporation.auth.SignInComponent
-import nekit.corporation.auth.SignInComponentImpl
 import nekit.corporation.common.AppScope
 import nekit.corporation.details.chapter.chapter.ChapterComponent
-import nekit.corporation.details.chapter.chapter.ChapterComponentImpl
 import nekit.corporation.details.details.DetailsComponent
-import nekit.corporation.details.details.DetailsComponentImpl
 import nekit.corporation.home_nav.HomeComponent
-import nekit.corporation.home_nav.HomeComponentImpl
 
 @ContributesAssistedFactory(AppScope::class, RootComponent.Factory::class)
 class RootComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     private val homeFactory: HomeComponent.Factory,
     private val signInFactory: SignInComponent.Factory,
-    private val detailsFactory:  DetailsComponent.Factory,
+    private val detailsFactory: DetailsComponent.Factory,
     private val chapterComponent: ChapterComponent.Factory
 ) :
     ComponentContext by componentContext,
@@ -34,6 +30,7 @@ class RootComponentImpl @AssistedInject constructor(
     override val childStack = childStack(
         source = navigation,
         serializer = null,
+        key = NAVIGATION_STACK_KEY,
         initialConfiguration = ChildConfig.SignIn,
         handleBackButton = true,
         childFactory = ::createChild
@@ -55,22 +52,27 @@ class RootComponentImpl @AssistedInject constructor(
 
         is ChildConfig.Details -> {
             RootComponent.Child.DetailsChild(
-                detailsFactory(componentContext,
+                detailsFactory(
+                    bookId = config.bookId,
                     close = navigation::pop,
-                    openChapter = { navigation.push(configuration = ChildConfig.Chapter(it)) }),
+                    openChapter = { navigation.push(configuration = ChildConfig.Chapter(it)) },
+                    componentContext = componentContext
+                ),
             )
         }
 
         is ChildConfig.SignIn -> {
             RootComponent.Child.AuthorizationChild(
-                signInFactory(componentContext = componentContext,
+                signInFactory(
+                    componentContext = componentContext,
                     onComplete = { navigation.push(ChildConfig.Home) })
             )
         }
 
         is ChildConfig.Home -> {
             RootComponent.Child.HomeChild(
-                homeFactory(componentContext = componentContext,
+                homeFactory(
+                    componentContext = componentContext,
                     openChapter = { navigation.push(configuration = ChildConfig.Chapter(it)) },
                     openDetails = { navigation.push(configuration = ChildConfig.Details(it)) })
             )
@@ -91,5 +93,9 @@ class RootComponentImpl @AssistedInject constructor(
 
         @Parcelize
         data object Home : ChildConfig, Parcelable
+    }
+
+    companion object {
+        private const val NAVIGATION_STACK_KEY = "RootComponentImpl"
     }
 }

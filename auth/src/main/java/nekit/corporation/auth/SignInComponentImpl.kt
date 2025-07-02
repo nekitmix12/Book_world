@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import com.arkivanov.decompose.ComponentContext
+import com.arkivanov.essenty.lifecycle.Lifecycle
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.collections.immutable.persistentListOf
@@ -42,6 +43,7 @@ class SignInComponentImpl @AssistedInject constructor(
     private val coroutineScope = componentCoroutineScope()
 
     init {
+
         coroutineScope.launch {
             launch {
                 state.collect {
@@ -54,21 +56,28 @@ class SignInComponentImpl @AssistedInject constructor(
                     )
                 }
             }
-            launch {
-                getTokenUseCase.execute(GetTokenUseCase.Request).collect {
-                    when (it) {
-                        is Result.Success -> {
-                            if (it.data.token != null)
-                                onComplete()
-                        }
+            lifecycle.subscribe(object : Lifecycle.Callbacks{
+                override fun onStart() {
+                    super.onStart()
+                    launch {
+                        getTokenUseCase.execute(GetTokenUseCase.Request).collect {
+                            when (it) {
+                                is Result.Success -> {
+                                    if (it.data.token != null)
+                                        onComplete()
+                                }
 
-                        is Result.Error -> Log.e(TAG, it.exception)
+                                is Result.Error -> Log.e(TAG, it.exception)
+                            }
+                            state.value = state.value.copy(inProgress = false)
+                        }
                     }
-                    state.value = state.value.copy(inProgress = false)
                 }
-            }
+            })
         }
     }
+
+
 
     override fun onSignInClick() {
         state.value = state.value.copy(inProgress = true)

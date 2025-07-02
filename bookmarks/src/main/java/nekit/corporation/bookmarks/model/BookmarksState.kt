@@ -1,8 +1,6 @@
-package nekit.corporation.bookmarks
+package nekit.corporation.bookmarks.model
 
 import kotlinx.collections.immutable.ImmutableList
-import nekit.corporation.bookmarks.model.QuoteModel
-import nekit.corporation.bookmarks.model.ReadNowBookModel
 import nekit.corporation.common.models.BookSearchModel
 
 data class BookmarksState(

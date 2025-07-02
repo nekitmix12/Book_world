@@ -1,8 +1,7 @@
-package nekit.corporation.data.remote_source.dto.progress
+package nekit.corporation.domain.models.progress
 
 import kotlinx.serialization.Serializable
 import nekit.corporation.domain.models.common.Meta
-import nekit.corporation.domain.models.progress.Progress
 
 @Serializable
 data class Progresses(

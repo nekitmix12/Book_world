@@ -1,23 +1,26 @@
-package nekit.corporation.domain.usecases.books
+package nekit.corporation.domain.usecases.favorite
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import nekit.corporation.domain.models.progress.Progresses
 import nekit.corporation.domain.repository.AuthorizeRepository
 import nekit.corporation.domain.usecases.UseCase
 import nekit.corporation.domain.usecases.auth.TokenRefreshUseCase
 import javax.inject.Inject
 
-class GetReadingBookUseCase @Inject constructor(
+class DeleteFromFavoriteUseCase @Inject constructor(
     private val repository: AuthorizeRepository,
     private val tokenRefreshUseCase: TokenRefreshUseCase,
     configuration: Configuration
-) : UseCase<GetReadingBookUseCase.Request, GetReadingBookUseCase.Response>(configuration) {
+) : UseCase<DeleteFromFavoriteUseCase.Request, DeleteFromFavoriteUseCase.Response>(configuration) {
     override fun process(request: Request): Flow<Response> = flow {
         tokenRefreshUseCase.process()
-        Response(repository.getProgress())
+        repository.deleteFavorites(request.documentBookId)
+        emit(Response)
     }
 
-    data object Request : UseCase.Request
-    data class Response(val books: Progresses) : UseCase.Response
+    data class Request(val documentBookId: String) : UseCase.Request
+    data object Response : UseCase.Response
+    companion object {
+        private const val TAG = "GetFavoriteUseCase"
+    }
 }
