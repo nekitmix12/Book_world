@@ -44,11 +44,14 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Devices
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import nekit.corporation.common_ui.theme.BookWorldTheme
 import nekit.corporation.common_ui.theme.accent_dark
@@ -283,4 +286,38 @@ fun ButtonSignIn(isActive: Boolean, navigateToLibrary: () -> Unit) {
             modifier = Modifier.padding(vertical = 7.5.dp)
         )
     }
+}
+
+class FakeSignInComponent : SignInComponent {
+
+    override val state = MutableStateFlow(
+        AuthStore.State(
+            email = "",
+            password = "",
+            inProgress = true,
+            carouselImages = persistentListOf(),
+            userName = "",
+        )
+    )
+
+    override fun onSignInClick() = Unit
+
+    override fun onEmailChange(email: String) = Unit
+    override fun onNameChange(name: String) = Unit
+
+    override fun onPasswordChange(password: String) = Unit
+    override fun onPasswordImageClick() = Unit
+
+    override fun onEmailImageClick() = Unit
+
+    override fun onNameImageClick() = Unit
+
+
+}
+
+@Preview(showSystemUi = true, device = Devices.PIXEL_6)
+@Composable
+fun SignInUiPreview() {
+
+    SignInUi(FakeSignInComponent())
 }

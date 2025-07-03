@@ -25,7 +25,9 @@ import nekit.corporation.details.models.ShortChapterModel
 
 @ContributesAssistedFactory(AppScope::class, ChapterComponent.Factory::class)
 class ChapterComponentImpl @AssistedInject constructor(
-    @Assisted componentContext: ComponentContext,@Assisted chapterId: Long,@Assisted onClose: () -> Unit
+    @Assisted componentContext: ComponentContext,
+    @Assisted chapterId: Long,
+    @Assisted onClose: () -> Unit
 ) : ComponentContext by componentContext, ChapterComponent {
 
     private val bottomNavigation = SlotNavigation<ChildConfig.BottomSheet>()
@@ -41,7 +43,7 @@ class ChapterComponentImpl @AssistedInject constructor(
     }
 
     override val sideSheet: Value<ChildSlot<*, SideSheetComponent>> = childSlot(
-        source = sideNavigation, key =NAVIGATION_SIDE_SLOT_KEY, handleBackButton = true
+        source = sideNavigation, key = NAVIGATION_SIDE_SLOT_KEY, handleBackButton = true
     ) { _, childCtx ->
         SideSheetComponentImpl(
             componentContext = childCtx, onDismissClick = sideNavigation::dismiss
@@ -61,7 +63,7 @@ class ChapterComponentImpl @AssistedInject constructor(
             isInteracted = true,
             text = persistentListOf(),
             chapter = ShortChapterModel(
-                "", "", nekit.corporation.details.models.ChapterState.InProgress
+                1, ""
             ),
             bookName = "",
             loading = true
@@ -108,7 +110,8 @@ class ChapterComponentImpl @AssistedInject constructor(
         @Parcelize
         data class SideSheet(val chapterId: String) : ChildConfig, Parcelable
     }
-    companion object{
+
+    companion object {
         private const val NAVIGATION_BOTTOM_SLOT_KEY = "bottomNavigation"
         private const val NAVIGATION_SIDE_SLOT_KEY = "sideNavigation"
     }

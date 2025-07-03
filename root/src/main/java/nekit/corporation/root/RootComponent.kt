@@ -3,6 +3,7 @@ package nekit.corporation.root
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.value.Value
+import com.arkivanov.mvikotlin.core.store.StoreFactory
 import nekit.corporation.auth.SignInComponent
 import nekit.corporation.details.chapter.chapter.ChapterComponent
 import nekit.corporation.details.details.DetailsComponent
@@ -21,7 +22,8 @@ interface RootComponent {
 
     fun interface Factory {
         operator fun invoke(
-            componentContext: ComponentContext
+            componentContext: ComponentContext,
+            storeFactory: StoreFactory,
         ): RootComponent
     }
 }

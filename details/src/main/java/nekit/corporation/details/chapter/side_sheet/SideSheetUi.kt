@@ -95,7 +95,7 @@ fun ChapterSideSheet(
                 items(state.chapters) {
                     Text(
                         text = it.name,
-                        style = if (it.state != ChapterState.InProgress) nekit.corporation.common_ui.theme.detailsBody
+                        style = if (true) nekit.corporation.common_ui.theme.detailsBody
                         else nekit.corporation.common_ui.theme.detailsSelectedBody,
                         modifier = Modifier
                             .padding(horizontal = 16.dp, vertical = 13.5.dp)

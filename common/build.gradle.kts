@@ -20,8 +20,7 @@ android {
         release {
             isMinifyEnabled = false
             proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             )
         }
     }
@@ -45,6 +44,11 @@ dependencies {
     testImplementation(libs.androidx.compose.ui.test.junit4)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.junit)*/
+    api(libs.mvikotlin.main)
+    api(libs.mvikotlin)
+    api(libs.mvikotlin.extensions.coroutines)
+    api(libs.mvikotlin.logging)
+
 
     compileOnlyApi(libs.junit)
     //testApi(libs.junit)
@@ -68,7 +72,6 @@ dependencies {
     api(libs.kotlinx.serialization.json)
     //
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-/*    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)*/
+    implementation(libs.androidx.appcompat)/*    androidTestImplementation(libs.androidx.junit)
+        androidTestImplementation(libs.androidx.espresso.core)*/
 }

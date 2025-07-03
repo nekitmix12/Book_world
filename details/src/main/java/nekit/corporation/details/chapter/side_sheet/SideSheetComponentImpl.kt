@@ -10,7 +10,7 @@ class SideSheetComponentImpl(componentContext: ComponentContext, val onDismissCl
         SideSheetState(chapters = persistentListOf(), isVisible = true)
     )
 
-    override fun onChapterClick(chapterId: String) {
+    override fun onChapterClick(chapterId: Long) {
     }
 
     override fun onDismiss() = onDismissClick()

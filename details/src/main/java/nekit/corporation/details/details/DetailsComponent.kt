@@ -4,13 +4,13 @@ import com.arkivanov.decompose.ComponentContext
 import kotlinx.coroutines.flow.StateFlow
 
 interface DetailsComponent {
-    val state: StateFlow<DetailsState>
+    val state: StateFlow<DetailsStore.State>
 
     fun onChapterClick(chapterId: Long)
 
     fun onReadClick()
 
-    fun onAddToFavoriteClick()
+    fun onFavoriteIconClick()
 
     fun onBackClick()
 

@@ -1,6 +1,5 @@
 package nekit.corporation.details.details
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -29,13 +28,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import nekit.corporation.common_ui.R.drawable
 import nekit.corporation.common_ui.R.drawable.bookmarks
 import nekit.corporation.details.R
@@ -71,7 +70,7 @@ fun BookDetailUi(
                 "Секретный код скрыт в работах Леонардо да Винчи...\n" + "Только он поможет найти христианские святыни, дающие немыслимые власть и могущество... \n" + "Ключ к величайшей тайне, над которой человечество билось веками, наконец может быть найден..."
             )
         }
-        if (state.chapters.find { it.state is ChapterState.Passed } != null) {
+        if (state.chapters!!.find { true } != null) {
             item { Spacer(Modifier.height(16.dp)) }
             item { nekit.corporation.common_ui.ui_kit.MiddleLabel(stringResource(R.string.was_read)) }
             item {
@@ -86,20 +85,20 @@ fun BookDetailUi(
         item { Spacer(Modifier.height(24.dp)) }
         item { nekit.corporation.common_ui.ui_kit.MiddleLabel(stringResource(R.string.toc)) }
         item { Spacer(Modifier.height(8.dp)) }
-        items(state.chapters.size) {
-            ChapterItem(state.chapters[it], component::onChapterClick)
+        items(state.chapters!!.size) {
+            ChapterItem(state.chapters!![it], component::onChapterClick)
         }
     }
 }
 
 @Composable
 fun DetailsImage(
-    image: ImageBitmap,
+    imageUrl: String,
     onBackClick: () -> Unit,
 ) {
     Box() {
-        Image(
-            bitmap = image,
+        AsyncImage(
+            imageUrl,
             "",
             modifier = Modifier
                 .fillMaxWidth()
@@ -231,7 +230,7 @@ fun ChapterItem(
             .padding(horizontal = 16.dp)
             .clickable { onClick(chapter.id) }
             .testTag("chapters")) {
-        when (chapter.state) {
+        /*when (chapter.state) {
             is ChapterState.Passed -> {
                 Text(
                     text = chapter.name,
@@ -280,7 +279,7 @@ fun ChapterItem(
             }
 
             else -> {}
-        }
+        }*/
 
     }
 }

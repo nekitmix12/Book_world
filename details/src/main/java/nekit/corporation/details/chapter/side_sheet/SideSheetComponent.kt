@@ -6,7 +6,7 @@ import nekit.corporation.details.models.ChapterState
 interface SideSheetComponent {
     val state: StateFlow<SideSheetState>
 
-    fun onChapterClick(chapterId: String)
+    fun onChapterClick(chapterId: Long)
 
     fun onDismiss()
 }

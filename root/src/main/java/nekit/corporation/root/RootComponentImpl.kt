@@ -6,6 +6,7 @@ import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.push
+import com.arkivanov.mvikotlin.core.store.StoreFactory
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.parcelize.Parcelize
@@ -19,13 +20,12 @@ import nekit.corporation.home_nav.HomeComponent
 @ContributesAssistedFactory(AppScope::class, RootComponent.Factory::class)
 class RootComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
+    @Assisted private val storeFactory: StoreFactory,
     private val homeFactory: HomeComponent.Factory,
     private val signInFactory: SignInComponent.Factory,
     private val detailsFactory: DetailsComponent.Factory,
     private val chapterComponent: ChapterComponent.Factory
-) :
-    ComponentContext by componentContext,
-    RootComponent {
+) : ComponentContext by componentContext, RootComponent {
     private val navigation = StackNavigation<ChildConfig>()
     override val childStack = childStack(
         source = navigation,
@@ -65,7 +65,9 @@ class RootComponentImpl @AssistedInject constructor(
             RootComponent.Child.AuthorizationChild(
                 signInFactory(
                     componentContext = componentContext,
-                    onComplete = { navigation.push(ChildConfig.Home) })
+                    onComplete = { navigation.push(ChildConfig.Home) },
+                    storeFactory = storeFactory
+                )
             )
         }
 
