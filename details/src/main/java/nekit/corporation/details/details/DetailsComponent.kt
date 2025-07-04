@@ -1,6 +1,7 @@
 package nekit.corporation.details.details
 
 import com.arkivanov.decompose.ComponentContext
+import com.arkivanov.mvikotlin.core.store.StoreFactory
 import kotlinx.coroutines.flow.StateFlow
 
 interface DetailsComponent {
@@ -10,7 +11,7 @@ interface DetailsComponent {
 
     fun onReadClick()
 
-    fun onFavoriteIconClick()
+    fun onFavoriteIconClick(isFavorite: Boolean)
 
     fun onBackClick()
 
@@ -19,6 +20,7 @@ interface DetailsComponent {
         operator fun invoke(
             bookId: Long,
             componentContext: ComponentContext,
+            storeFactory: StoreFactory,
             close: () -> Unit,
             openChapter: (Long) -> Unit,
         ): DetailsComponent

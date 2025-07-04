@@ -2,8 +2,8 @@ package nekit.corporation.home_nav
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.slot.ChildSlot
-import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.value.Value
+import com.arkivanov.mvikotlin.core.store.StoreFactory
 import kotlinx.serialization.Serializable
 import nekit.corporation.bookmarks.BookmarksComponent
 import nekit.corporation.library.LibraryComponent
@@ -35,8 +35,9 @@ interface HomeComponent {
     fun interface Factory {
         operator fun invoke(
             componentContext: ComponentContext,
-            openChapter: OpenDetails,
-            openDetails: OpenChapter
+            openChapter: OpenChapter,
+            openDetails: OpenDetails,
+            storeFactory: StoreFactory,
         ): HomeComponent
     }
 

@@ -1,4 +1,4 @@
-package nekit.corporation.bookmarks
+package nekit.corporation.bookmarks.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -37,6 +37,8 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import com.valentinilk.shimmer.shimmer
+import nekit.corporation.bookmarks.BookmarksComponent
+import nekit.corporation.bookmarks.R
 import nekit.corporation.bookmarks.model.QuoteModel
 import nekit.corporation.bookmarks.model.ReadNowBookModel
 import nekit.corporation.common_ui.R.drawable.play

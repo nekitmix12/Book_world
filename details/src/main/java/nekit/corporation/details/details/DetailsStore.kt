@@ -12,16 +12,22 @@ interface DetailsStore : Store<Intent, State, Label> {
 
 
     sealed interface Intent {
-        data class OnFavoriteClick(val isFavorite: Boolean)
+        data class OnFavoriteClick(val isFavorite: Boolean) : Intent
+        data object OnPlayClick : Intent
     }
 
     sealed interface Action {
-        data class LoadDetails(val detailsId: Long) : Action
+        data class LoadDetails(val bookId: Long) : Action
+    }
+
+    sealed interface Msg {
+        data class FavoriteChanged(val isFavorite: Boolean) : Msg
+        data object StartFavoriteLoad : Msg
+        data class DetailsLoaded(val state: State) : Msg
     }
 
     sealed interface Label {
-        data object LoadDetails : Label
-        data object OnPlayClick : Label
+        data class OnPlayClick(val chapterId: Long) : Label
     }
 
     data class State(
@@ -32,12 +38,13 @@ interface DetailsStore : Store<Intent, State, Label> {
         val authorName: String? = null,
         val readingPercent: Float = 0.0f,
         val inFavorite: Boolean = false,
+        val loadFavorite: Boolean = false,
         val progress: Int = 0,
         val image: String? = null,
-        val loading: Boolean
+        val loading: Boolean = true
     )
 
     fun interface Factory {
-        operator fun invoke(storeFactory: StoreFactory): DetailsStoreFactory
+        operator fun invoke(storeFactory: StoreFactory, bookId: Long): DetailsStoreFactory
     }
 }

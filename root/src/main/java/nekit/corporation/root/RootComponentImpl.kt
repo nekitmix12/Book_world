@@ -56,7 +56,8 @@ class RootComponentImpl @AssistedInject constructor(
                     bookId = config.bookId,
                     close = navigation::pop,
                     openChapter = { navigation.push(configuration = ChildConfig.Chapter(it)) },
-                    componentContext = componentContext
+                    componentContext = componentContext,
+                    storeFactory = storeFactory
                 ),
             )
         }
@@ -74,9 +75,11 @@ class RootComponentImpl @AssistedInject constructor(
         is ChildConfig.Home -> {
             RootComponent.Child.HomeChild(
                 homeFactory(
+                    openDetails = { navigation.push(configuration = ChildConfig.Details(it)) },
                     componentContext = componentContext,
                     openChapter = { navigation.push(configuration = ChildConfig.Chapter(it)) },
-                    openDetails = { navigation.push(configuration = ChildConfig.Details(it)) })
+                    storeFactory = storeFactory
+                )
             )
         }
     }

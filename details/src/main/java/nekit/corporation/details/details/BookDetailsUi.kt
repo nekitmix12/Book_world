@@ -1,5 +1,7 @@
 package nekit.corporation.details.details
 
+import android.util.Log
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -15,12 +17,15 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -33,18 +38,29 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Devices
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
+import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImagePainter
+import coil.compose.rememberAsyncImagePainter
+import com.valentinilk.shimmer.shimmer
 import nekit.corporation.common_ui.R.drawable
 import nekit.corporation.common_ui.R.drawable.bookmarks
+import nekit.corporation.common_ui.theme.PurpleGrey80
+import nekit.corporation.common_ui.theme.accent_dark
+import nekit.corporation.common_ui.theme.accent_medium
+import nekit.corporation.common_ui.theme.detailsBody
+import nekit.corporation.common_ui.theme.detailsSelectedBody
 import nekit.corporation.details.R
 import nekit.corporation.details.models.ChapterState
 import nekit.corporation.details.models.ShortChapterModel
 
-//@Preview(showSystemUi = true, device = Devices.PIXEL_5)
+@Preview(showSystemUi = true, device = Devices.PIXEL_5)
 @Composable
 fun BookDetailUi(
-    component: DetailsComponent
+    component: DetailsComponent = FakeDetailsComponent()
 ) {
     val state by component.state.collectAsState()
 
@@ -56,49 +72,81 @@ fun BookDetailUi(
             .fillMaxSize()
             .testTag("Book details")
     ) {
-        item { DetailsImage(state.image!!, component::onBackClick) }
+        item { DetailsImage(state.image, component::onBackClick) }
         item {
             ButtonRow(
-                component::onReadClick, component::onAddToFavoriteClick
+                component::onReadClick, component::onFavoriteIconClick, state.inFavorite
             )
         }
-        item { DetailsName("Код да винчи") }
-        item { CommonDetailsText("Дэн Браун") }
+        item { DetailsName(state.name ?: "") }
+        item { CommonDetailsText(state.authorName ?: "") }
         item { Spacer(Modifier.height(24.dp)) }
+        item { CommonDetailsText(state.description ?: "") }
+        item { Spacer(Modifier.height(16.dp)) }
+        item { nekit.corporation.common_ui.ui_kit.MiddleLabel(stringResource(R.string.was_read)) }
         item {
-            CommonDetailsText(
-                "Секретный код скрыт в работах Леонардо да Винчи...\n" + "Только он поможет найти христианские святыни, дающие немыслимые власть и могущество... \n" + "Ключ к величайшей тайне, над которой человечество билось веками, наконец может быть найден..."
+            LinearProgressIndicator(
+                progress = { state.readingPercent },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 12.dp)
+                    .padding(horizontal = 16.dp),
+                trackColor = accent_medium,
+                color = accent_dark,
+                gapSize = 4.dp
             )
-        }
-        if (state.chapters!!.find { true } != null) {
-            item { Spacer(Modifier.height(16.dp)) }
-            item { nekit.corporation.common_ui.ui_kit.MiddleLabel(stringResource(R.string.was_read)) }
-            item {
-                /* ProgressReadBar(
-                     0.1f,
-                     Modifier
-                         .padding(top = 12.dp)
-                         .padding(horizontal = 16.dp)
-                 )*/
-            }
         }
         item { Spacer(Modifier.height(24.dp)) }
         item { nekit.corporation.common_ui.ui_kit.MiddleLabel(stringResource(R.string.toc)) }
         item { Spacer(Modifier.height(8.dp)) }
-        items(state.chapters!!.size) {
-            ChapterItem(state.chapters!![it], component::onChapterClick)
-        }
+        if (state.chapters != null)
+            items(state.chapters!!.size) {
+                ChapterItem(
+                    state.chapters!![it], component::onChapterClick, when {
+                        it > state.progress -> ChapterState.NotWatch
+                        it < state.progress -> ChapterState.Passed
+                        else -> ChapterState.InProgress
+                    }
+                )
+            }
+        else
+            items(3) {
+                Box(
+                    Modifier
+                        .padding(horizontal = 16.dp, vertical = 8.dp)
+                        .fillMaxWidth()
+                        .height(32.dp)
+                        .clip(RoundedCornerShape(4.dp))
+                        .background(PurpleGrey80)
+                        .shimmer()
+                )
+            }
     }
+
 }
 
 @Composable
 fun DetailsImage(
-    imageUrl: String,
+    imageUrl: String?,
     onBackClick: () -> Unit,
 ) {
-    Box() {
-        AsyncImage(
-            imageUrl,
+    LaunchedEffect(imageUrl) {
+        Log.d("DetailsImage", "Loading imageUrl=$imageUrl")
+    }
+    val painter = rememberAsyncImagePainter(imageUrl)
+    val state = painter.state
+
+    Box {
+        if (state is AsyncImagePainter.State.Loading || state is AsyncImagePainter.State.Error || state is AsyncImagePainter.State.Empty) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(380.dp)
+                    .shimmer()
+                    .background(Color.LightGray.copy(alpha = 0.3f))
+            )
+        } else Image(
+            painter = painter,
             "",
             modifier = Modifier
                 .fillMaxWidth()
@@ -106,7 +154,6 @@ fun DetailsImage(
                 .testTag("detail image"),
             contentScale = ContentScale.Crop
         )
-
         Spacer(
             modifier = Modifier
                 .fillMaxWidth()
@@ -142,7 +189,9 @@ fun DetailsImage(
 
 
 @Composable
-fun ButtonRow(onReadClick: () -> Unit, onAddToFavouriteClick: () -> Unit) {
+fun ButtonRow(
+    onReadClick: () -> Unit, onAddToFavouriteClick: (Boolean) -> Unit, isFavorite: Boolean
+) {
     Row(Modifier.padding(horizontal = 16.dp)) {
         Button(
             onClick = onReadClick,
@@ -166,7 +215,7 @@ fun ButtonRow(onReadClick: () -> Unit, onAddToFavouriteClick: () -> Unit) {
         }
         Spacer(Modifier.width(8.dp))
         Button(
-            onClick = onAddToFavouriteClick,
+            onClick = { onAddToFavouriteClick(isFavorite) },
             modifier = Modifier
                 .weight(1f)
                 .offset(y = ((-24).dp))
@@ -179,14 +228,15 @@ fun ButtonRow(onReadClick: () -> Unit, onAddToFavouriteClick: () -> Unit) {
             )
         ) {
             Icon(
-                painter = painterResource(bookmarks),
+                painter = painterResource(if (isFavorite) bookmarks else R.drawable.bookmarks_fill),
                 "",
                 Modifier.padding(vertical = 5.dp)
             )
             Spacer(Modifier.width(8.dp))
             Text(
-                text = stringResource(R.string.in_favorite),
-                style = nekit.corporation.common_ui.theme.detailsBodyButton
+                text = stringResource(if (isFavorite) R.string.in_favorite else R.string.from_favorite),
+                style = nekit.corporation.common_ui.theme.detailsBodyButton,
+                textAlign = TextAlign.Center
             )
         }
     }
@@ -213,7 +263,8 @@ fun CommonDetailsText(text: String) {
                 text = paragraph,
                 style = nekit.corporation.common_ui.theme.detailsBody,
                 modifier = Modifier.padding(horizontal = 16.dp),
-            )
+
+                )
             Spacer(modifier = Modifier.height(8.dp))
         }
     }
@@ -224,26 +275,27 @@ fun CommonDetailsText(text: String) {
 fun ChapterItem(
     chapter: ShortChapterModel,
     onClick: (Long) -> Unit,
+    state: ChapterState,
 ) {
     Row(
         Modifier
             .padding(horizontal = 16.dp)
             .clickable { onClick(chapter.id) }
             .testTag("chapters")) {
-        /*when (chapter.state) {
+        when (state) {
             is ChapterState.Passed -> {
                 Text(
                     text = chapter.name,
                     Modifier
                         .weight(1f)
                         .padding(vertical = 13.5.dp),
-                    style = nekit.corporation.common_ui.theme.detailsBody
+                    style = detailsBody
                 )
 
                 Icon(
                     painter = painterResource(R.drawable.access),
                     "",
-                    tint = nekit.corporation.common_ui.theme.accent_medium,
+                    tint = accent_medium,
                     modifier = Modifier.padding(vertical = 13.5.dp),
                 )
 
@@ -256,12 +308,12 @@ fun ChapterItem(
                     Modifier
                         .weight(1f)
                         .padding(vertical = 13.5.dp),
-                    style = nekit.corporation.common_ui.theme.detailsSelectedBody
+                    style = detailsSelectedBody
                 )
                 Icon(
                     painter = painterResource(R.drawable.any),
                     "",
-                    tint = nekit.corporation.common_ui.theme.accent_dark,
+                    tint = accent_dark,
                     modifier = Modifier
                         .padding(vertical = 13.5.dp)
                         .clickable { onClick(chapter.id) },
@@ -274,12 +326,12 @@ fun ChapterItem(
                     Modifier
                         .weight(1f)
                         .padding(vertical = 13.5.dp),
-                    style = nekit.corporation.common_ui.theme.detailsBody
+                    style = detailsBody
                 )
             }
 
             else -> {}
-        }*/
+        }
 
     }
 }

@@ -27,7 +27,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
-import nekit.corporation.bookmarks.BookmarksUi
+import nekit.corporation.bookmarks.ui.BookmarksUi
 import nekit.corporation.common_ui.R.drawable.bookmarks
 import nekit.corporation.common_ui.R.drawable.play
 import nekit.corporation.library.LibraryUi

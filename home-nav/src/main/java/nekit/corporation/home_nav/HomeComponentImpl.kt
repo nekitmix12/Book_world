@@ -4,6 +4,7 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.slot.SlotNavigation
 import com.arkivanov.decompose.router.slot.activate
 import com.arkivanov.decompose.router.slot.childSlot
+import com.arkivanov.mvikotlin.core.store.StoreFactory
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import me.gulya.anvil.assisted.ContributesAssistedFactory
@@ -16,8 +17,9 @@ import nekit.corporation.search.SearchComponent
 @ContributesAssistedFactory(AppScope::class, HomeComponent.Factory::class)
 class HomeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
-    @Assisted val openDetails: HomeComponent.OpenDetails,
     @Assisted val openChapter: HomeComponent.OpenChapter,
+    @Assisted val openDetails: HomeComponent.OpenDetails,
+    @Assisted val storeFactory: StoreFactory,
     private val libraryFactory: LibraryComponent.Factory,
     private val searchFactory: SearchComponent.Factory,
     private val bookmarksFactory: BookmarksComponent.Factory,
@@ -52,6 +54,7 @@ class HomeComponentImpl @AssistedInject constructor(
                 libraryFactory(
                     componentContext = context,
                     goToBook = openDetails::open,
+                    storeFactory = storeFactory,
                 )
             )
 
@@ -73,12 +76,13 @@ class HomeComponentImpl @AssistedInject constructor(
                         override fun goToDetails(detailsId: Long) {
                             openDetails.open(detailsId)
                         }
-                    }
+                    },
+                    storeFactory = storeFactory
                 )
             )
         }
 
-    companion object{
+    companion object {
         private const val NAVIGATION_SLOT_KEY = "HomeComponentImpl"
     }
 }

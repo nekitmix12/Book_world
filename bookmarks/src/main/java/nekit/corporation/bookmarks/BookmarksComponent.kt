@@ -1,11 +1,11 @@
 package nekit.corporation.bookmarks
 
 import com.arkivanov.decompose.ComponentContext
+import com.arkivanov.mvikotlin.core.store.StoreFactory
 import kotlinx.coroutines.flow.StateFlow
-import nekit.corporation.bookmarks.model.BookmarksState
 
 interface BookmarksComponent {
-    val state: StateFlow<BookmarksState>
+    val state: StateFlow<BookmarksStore.State>
 
     fun onBookClick(bookId: Long)
 
@@ -13,7 +13,8 @@ interface BookmarksComponent {
     fun interface Factory {
         operator fun invoke(
             componentContext: ComponentContext,
-            methods: Methods
+            methods: Methods,
+            storeFactory: StoreFactory,
         ): BookmarksComponent
     }
 

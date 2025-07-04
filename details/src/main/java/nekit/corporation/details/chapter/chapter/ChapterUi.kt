@@ -42,6 +42,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
 import nekit.corporation.common_ui.R.drawable
 import nekit.corporation.common_ui.theme.accent_dark
@@ -60,7 +61,6 @@ fun ChapterUi(
     component: ChapterComponent
 ) {
     val state by component.state.collectAsState()
-
     val destiny = LocalDensity.current.density
     val lazyListState = rememberLazyListState()
     val isFirstItemVisible by remember { derivedStateOf { lazyListState.firstVisibleItemScrollOffset == 0 } }
@@ -185,6 +185,7 @@ fun ChapterUi(
 
         Spacer(Modifier.height(16.dp))
     }
+
 }
 
 @Composable

@@ -1,19 +1,20 @@
 package nekit.corporation.auth
 
 import com.arkivanov.decompose.ComponentContext
+import com.arkivanov.decompose.value.Value
 import com.arkivanov.mvikotlin.core.instancekeeper.getStore
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.labels
+import com.arkivanov.mvikotlin.extensions.coroutines.stateFlow
+import com.arkivanov.mvikotlin.extensions.coroutines.states
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import kotlinx.collections.immutable.persistentListOf
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import me.gulya.anvil.assisted.ContributesAssistedFactory
 import nekit.corporation.auth.AuthStore.Intent
 import nekit.corporation.common.AppScope
 import nekit.corporation.common.utils.componentCoroutineScope
-
 @ContributesAssistedFactory(AppScope::class, SignInComponent.Factory::class)
 class SignInComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
@@ -21,15 +22,15 @@ class SignInComponentImpl @AssistedInject constructor(
     @Assisted storeFactory: StoreFactory,
     private val authFactory: AuthStore.Factory,
 ) : ComponentContext by componentContext, SignInComponent {
-    override val state = MutableStateFlow(
-        AuthStore.State(carouselImages = persistentListOf())
-    )
     private val store =
         instanceKeeper.getStore {
             authFactory(
                 storeFactory = storeFactory,
             ).create()
         }
+    @OptIn(ExperimentalCoroutinesApi::class)
+    override val state = store.stateFlow
+
     private val scope = componentCoroutineScope()
 
     init {

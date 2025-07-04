@@ -1,6 +1,5 @@
-package nekit.corporation.bookmarks
+package nekit.corporation.bookmarks.model
 
-import nekit.corporation.bookmarks.model.ReadNowBookModel
 import nekit.corporation.common.models.BookSearchModel
 import nekit.corporation.domain.models.book.Books
 import nekit.corporation.domain.models.book.ChaptersWithBookAndAuthor

@@ -1,16 +1,16 @@
-package nekit.corporation.bookmarks
+package nekit.corporation.bookmarks.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import nekit.corporation.bookmarks.model.BookmarksState
+import nekit.corporation.bookmarks.BookmarksComponent
+import nekit.corporation.bookmarks.BookmarksStore.*
 
 class FakeBookmarksComponent : BookmarksComponent {
-    override var state: StateFlow<BookmarksState> = MutableStateFlow(
-        BookmarksState(
+    override var state = MutableStateFlow(
+        State(
             quotes = null,
             books = null,
             reading = null
